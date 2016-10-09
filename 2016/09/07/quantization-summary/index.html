@@ -1,0 +1,931 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="quantization," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="Recently I have been working on quantizing typical neural networks to uint8 to figure out the influence on their performance. Today I got some result, which shows that to Inception-BN and VGG model on">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Quantizing a Neural Network">
+<meta property="og:url" content="http://yoursite.com/2016/09/07/quantization-summary/index.html">
+<meta property="og:site_name" content="Chaos">
+<meta property="og:description" content="Recently I have been working on quantizing typical neural networks to uint8 to figure out the influence on their performance. Today I got some result, which shows that to Inception-BN and VGG model on">
+<meta property="og:updated_time" content="2016-10-03T05:28:42.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Quantizing a Neural Network">
+<meta name="twitter:description" content="Recently I have been working on quantizing typical neural networks to uint8 to figure out the influence on their performance. Today I got some result, which shows that to Inception-BN and VGG model on">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2016/09/07/quantization-summary/"/>
+
+  <title> Quantizing a Neural Network | Chaos </title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Chaos</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Quantizing a Neural Network
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-09-07T15:55:40+08:00" content="2016-09-07">
+              2016-09-07
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/ML-Implementation/" itemprop="url" rel="index">
+                    <span itemprop="name">ML Implementation</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/09/07/quantization-summary/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/09/07/quantization-summary/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2016/09/07/quantization-summary/" class="leancloud_visitors" data-flag-title="Quantizing a Neural Network">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>Recently I have been working on quantizing typical neural networks to uint8 to figure out the influence on their performance. Today I got some result, which shows that to Inception-BN and VGG model on CIFAR10 and ImageNet dataset, the effect on the performance is negligible, from which I believe we can conclude that uint8 quantization will not decrease performance. The concrete results will be attached at the end of the post.</p>
+<p>This post is to write down some important conclusions and thinkings.</p>
+<h1 id="What-is-Quantization"><a href="#What-is-Quantization" class="headerlink" title="What is Quantization"></a>What is Quantization</h1><p>From my understanding, the so called <em>quantization</em> is nothing but the process to change the floating-point storage and operations into fixed-point. The main purposes are:</p>
+<ul>
+<li>save space</li>
+<li>speed up by utilizing integer operations</li>
+</ul>
+<p>The first goal is obvious and immediate, e.g. 4x space will be saved upon converting from float32 to uint8. Note that it is just storage space, while the runtime memory is another story. On the other hand, the second goal is not that easy to achieve, which requires us to investigate into every single operators, and find corresponding steps and optimizations.</p>
+<p>There are mainly two ways of quantization:</p>
+<ul>
+<li>Linear quantization<ul>
+<li>use a linear mapping to (de)quantize</li>
+</ul>
+</li>
+<li>Codebook quantization<ul>
+<li>(de)quantize by looking up a mapping table</li>
+</ul>
+</li>
+</ul>
+<p>In fact, those two are essentially equivalent, which I believe is also the essence of quantization:</p>
+<blockquote>
+<p>to find a invertible mapping from floating-point to fixed-point numbers, and to transform operations under such mapping correspondingly</p>
+</blockquote>
+<p>The difference between different ways of quantization results in the fact that we have to re-define the operations between elements! For example:</p>
+<ul>
+<li>Linear quantization<ul>
+<li>element mapping: <span>$x\mapsto a\hat{x}+b$</span><!-- Has MathJax --></li>
+<li>element addition: <span>$\widehat{x+y} = \hat{x}+\hat{y}+ \frac{b}{a}$</span><!-- Has MathJax -->, which is NOT simply <span>$\hat{x}+\hat{y}$</span><!-- Has MathJax --></li>
+</ul>
+</li>
+<li>Codebook quantization<ul>
+<li>element mapping：look up a table</li>
+<li>element addition: look up twice</li>
+</ul>
+</li>
+</ul>
+<p>As a result, different mapping indicates different optimization on computation. <a href="https://arxiv.org/abs/1510.00149" target="_blank" rel="external">The Deep Compression by Song Han</a> chooses the codebook approach, and utilizes the K-means algorithm to generate the codebook, while he also designed a <a href="https://arxiv.org/abs/1602.01528" target="_blank" rel="external">designated hardware</a> to speed up the looking up operation. On the contrary, I chose the linear method, since it can utilize some mathematics.</p>
+<p>In fact, we can define the process of quantization using the language from Category Theory:</p>
+<blockquote>
+<p>to find a functor from floating-point category to fixed-point category</p>
+</blockquote>
+<p>which not only implies the mapping between elements, but also that between operators!</p>
+<h1 id="Formalization-of-Linear-Quantization"><a href="#Formalization-of-Linear-Quantization" class="headerlink" title="Formalization of Linear Quantization"></a>Formalization of Linear Quantization</h1><p>We call <span>$Q_V(\mathbb{R})$</span><!-- Has MathJax --> a linear <strong>quantized space</strong> to finite integer ring V from <span>$\mathbb{R}$</span><!-- Has MathJax -->.</p>
+<p>The elements of <span>$Q_V(\mathbb{R})$</span><!-- Has MathJax --> are denoted by <span>$(\hat{x}, l, u)$</span><!-- Has MathJax -->, and are referred to as the <strong>quantized number</strong>. We call <span>$\hat{x}\in V$</span><!-- Has MathJax --> the <strong>quantized value</strong>, and <span>$(l, u), l\leqslant u\in \mathbb{R}$</span><!-- Has MathJax --> the <strong>quantizing range</strong>. Sometimes we can omit the range when it is clear from the context, but must keep in mind that every element of <span>$Q_V(\mathbb{R})$</span><!-- Has MathJax --> <em>must</em> be attached by two real number <span>$l$</span><!-- Has MathJax --> and <span>$u$</span><!-- Has MathJax --> representing the endpoints of the interval to which the quantized value is quantizing.</p>
+<p>The quantize mapping from <span>$\mathbb{R}$</span><!-- Has MathJax --> to <span>$Q_V(\mathbb{R})$</span><!-- Has MathJax --> is:</p>
+<span>$$q_{l,u}:x\mapsto \left(\left[\frac{x-l}{\Delta}\right], l, u\right)$$</span><!-- Has MathJax -->
+<p>where the round bracket is saturated to the range of <span>$V$</span><!-- Has MathJax -->. The dequantize mapping is:</p>
+<span>$$q^{-1}:(\hat{x}, l, u) \mapsto \hat{x}\Delta + l$$</span><!-- Has MathJax -->
+<p>where</p>
+<span>$$\Delta = \frac{u-l}{|V| - 1}$$</span><!-- Has MathJax -->
+<p>is the minimum representable difference.</p>
+<p>In this post we will consider the ring <span>$U$</span><!-- Has MathJax --> be the ring consists of uint8 integers, in which the addition and multiplication is saturated version，i.e. capped by 0 and 255. We have <span>$|U|=256$</span><!-- Has MathJax -->, and denote it by <span>$S=255$</span><!-- Has MathJax --> from now on.</p>
+<h1 id="Liearn-Invariance"><a href="#Liearn-Invariance" class="headerlink" title="Liearn Invariance"></a>Liearn Invariance</h1><p>It is easy to see a simple property of linear quantized space, which I called the <strong>linear invariance</strong>: i.e. if</p>
+<span>$$q_{l,u}(x)=(\hat{x},l,u)$$</span><!-- Has MathJax -->
+<p>then</p>
+<span>$$q_{l,u}(ax+b)=(\hat{x}, al+b, au+b)$$</span><!-- Has MathJax -->
+<p>As a result, when linearly transforming a bunch of quantized numbers under same range, we need to do nothing but update the two endpoints of the range under the linear transformation. In particular, we do NOT need to update the quantzied values of those numbers!</p>
+<h1 id="Range-Adjustment"><a href="#Range-Adjustment" class="headerlink" title="Range Adjustment"></a>Range Adjustment</h1><p>We call two quantized number are <strong>equal</strong> if they dequantized to the same number in <span>$\mathbb{R}$</span><!-- Has MathJax -->. However it seldom happens, since the precision of quantized numbers are limited. So we define two quantized numbers <span>$(\hat{x}, l, u)$</span><!-- Has MathJax --> and <span>$(\hat{y}, l&apos;, u&apos;)$</span><!-- Has MathJax --> to be <strong>almost equal</strong> if</p>
+<span>$$\left|(\Delta\hat{x}+l) - (\Delta&apos;\hat{y} + l&apos;)\right| &lt; \frac{1}{2}\min{(\Delta,\Delta&apos;)}$$</span><!-- Has MathJax -->
+<p>which looks terrifying, but in fact it is saying nothing but that <span>$\hat{x}$</span><!-- Has MathJax --> and <span>$\hat{y}$</span><!-- Has MathJax --> are the best choices to represent the same real number under different quantizing ranges.</p>
+<p>There is a common operation within space <span>$Q_V(\mathbb{R})$</span><!-- Has MathJax --> itself, which I called <strong>range adjustment</strong>: if <span>$(\hat{x}, l, u)$</span><!-- Has MathJax --> and <span>$(\hat{y}, l&apos;, u&apos;)$</span><!-- Has MathJax --> are almost equal, then</p>
+<span>$$\begin{aligned}
+\hat{y}&amp;= \left[\frac{\hat{x}\Delta+l-l&apos;}{\Delta&apos;}\right]\\
+\end{aligned}$$</span><!-- Has MathJax -->
+<p>This operation is so common that we must find a fast way to compute it. So far I just naively implemented it.</p>
+<h1 id="Operations-in-Linear-Quantized-Space"><a href="#Operations-in-Linear-Quantized-Space" class="headerlink" title="Operations in Linear Quantized Space"></a>Operations in Linear Quantized Space</h1><p>In this section I provide the quantized version of several common operators in neural network.</p>
+<h2 id="Fully-Connected"><a href="#Fully-Connected" class="headerlink" title="Fully Connected"></a>Fully Connected</h2><p>Please refer to <a href="/2016/09/09/uint8-fc/" title="UInt8 Matrix Multiplication">UInt8 Matrix Multiplication</a>.</p>
+<h2 id="Convolution"><a href="#Convolution" class="headerlink" title="Convolution"></a>Convolution</h2><p>In GPU, CuDNN provides the API for floating-point convolution, but no uint8 version. Luckily at least CUDA 8.0 provides uint8 GEMM API, so I can write the convolution by myself, before which I have to write im2col functions. The detail is in <a href="/2016/09/09/conv/" title="Implement Convolution in CNN">Implement Convolution in CNN</a>.</p>
+<h2 id="ReLU-Activation"><a href="#ReLU-Activation" class="headerlink" title="ReLU Activation"></a>ReLU Activation</h2><p>ReLU is computed in <span>$\mathbb{R}$</span><!-- Has MathJax --> as：</p>
+<span>$$x\mapsto\max{(x,0)}$$</span><!-- Has MathJax -->
+<p>In <span>$Q_V(\mathbb{R})$</span><!-- Has MathJax --> , if the input range is <span>$(l, u)$</span><!-- Has MathJax --> where <span>$l&lt;0, u&gt;0$</span><!-- Has MathJax -->, the output range should be <span>$(0, u)$</span><!-- Has MathJax -->, and we have the mapping<br><span>$$\begin{aligned}
+&amp;(\hat{x}, l, u) \mapsto (\hat{y}, 0, u)\\
+\hat{y}&amp;= \left[\frac{1}{\Delta_y}(\max{(\hat{x}\Delta_x+l, 0)} - 0)\right]\\
+&amp;= \left[\frac{\max{\left(\hat{x}\frac{u-l}{S}+l, 0\right)}\cdot S}{u}\right]\\
+&amp;=\left[\max{\left(\hat{x}\left(1-\frac{l}{u}\right)+\frac{l}{u}S, 0\right)}\right]\\
+&amp;=\hat{x} - \left[(S - \hat{x})\frac{-l}{u}\right]
+\end{aligned}$$</span><!-- Has MathJax --></p>
+<p>where</p>
+<ul>
+<li>the last minus is saturated</li>
+<li>note that on uint8, <span>$S - \hat{x}$</span><!-- Has MathJax --> is still in uint8</li>
+</ul>
+<p>All other cases on the input range is obvious and need no computation.</p>
+<h2 id="Batch-Normalization"><a href="#Batch-Normalization" class="headerlink" title="Batch Normalization"></a>Batch Normalization</h2><p>The input of a batch normalization layer is a tensor of dimension <span>$(N, C, H, W)$</span><!-- Has MathJax -->. The layer will update <span>$C$</span><!-- Has MathJax --> tensors of shape <span>$(N, H, W)$</span><!-- Has MathJax --> along the second dimension by:</p>
+<span>$$x \mapsto \gamma_c\frac{x-\mu_c}{\sigma_c} + \beta_c$$</span><!-- Has MathJax -->
+<p>where <span>$\mu_c, \sigma_c$</span><!-- Has MathJax --> is the mean and standard deviation of the <span>$c$</span><!-- Has MathJax -->th tensor, and <span>$\gamma_c$</span><!-- Has MathJax --> and <span>$\beta_c$</span><!-- Has MathJax --> are pre-determined parameters for each <span>$c$</span><!-- Has MathJax -->。</p>
+<p>By linear invariance, the quantized batch norm can be calculated as:</p>
+<ul>
+<li>For each <span>$c$</span><!-- Has MathJax -->, let <span>$l_c =f_c(l), u_c = f_c(u)$</span><!-- Has MathJax -->, where <span>$f_c(x) = \gamma_c\frac{x-\mu_c}{\sigma_c} + \beta_c$</span><!-- Has MathJax --></li>
+<li>Find <span>$l=\min{(l_i)}, u = \max{(u_i)}$</span><!-- Has MathJax --></li>
+<li>For each <span>$c$</span><!-- Has MathJax -->, adjust the range of <span>$(\hat{x}, l_c, u_c)$</span><!-- Has MathJax --> to <span>$(\hat{y}, l&apos;, u&apos;)$</span><!-- Has MathJax --></li>
+</ul>
+<p>Furthermore, instead of calculating <span>$\mu_c, \sigma_c$</span><!-- Has MathJax --> on air, they are passed in as parameters, since they are calculated and movingly accumulated during training process. As a result, the speed bottleneck is at the third step, i.e. adjusting <span>$C$</span><!-- Has MathJax --> ranges to a uniformed one.</p>
+<h2 id="Max-and-Avg-Pooling"><a href="#Max-and-Avg-Pooling" class="headerlink" title="Max and Avg Pooling"></a>Max and Avg Pooling</h2><p>Obviously, quantization preserves max and avg. In other words, we can perform the corresponding operation directly on uint8 integers without changing the range. Note that we need a intermediate variable with large type such as int when performing avg.</p>
+<p>However, always we need to adjust the range at end for better accuracy, which will cause extra time.</p>
+<h2 id="Concat"><a href="#Concat" class="headerlink" title="Concat"></a>Concat</h2><p>We only need to adjust the ranges of each part to a uniformed one.</p>
+<h1 id="Determine-Operator-Output-Range"><a href="#Determine-Operator-Output-Range" class="headerlink" title="Determine Operator Output Range"></a>Determine Operator Output Range</h1><p>There is another important issue that must be solved: how to determine the output ranges of each operator given the quantized input numbers, i.e. a bunch of uint8 values and their quantizing ranges?</p>
+<p>The output range of some operator, such as ReLU, is obvious, while some not, e.g. fully connected, which is matrix multiplication. Initially I tried several heuristic to estimated the output range. For example, I found that for a <span>$(m,n)$</span><!-- Has MathJax --> matrix with range <span>$(l_1,u_1)$</span><!-- Has MathJax --> multiplying <span>$(n, k)$</span><!-- Has MathJax --> matrix with range <span>$(l_2,u_2)$</span><!-- Has MathJax -->, the output range can be roughly estimated by</p>
+<span>$$(l,u)\times\sqrt{n}$$</span><!-- Has MathJax -->
+<p>where</p>
+<span>$$\begin{aligned}
+l&amp;=\min{(l_1l_2,l_1u_2,u_1l_2,u_1u_2)}\\
+u&amp;=\max{(l_1l_2,l_1u_2,u_1l_2,u_1u_2)}\\
+\end{aligned}$$</span><!-- Has MathJax -->
+<p>At least on the randomly generated data, such estimation makes little error. However, it failed on the real data. Besides, there are a lot other operators whose output ranges can not be even estiamted by closed math formulas.</p>
+<p>Finally, my solution is to use the <em>training data</em> and the original model to directly record the output range of each layer, and introduced a new hyper parameter to shrink the recorded ranges to be the quantized ranges in the quantized model. It works surprisingly good:)</p>
+<h1 id="Notes-on-Implementation"><a href="#Notes-on-Implementation" class="headerlink" title="Notes on Implementation"></a>Notes on Implementation</h1><p>It turnes out that the performance after quantization is extremely sensitive to the rounding error. Followings are several lessons I have been taught.</p>
+<ul>
+<li><p>Always use <code>std::round</code> instead of <code>std::floor</code></p>
+<p>Initially, I carelessly used <code>std::floor</code> when mapping a float32 to uint8 at one place. The model accuracy drops to, surprisingly, 0!</p>
+</li>
+<li><p>Always choose the quantizing range such that 0 is quantized as accurate as possible, i.e <span>$q^{-1}(q_{l,u}(0))$</span><!-- Has MathJax --> should ideally be again 0.</p>
+<p>This principle is intended for the convolution operators, which are always 0-padded. If the quantized zero is in fact depart from the real zero a lot, it will cause much error.</p>
+</li>
+</ul>
+<p>Following table demonstrates the influence on performance caused by the above two approaches. The accuracy is calculated on a single batch, i.e. 32 examples.</p>
+<table>
+<thead>
+<tr>
+<th>Model</th>
+<th>Dataset</th>
+<th>normal</th>
+<th>misused std::floor</th>
+<th>not adjust range</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Inception-BN</td>
+<td>ImagetNet</td>
+<td>59.375%</td>
+<td>0%</td>
+<td>18.75%</td>
+</tr>
+<tr>
+<td>VGG</td>
+<td>ImageNet</td>
+<td>62.5%</td>
+<td>0%</td>
+<td>9.375%</td>
+</tr>
+</tbody>
+</table>
+<p>It can be seen that those two approaches have dramatical influence on the final performance.</p>
+<h1 id="Results"><a href="#Results" class="headerlink" title="Results"></a>Results</h1><p>Following table shows the result of my experiments on some typical models, the performance is Top-1 accuracy on the validation dataset:</p>
+<table>
+<thead>
+<tr>
+<th>Model</th>
+<th>Dataset</th>
+<th>Original</th>
+<th>Quantized</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Small Inception-BN</td>
+<td>CIFAR10</td>
+<td>90.97%</td>
+<td>90.87%</td>
+</tr>
+<tr>
+<td>Inception-BN</td>
+<td>ImagetNet</td>
+<td>67.61%</td>
+<td>66.75%</td>
+</tr>
+<tr>
+<td>VGG</td>
+<td>ImageNet</td>
+<td>70.69%</td>
+<td>69.67%</td>
+</tr>
+</tbody>
+</table>
+<p>We see that the experiment covers networks and datasets in both small and large scale, which I believe indicates that the uint8 quantization have little if not at all harm on the performance.</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/quantization/" rel="tag">#quantization</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/09/09/uint8-fc/" rel="prev" title="UInt8 Matrix Multiplication">
+                UInt8 Matrix Multiplication <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/09/07/quantization-summary/"
+           data-title="Quantizing a Neural Network" data-url="http://yoursite.com/2016/09/07/quantization-summary/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/uploads/avatar.png"
+               alt="h(x)" />
+          <p class="site-author-name" itemprop="name">h(x)</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">7</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#What-is-Quantization"><span class="nav-number">1.</span> <span class="nav-text">What is Quantization</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Formalization-of-Linear-Quantization"><span class="nav-number">2.</span> <span class="nav-text">Formalization of Linear Quantization</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Liearn-Invariance"><span class="nav-number">3.</span> <span class="nav-text">Liearn Invariance</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Range-Adjustment"><span class="nav-number">4.</span> <span class="nav-text">Range Adjustment</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Operations-in-Linear-Quantized-Space"><span class="nav-number">5.</span> <span class="nav-text">Operations in Linear Quantized Space</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Fully-Connected"><span class="nav-number">5.1.</span> <span class="nav-text">Fully Connected</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Convolution"><span class="nav-number">5.2.</span> <span class="nav-text">Convolution</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ReLU-Activation"><span class="nav-number">5.3.</span> <span class="nav-text">ReLU Activation</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Batch-Normalization"><span class="nav-number">5.4.</span> <span class="nav-text">Batch Normalization</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Max-and-Avg-Pooling"><span class="nav-number">5.5.</span> <span class="nav-text">Max and Avg Pooling</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Concat"><span class="nav-number">5.6.</span> <span class="nav-text">Concat</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Determine-Operator-Output-Range"><span class="nav-number">6.</span> <span class="nav-text">Determine Operator Output Range</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Notes-on-Implementation"><span class="nav-number">7.</span> <span class="nav-text">Notes on Implementation</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Results"><span class="nav-number">8.</span> <span class="nav-text">Results</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">h(x)</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"hx-chaos"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    <script src="/vendors/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("HaYouQEVV7WVOM54aQI5vJ8W-gzGzoHsz", "dwbK71pPT5vOio5RpJ5x0dad");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+
+
+
+  
+
+</body>
+</html>

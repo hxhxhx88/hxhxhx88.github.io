@@ -1,0 +1,1988 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="Chaos">
+<meta property="og:url" content="http://yoursite.com/index.html">
+<meta property="og:site_name" content="Chaos">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Chaos">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/"/>
+
+  <title> Chaos </title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container one-collumn sidebar-position-left 
+   page-home 
+ ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Chaos</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+  <section id="posts" class="posts-expand">
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/10/03/rl-dp/" itemprop="url">
+                  RL Note (3) - Planning by Dynamic Programming
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-10-03T15:21:11+08:00" content="2016-10-03">
+              2016-10-03
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Machine-Learning/" itemprop="url" rel="index">
+                    <span itemprop="name">Machine Learning</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/10/03/rl-dp/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/10/03/rl-dp/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2016/10/03/rl-dp/" class="leancloud_visitors" data-flag-title="RL Note (3) - Planning by Dynamic Programming">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>In this post I will clarify a method to solve the MDP using Bellman Expectation and/or Optimality Equation, as stated in the previous post <a href="/2016/10/03/rl-dp/" title="RL Note (3) - Planning by Dynamic Programming">RL Note (3) - Planning by Dynamic Programming</a>. The lecture video is <a href="https://www.youtube.com/watch?v=Nd1-UUMVfz4" target="_blank" rel="external">here: Lecture 3_ Planning by Dynamic Programming</a>.</p>
+<p>To be honest, initially I was not clear what’s going on after watching the video, so used my own way to re-formulate the algorithm introduced in the video, which hopefully is clearer and easier to understand.</p>
+<p>In this post we are considering how to solve for optimal state value function <span>$v_*$</span><!-- Has MathJax --> and optimal policy <span>$\pi_*$</span><!-- Has MathJax -->.</p>
+<h1 id="Notations"><a href="#Notations" class="headerlink" title="Notations"></a>Notations</h1><p>The Bellman Expectation Equation is<br><span>$$v_{\pi}(s)=\mathbb{E}[R_{t+1}\mid S_t=s] + \gamma\mathbb{E}[v_{\pi}(S_{t+1}) \mid S_t = s]$$</span><!-- Has MathJax --></p>
+<p>For simplicity, we define a <em>bellman expectation operator</em> <span>$T_E^{\pi}$</span><!-- Has MathJax --> on the functions over state space to encapsulate all right hand side, i.e. define</p>
+<span>$$\begin{aligned}
+T_E^{\pi}: (S\rightarrow\mathbb{R})&amp;\rightarrow(S\rightarrow\mathbb{R})\\
+v&amp;\mapsto \left(s\mapsto\mathbb{E}[R_{t+1}\mid S_t=s] + \gamma\mathbb{E}[v(S_{t+1}) \mid S_t = s]\right)
+\end{aligned}$$</span><!-- Has MathJax -->
+<p>So the Bellman Expectation Equation can be expressed as simply:<br><span>$$v_{\pi}=T_E^{\pi}(v_{\pi})$$</span><!-- Has MathJax --></p>
+<p>Also, for Bellman Optimality Equation, we can similarly define a <em>bellman optimality operator</em><br><span>$$\begin{aligned}
+T_O: (S\rightarrow\mathbb{R})&amp;\rightarrow(S\rightarrow\mathbb{R})\\
+v&amp;\mapsto \left(s\mapsto\max_a{\left(R_s^a + \gamma  \sum_{s&apos;}\mathbb{P}_{ss&apos;}^av(s&apos;)\right)}\right)
+\end{aligned}$$</span><!-- Has MathJax --></p>
+<p>As a result, the Bellman Optimality Equation for optimal value functions can be written as<br><span>$$v_*=T_O(v_*)$$</span><!-- Has MathJax --></p>
+<p>Furthermore, recall that we can construct an optimal policy <span>$\pi_*$</span><!-- Has MathJax --> from an optimal action value function <span>$q_*$</span><!-- Has MathJax --> greedily by picking the action with the maximum value. Since <span>$q_*$</span><!-- Has MathJax --> and  <span>$v_*$</span><!-- Has MathJax --> are inter-convertible, we can also construct the <span>$\pi_*$</span><!-- Has MathJax --> from an optimal state value function <span>$q_*$</span><!-- Has MathJax -->. For simplicity, we define the <strong>greedy operator</strong> <span>$G$</span><!-- Has MathJax --> by<br><span>$$\begin{aligned}
+G: (S\rightarrow\mathbb{R})&amp;\rightarrow(A\rightarrow\mathbb{R})\\
+v&amp;\mapsto \left(a\mapsto \begin{cases}
+1, \quad a = \operatorname{argmax} \left(R_s^a + \gamma\sum_{s&apos;}\mathbb{P}_{ss&apos;}^a v(s&apos;)\right)\\
+0, \quad\text{otherwise}
+\end{cases}\right)
+\end{aligned}$$</span><!-- Has MathJax --></p>
+<p>Use those operators, we can find a simple relation between those frightening formulas:<br><span>$$T_O(\cdot) = T_E^{G(\cdot)}(\cdot)$$</span><!-- Has MathJax --></p>
+<h1 id="Three-Iterative-Methods"><a href="#Three-Iterative-Methods" class="headerlink" title="Three Iterative Methods"></a>Three Iterative Methods</h1><p>In the lecture, the teacher mentioned three iterative algorithms, which are</p>
+<ul>
+<li>Policy Evaluation<ul>
+<li>Input: MDP, A policy <span>$\pi$</span><!-- Has MathJax --></li>
+<li>Output: The value function <span>$v_{\pi}$</span><!-- Has MathJax --></li>
+</ul>
+</li>
+<li>Policy Iteration<ul>
+<li>Input: MDP</li>
+<li>Output: An optimal value function <span>$v_*$</span><!-- Has MathJax --> and optimal policy <span>$\pi_*$</span><!-- Has MathJax --></li>
+</ul>
+</li>
+<li>Value Iteration<ul>
+<li>Input: MDP</li>
+<li>Output: An optimal value function <span>$v_*$</span><!-- Has MathJax --> and optimal policy <span>$\pi_*$</span><!-- Has MathJax --></li>
+</ul>
+</li>
+</ul>
+<p>At the beginning I was really confused, especially by the latter two. Luckily, by the operator I defined above, I can clearly express those three algorithms now.</p>
+<h2 id="Policy-Evaluation"><a href="#Policy-Evaluation" class="headerlink" title="Policy Evaluation"></a>Policy Evaluation</h2><ul>
+<li>Input:<ul>
+<li>MDP, A policy <span>$\pi$</span><!-- Has MathJax --></li>
+</ul>
+</li>
+<li>Steps:<ul>
+<li>initialize <span>$v^{(0)}$</span><!-- Has MathJax --></li>
+<li>loop until should terminate<ul>
+<li><span>$v^{(k+1)}\leftarrow T^{\pi}_E\left(v^{(k)}\right)$</span><!-- Has MathJax --></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Output:<ul>
+<li><span>$v_*\leftarrow v^{(\text{last})}$</span><!-- Has MathJax -->
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="Policy-Iteration"><a href="#Policy-Iteration" class="headerlink" title="Policy Iteration"></a>Policy Iteration</h2><ul>
+<li>Input:<ul>
+<li>MDP</li>
+</ul>
+</li>
+<li>Steps:<ul>
+<li>initialize <span>$v^{(0)}, \pi^{(0)}$</span><!-- Has MathJax -->, and an integer <span>$K\geqslant 1$</span><!-- Has MathJax --></li>
+<li>loop until should terminate<ul>
+<li><span>$v^{(k+1)}\leftarrow \left(T^{\pi^{(k)}}_E\right)^K\left(v^{(k)}\right)$</span><!-- Has MathJax --></li>
+<li><span>$\pi^{(k+1)}\leftarrow G\left(v^{(k+1)}\right)$</span><!-- Has MathJax --></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Output:<ul>
+<li><span>$v_*\leftarrow v^{(\text{last})}$</span><!-- Has MathJax --></li>
+<li><span>$\pi_*\leftarrow \pi^{(\text{last})}$</span><!-- Has MathJax -->
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="Value-Iteration"><a href="#Value-Iteration" class="headerlink" title="Value Iteration"></a>Value Iteration</h2><ul>
+<li>Input:<ul>
+<li>MDP</li>
+</ul>
+</li>
+<li>Steps:<ul>
+<li>initialize <span>$v^{(0)}$</span><!-- Has MathJax --></li>
+<li>loop until should terminate<ul>
+<li><span>$v^{(k+1)}\leftarrow T_O\left(v^{(k)}\right)$</span><!-- Has MathJax --></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Output:<ul>
+<li><span>$v_*\leftarrow v^{(\text{last})}$</span><!-- Has MathJax --></li>
+<li><span>$\pi_*\leftarrow G(v_*)$</span><!-- Has MathJax -->
+</li>
+</ul>
+</li>
+</ul>
+<p>Note that when <span>$K=1$</span><!-- Has MathJax -->, the Policy Iteration is exactly Value Iteration.</p>
+<p>It can be shown by the Contraction Mapping Theorem that when <span>$\gamma&lt;1$</span><!-- Has MathJax --></p>
+<ul>
+<li><span>$v_{\pi}$</span><!-- Has MathJax --> is unique for a given <span>$\pi$</span><!-- Has MathJax --></li>
+<li>Policy Evaluation converges to <span>$v_{\pi}$</span><!-- Has MathJax --></li>
+<li>Policy Iteration converges to <span>$v_*$</span><!-- Has MathJax --></li>
+<li>Value Iteration converges to <span>$v_*$</span><!-- Has MathJax --></li>
+</ul>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/10/03/rl-bellman/" itemprop="url">
+                  RL Note (2.2) - The Bellman Equation
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-10-03T14:52:06+08:00" content="2016-10-03">
+              2016-10-03
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Machine-Learning/" itemprop="url" rel="index">
+                    <span itemprop="name">Machine Learning</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/10/03/rl-bellman/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/10/03/rl-bellman/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2016/10/03/rl-bellman/" class="leancloud_visitors" data-flag-title="RL Note (2.2) - The Bellman Equation">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>In the previous note <a href="/2016/10/03/rl-mdp/" title="RL Note (2.1) - Markov Decision Process">RL Note (2.1) - Markov Decision Process</a>, we formalized the agent-environment interaction problem into a Markov Decision Process, and defined the value functions of MDP. In this post we deduce a very important property of those value functions, namely the Bellman Equation, which is of fundamental importance to solve the MDP.</p>
+<h1 id="Bellman-Expectation-Equation"><a href="#Bellman-Expectation-Equation" class="headerlink" title="Bellman Expectation Equation"></a>Bellman Expectation Equation</h1><p>We can sense the recursiveness in the value function, which leads us to a relationship between the value function and itself. We have</p>
+<span>$$\begin{aligned}
+v_{\pi}(s)&amp;=\mathbb{E}[G_t \mid S_t = s]\\
+&amp;=\mathbb{E}[R_{t+1}+\gamma R_{t+2}+\gamma^2 R_{t+3}+\cdots \mid S_t = s]\\
+&amp;=\mathbb{E}[R_{t+1}\mid S_t=s+\gamma R_{t+2}+\gamma^2 R_{t+3}+\cdots \mid S_t = s]\\
+&amp;=\mathbb{E}[R_{t+1}\mid S_t=s] + \gamma\mathbb{E}[R_{t+2}+\gamma R_{t+3}+\cdots \mid S_t = s]\\
+&amp;=\mathbb{E}[R_{t+1}\mid S_t=s] + \gamma\mathbb{E}[G_{t+1} \mid S_t = s]\\
+&amp;=\mathbb{E}[R_{t+1}\mid S_t=s] + \gamma\mathbb{E}[\mathbb{E}[G_{t+1}\mid S_{t+1}] \mid S_t = s]\\
+&amp;=\mathbb{E}[R_{t+1}\mid S_t=s] + \gamma\mathbb{E}[v_{\pi}(S_{t+1}) \mid S_t = s]\\
+\end{aligned}$$</span><!-- Has MathJax -->
+<p>which can be interpreted intuitively as</p>
+<blockquote>
+<p>The state value of state <span>$s$</span><!-- Has MathJax --> is the immediate (expected) reward plus the discounted (expected) values of future states.</p>
+</blockquote>
+<p>However, the above deduction is too simplified on notation, which may lead to confusion as I initially encountered. So I think it worth some explanation. Up to the penultimate line, everything is fine. The penultimate line uses a general fact about the expectation:<br><span>$$\mathbb{E}_{Z\sim\mathbb{P}[Z]}[Z] = \mathbb{E}_{Y\sim\mathbb{P}[Y]}[\mathbb{E}[Z\mid Y]]$$</span><!-- Has MathJax --></p>
+<p>Note that in the right hand side, the random variable has changed from <span>$Z$</span><!-- Has MathJax --> to <span>$\mathbb{E}[Z\mid Y]$</span><!-- Has MathJax -->, and the outer expectation is calculated according to the distribution of <span>$Y$</span><!-- Has MathJax --> instead of <span>$Z$</span><!-- Has MathJax -->. It is a common trick to transform expectation.</p>
+<p>Also, the <span>$R_t$</span><!-- Has MathJax --> in all formulas is fact a abbreviation of <span>$R_{s}^{A_t}$</span><!-- Has MathJax -->, which is a random variable distributed based on the distribution of <span>$A_t$</span><!-- Has MathJax --> given state <span>$s$</span><!-- Has MathJax -->, i.e. the policy <span>$\pi(a\mid s)$</span><!-- Has MathJax -->.</p>
+<p>Similarly, we have<br><span>$$\begin{aligned}
+q_{\pi}(s,a)&amp;=\mathbb{E}[G_t \mid S_t = s, A_t=a]\\
+&amp;=\cdots\\
+&amp;=\mathbb{E}[R_{t+1}\mid S_t=s,A_t=a] + \gamma\mathbb{E}[q(S_{t+1}, A_{t+1}) \mid S_t = s, A_t=a]\\
+&amp;=R_s^a + \gamma\mathbb{E}[q_{\pi}(S_{t+1}, A_{t+1}) \mid S_t = s, A_t=a]
+\end{aligned}$$</span><!-- Has MathJax --></p>
+<p>which can also be interpreted intuitively as</p>
+<blockquote>
+<p>The action value of state <span>$s$</span><!-- Has MathJax --> and action <span>$a$</span><!-- Has MathJax --> is the immediate reward plus the discounted (expected) values from future states and actions.</p>
+</blockquote>
+<p>Note that here the first term, i.e. <span>$R_s^a$</span><!-- Has MathJax -->, is a known value of the MDP instead of a expectation.</p>
+<p>If we expand the expectation, we get<br><span>$$\begin{aligned}
+v_{\pi}(s)&amp;=\mathbb{E}[R_{t+1}\mid S_t=s] + \gamma\mathbb{E}[v(S_{t+1}) \mid S_t = s]\\
+&amp;=\sum_{a}\pi(a\mid s)\left(R_s^a + \gamma  \sum_{s&apos;}\mathbb{P}_{ss&apos;}^av_{\pi}(s&apos;)\right)
+\end{aligned}$$</span><!-- Has MathJax --></p>
+<p>and<br><span>$$\begin{aligned}
+q_{\pi}(s,a)&amp;=R_s^a + \gamma\mathbb{E}[q(S_{t+1}, A_{t+1}) \mid S_t = s, A_t=a]\\
+&amp;= R_s^a + \gamma\sum_{s&apos;}\mathbb{P}_{ss&apos;}^a \left(\sum_{a&apos;}\pi(a&apos;\mid s&apos;) q_{\pi}(s&apos;,a&apos;)\right)
+\end{aligned}$$</span><!-- Has MathJax --></p>
+<p>Also, we can deduce the relationship between <span>$v_{\pi}$</span><!-- Has MathJax --> and <span>$q_{\pi}$</span><!-- Has MathJax -->:<br><span>$$\begin{aligned}
+v_{\pi}(s)&amp;=\mathbb{E}[G_t \mid S_t = s]\\
+&amp;=\mathbb{E}[\mathbb{E}[G_t \mid S_t = s, A_t]]\\
+&amp;=\mathbb{E}[q_{\pi}(s, A_t)]\\
+&amp;=\sum_{a}\pi(a\mid s)q_{\pi}(s,a)
+\end{aligned}$$</span><!-- Has MathJax --></p>
+<p>put it back into the above expression of <span>$q_{\pi}(s,a)$</span><!-- Has MathJax -->, we get<br><span>$$\begin{aligned}
+q_{\pi}(s,a) = R_s^a + \gamma\sum_{s&apos;}\mathbb{P}_{ss&apos;}^a v_{\pi}(s&apos;)
+\end{aligned}$$</span><!-- Has MathJax --></p>
+<p>Those are called the <strong>Bellman Expectation Equation</strong>, which are self-entangled recursive relationships between two value functions. Looks frightening, but in fact they can be intuitively deduced by randomly sample 1 and 2 steps from the state <span>$S_t=s$</span><!-- Has MathJax -->.</p>
+<p>Note that the Bellman Expectation Equation is deduced purely from the very definition of the value function, which means that it is a <em>necessory</em> condition for a function to be a valid value function.</p>
+<h1 id="Bellman-Optimality-Equation"><a href="#Bellman-Optimality-Equation" class="headerlink" title="Bellman Optimality Equation"></a>Bellman Optimality Equation</h1><p>The Bellman Expectation Equation is true for <em>any</em> value function, in particular for an optimal value function. Select an optimal policy (which we have known exists) <span>$\pi_*$</span><!-- Has MathJax -->, since it deterministically pick the action with maximum action value, we can replace the expection <span>$\mathbb{E}$</span><!-- Has MathJax --> in the Bellman Expcetion Equation to some deterministic function:<br><span>$$\begin{aligned}
+v_{\pi_*}(s)&amp;=\sum_{a}\pi_*(a\mid s)q_{\pi_*}(s,a)\\
+&amp;=\max_a{q_{\pi_*}(s,a)}\\
+&amp;=\max_a{\left(R_s^a + \gamma  \sum_{s&apos;}\mathbb{P}_{ss&apos;}^av_{\pi_*}(s&apos;)\right)}\\
+&amp;=v_*(s)
+\end{aligned}$$</span><!-- Has MathJax --></p>
+<p>and</p>
+<span>$$\begin{aligned}
+q_{\pi_*}(s,a)&amp;=R_s^a + \gamma\sum_{s&apos;}\mathbb{P}_{ss&apos;}^a v_{\pi_*}(s&apos;)\\
+&amp;=R_s^a + \gamma\sum_{s&apos;}\mathbb{P}_{ss&apos;}^a \max_{a&apos;}{q_{\pi_*}(s&apos;,a&apos;)}\\
+&amp;=q_*(s,a)
+\end{aligned}$$</span><!-- Has MathJax -->
+<p>Again, it is a <em>necessory</em> condition for a function to be a optimal value function.</p>
+<p>Now, to solve the MDP, we need to find a <span>$q_*$</span><!-- Has MathJax --> (or <span>$v_*$</span><!-- Has MathJax --> equivalently, since they are mutually convertible when the model is known). However, the relationship specified by the Bellman Optimality Equation is not linear (unlike solving a Markov Chain). Luckily we can use some iterative algorithm to do the trick, which I will write in the next post.</p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/10/03/rl-mdp/" itemprop="url">
+                  RL Note (2.1) - Markov Decision Process
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-10-03T13:09:22+08:00" content="2016-10-03">
+              2016-10-03
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Machine-Learning/" itemprop="url" rel="index">
+                    <span itemprop="name">Machine Learning</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/10/03/rl-mdp/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/10/03/rl-mdp/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2016/10/03/rl-mdp/" class="leancloud_visitors" data-flag-title="RL Note (2.1) - Markov Decision Process">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>In this note we formalize the problem in reinforcement learning into a Markov Decision Process. The lecture video is <a href="https://www.youtube.com/watch?v=lfHX2hHRMVQ" target="_blank" rel="external">here: Lecture 2: Markov Decision Process</a>.</p>
+<p>In fact, I was shocked by the powerfulness of formalization invented by the western. Maybe it is the reason that ancient China did not develop mathematics and science.</p>
+<h1 id="Markov-Decision-Process"><a href="#Markov-Decision-Process" class="headerlink" title="Markov Decision Process"></a>Markov Decision Process</h1><p>We build the final Markov Decision Process cumulatively. The very basic building block is the well known Markov Process:</p>
+<div class="definition math-block"><br>A <strong>Markov Process</strong> is a tuple <span>$&lt;S,P&gt;$</span><!-- Has MathJax -->, where<br>- <span>$S$</span><!-- Has MathJax --> is a finite set of states.<br>- <span>$P$</span><!-- Has MathJax --> is a state transition matrix, where <span>$P_{ss&apos;}=\mathbb{P}(S_{t+1}=s&apos;\mid S_t=s)$</span><!-- Has MathJax --><br></div>
+
+<p>to which we then add <em>rewards</em>, to form a Markov Reward Process:</p>
+<div class="definition math-block"><br>A <strong>Markov Reward Process</strong> is a tuple <span>$&lt;S,P,R,\gamma&gt;$</span><!-- Has MathJax -->, where<br>- <span>$S$</span><!-- Has MathJax --> is a finite set of states.<br>- <span>$P$</span><!-- Has MathJax --> is a state transition matrix, where <span>$P_{ss&apos;}=\mathbb{P}(S_{t+1}=s&apos;\mid S_t=s)$</span><!-- Has MathJax --><br>- <span>$R$</span><!-- Has MathJax --> is a reward function, where <span>$R_s=\mathbb{E}(R_{S_{t+1}}\mid S_t=s)$</span><!-- Has MathJax --><br>- <span>$\gamma\in[0,1]$</span><!-- Has MathJax --> is a discount factor.<br></div>
+
+<p>to which we further add <em>actions</em>, to form a Markov Decision Process:</p>
+<div class="definition math-block"><br>A <strong>Markov Decision Process</strong> is a tuple <span>$&lt;S,A,P,R,\gamma&gt;$</span><!-- Has MathJax -->, where<br>- <span>$S$</span><!-- Has MathJax --> is a finite set of states.<br>- <span>$A$</span><!-- Has MathJax --> is a finite set of actions.<br>- <span>$P$</span><!-- Has MathJax --> is a state transition matrix, where <span>$P_{ss&apos;}^a=\mathbb{P}(S_{t+1}=s&apos;\mid S_t=s, A_t=a)$</span><!-- Has MathJax --><br>- <span>$R$</span><!-- Has MathJax --> is a reward functio, where <span>$R_s^a$</span><!-- Has MathJax --> is the immediate rewrad after performing action <span>$a$</span><!-- Has MathJax --> at state <span>$s$</span><!-- Has MathJax -->.<br>- <span>$\gamma\in[0,1]$</span><!-- Has MathJax --> is a discount factor.<br></div>
+
+<p>The Markov Decision Process is abbreviated as the <strong>MDP</strong>.</p>
+<h1 id="Notations-and-Randomness"><a href="#Notations-and-Randomness" class="headerlink" title="Notations and Randomness"></a>Notations and Randomness</h1><p>Before move on, I think we should clear some fact about the notations and randomness here. The whole process is essentially stochastic, which is described by the following variables and random variables:</p>
+<ul>
+<li><span>$S_t$</span><!-- Has MathJax -->, the random variable of agent state at timestamp <span>$t$</span><!-- Has MathJax -->.</li>
+<li><span>$A_t$</span><!-- Has MathJax -->, the random variable of the action taken by the agent at timestamp <span>$t$</span><!-- Has MathJax -->. We have<br><span>$$\mathbb{P}(A_t=a\mid S_t=s)=\pi(a\mid s)$$</span><!-- Has MathJax --></li>
+<li><span>$P_{ss&apos;}^a$</span><!-- Has MathJax -->, the variable of transition probability from state <span>$s$</span><!-- Has MathJax --> to state <span>$s&apos;$</span><!-- Has MathJax --> after performing action <span>$a$</span><!-- Has MathJax -->. It is not a random variable.</li>
+<li><span>$R_s^a$</span><!-- Has MathJax -->, the variable of immediate reward after performing action <span>$a$</span><!-- Has MathJax --> from state <span>$s$</span><!-- Has MathJax -->. Although it is not a random variable, but we usually come into <span>$R_{S_t}^{A_t}, R_{S_t}^{a}, R_{s}^{A_t}$</span><!-- Has MathJax -->, which are random variables, and we usually abbreviate them to <span>$R_{t+1}$</span><!-- Has MathJax --> when the randomness is clear from the context. Note that we use <span>$R_{t+1}$</span><!-- Has MathJax --> instead of <span>$R_t$</span><!-- Has MathJax -->, which is just a notation convention, indicating that the feedback of the environment is received at the next timestamp.</li>
+</ul>
+<p>Note that <span>$S_t$</span><!-- Has MathJax --> and <span>$A_t$</span><!-- Has MathJax --> is determined by the agent, while <span>$P_{ss&apos;}^a$</span><!-- Has MathJax --> and <span>$R_s^a$</span><!-- Has MathJax --> is indeed a <strong>model</strong> of the environment in the agent, which encapsulates the ignorance of the environment.</p>
+<p>Besides, both agent state and environment state by definition have <strong>Markov property</strong>, i.e.<br><span>$$\mathbb{P}[S_{t+1}\mid S_t] = \mathbb{P}[S_{t+1}\mid S_t, S_{t-1}, \cdots, S_1]$$</span><!-- Has MathJax --></p>
+<h1 id="Value-Functions"><a href="#Value-Functions" class="headerlink" title="Value Functions"></a>Value Functions</h1><p>In the previous post <a href="/2016/10/03/rl-concept/" title="RL Note (1) - Introduction to Reinforcement">RL Note (1) - Introduction to Reinforcement</a>, we have stated the <em>Reward Hypothesis</em>. Here we can express it formally.</p>
+<div class="definition math-block"><br>The <strong>return</strong> for <em>a single sample</em> from timestamp <span>$t$</span><!-- Has MathJax --> afterwards is<br><span>$$G_t = R_{t+1}+\gamma R_{t+2}+\gamma^2 R_{t+3}+\cdots = \sum_{k\geqslant 1} \gamma R_{t+k}$$</span><!-- Has MathJax --><br></div>
+
+<p>Note that it is a random variable. So the reward hypothesis is saying that our goal is to maximize the following value:</p>
+<span>$$v_{\pi}(s)\triangleq \mathbb{E}[G_t \mid S_t = s]$$</span><!-- Has MathJax -->
+<p>The <span>$v(s)$</span><!-- Has MathJax --> is called the <strong>state value function</strong>. Note that implicitly the sequence is generated according to policy <span>$\pi$</span><!-- Has MathJax -->, so we index the value function by it.</p>
+<p>Don’t forget the reward is gained through performing actions, so besides state value function, we also have an <strong>action value function</strong>, which is defined as:<br><span>$$q_{\pi}(s,a)\triangleq\mathbb{E}[G_t \mid S_t = s, A_t=a]$$</span><!-- Has MathJax --></p>
+<p>Instead of caring about the value function under a certain policy, we in fact want to find a optimal policy generating an optimal value function in some sense. So we define the <strong>optimal state value function</strong> as<br><span>$$v_*(s)=\max_{\pi}{v_{\pi}(s)}, \forall s$$</span><!-- Has MathJax --></p>
+<p>and the <strong>optimal action value function</strong> as<br><span>$$q_*(s, a)=\max_{\pi}{q_{\pi}(s, a)}, \forall s$$</span><!-- Has MathJax --></p>
+<p>Besides, in order to compare policy, we introduce a partial order in the policy space, say<br><span>$$\pi\geqslant\pi&apos; \text{ if } v_{\pi}(s)\geqslant v_{\pi&apos;}(s), \forall s$$</span><!-- Has MathJax --></p>
+<p>Note that <span>$v_*(s)$</span><!-- Has MathJax --> and <span>$q_*(s, a)$</span><!-- Has MathJax --> are defined by taking maximum for each <span>$s$</span><!-- Has MathJax -->, so the optimal value function itself may not necessarily be a value function for some policy. Thanks to the following theorem, it will not gonna happen.</p>
+<div class="theorem math-block"><br>For any Markov Decision Process,<br>- There exists an optimal policy <span>$\pi_*$</span><!-- Has MathJax -->, i.e. <span>$\pi_*\geqslant\pi, \forall\pi$</span><!-- Has MathJax --><br>- All optimal policies achieves optimal value functions, i.e. <span>$v_*=v_{\pi_*}, q_*=q_{\pi_*}$</span><!-- Has MathJax --><br></div>
+
+<p>OK, but here is another question: how to find the optimal policy? It turns out that as long as we find the optimal action value function <span>$q_*(s, a)$</span><!-- Has MathJax -->, we can construct the optimal policy by<br><span>$$\pi_*(a\mid s) = \begin{cases}
+1, \quad a = \operatorname{argmax} q_*(s, a)\\
+0, \quad\text{otherwise}
+\end{cases}$$</span><!-- Has MathJax --></p>
+<p>In another word, <span>$\pi_*$</span><!-- Has MathJax --> is constructed by deterministically choosing the action with maximum value.</p>
+<p>Note that it is <em>an</em> optimal policy, which is deterministic. There may be other optimal policies which is stochastic. Nevertheless, all optimal policies achieve the optimal value function, which is obviously unique.</p>
+<p>Given a MDP, i.e. given <span>$S, A, P, R, \gamma$</span><!-- Has MathJax -->, our goal is find the optimal policy, or sufficiently to find the optimal action function. It is what we mean by <em>solving</em> a MDP.</p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/10/03/rl-concept/" itemprop="url">
+                  RL Note (1) - Introduction to Reinforcement
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-10-03T10:07:24+08:00" content="2016-10-03">
+              2016-10-03
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Machine-Learning/" itemprop="url" rel="index">
+                    <span itemprop="name">Machine Learning</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/10/03/rl-concept/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/10/03/rl-concept/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2016/10/03/rl-concept/" class="leancloud_visitors" data-flag-title="RL Note (1) - Introduction to Reinforcement">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>Recently I began to watch <a href="http://www0.cs.ucl.ac.uk/staff/d.silver/web/Teaching.html" target="_blank" rel="external">RL Course by David Silver</a>, and will write a series of notes on this topic. This first note will record some symbols and definitions, corresponding to <a href="https://www.youtube.com/watch?v=2pWv7GOvuf0" target="_blank" rel="external">Lecture 1: Introduction to Reinforcement</a>.</p>
+<h1 id="Basic-Concepts"><a href="#Basic-Concepts" class="headerlink" title="Basic Concepts"></a>Basic Concepts</h1><p>In reinforcement learning, we are studying an <strong>agent</strong> interacting with an <strong>environment</strong> in a sequential manner. At each timestamp, the agent performs some <strong>action</strong> based on the <strong>history</strong> in its memory. At the next timestamp, the environment will respond by providing some <em>scalar</em> <strong>reward</strong>.</p>
+<p>The history consists of a sequence of <strong>observations</strong>, actions and rewords, say <span>$h_T = (\cdots,o_t, a_t, r_{t+1}, o_{t+1},\cdots, o_T)$</span><!-- Has MathJax -->. However, it can be too large to handle. As a result, we define the concept of <strong>state</strong>, which is nothing but a function of history, i.e.</p>
+<span>$$s_t = f(h_t)$$</span><!-- Has MathJax -->
+<p>Now we can say the agent acts based on the current state.</p>
+<p>There are two kinds of states, the <strong>agent state</strong> and the <strong>environment state</strong>. The former is by definition known by the agent, while the latter may or may not, which defines different problem types.</p>
+<p>At every timestamp, the agent is at some state, and should perform some action. The decision process according to which the agent choose an action is called a <strong>policy</strong>, usually denoted by <span>$\pi(a\mid s)$</span><!-- Has MathJax -->. It could be stochastic or deterministic.</p>
+<p>Above are all basic concepts of the reinforcement learning.</p>
+<h1 id="Goals"><a href="#Goals" class="headerlink" title="Goals"></a>Goals</h1><p>Our agent does not interact with the environment for nothing, it has a goal, which by definition consists of the immediate reward together with all future rewards. There is a fundamental axiom of the reinforcement learning, which says</p>
+<div class="axiom math-block"><br>(<strong>Reward Hypothesis</strong>) All goals can be described by the maximization of expected cumulative rewards.<br></div>
+
+<p>All study and works in reinforcement learning is based on this assumption.</p>
+<h1 id="Characteristic-of-Reinforcement-Learning"><a href="#Characteristic-of-Reinforcement-Learning" class="headerlink" title="Characteristic of Reinforcement Learning"></a>Characteristic of Reinforcement Learning</h1><p>The main difference between the reinforcement learning and other machine learning methods are:</p>
+<ul>
+<li>No supervisor, only reward signals from the environment.</li>
+<li>Feedback from environment may be delayed.</li>
+<li>Sequential random process, not i.i.d data.</li>
+</ul>
+<p>We should also distinguish between <em>Reinforcement Learning</em> and <em>Planning</em>. In the planning case, the model of the environment, i.e. <span>$P_{ss&apos;}^a$</span><!-- Has MathJax --> and <span>$R_s^a$</span><!-- Has MathJax -->, are known by the agent which can perform calculation according to the model. In the reinforcement learning case, the model is unknown, and the agent can only updating its policy according to the feedback of the environment.</p>
+<p>I think a typical example is our interaction with the earth. The environment is the earth, which has an internal law determining the evolution of the state. We, as the agent, although know nothing about that law, but come up with a pretty good approximation, i.e. the law of physics. Use physics, we can in some simple case accurately determine <span>$P_{ss&apos;}^a$</span><!-- Has MathJax --> and <span>$R_s^a$</span><!-- Has MathJax -->, which turns the problem into a Planning one. However, in some other situation, it is impossible or too complex to apply the law of physics, which leads us to the Reinforcement Learning case.</p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/09/09/conv/" itemprop="url">
+                  Implement Convolution in CNN
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-09-09T19:41:51+08:00" content="2016-09-09">
+              2016-09-09
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/ML-Implementation/" itemprop="url" rel="index">
+                    <span itemprop="name">ML Implementation</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/09/09/conv/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/09/09/conv/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2016/09/09/conv/" class="leancloud_visitors" data-flag-title="Implement Convolution in CNN">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>This is a short memo to record the formula I used in implementing convolution.</p>
+<h1 id="Problem-Parameters"><a href="#Problem-Parameters" class="headerlink" title="Problem Parameters"></a>Problem Parameters</h1><p>The problem is formalized as:</p>
+<ul>
+<li>inputs<ul>
+<li>a <span>$(N, C, H, W)$</span><!-- Has MathJax --> tensor as the data</li>
+<li>a <span>$(K, C, R, S)$</span><!-- Has MathJax --> tensor as the kernel</li>
+</ul>
+</li>
+<li>output<ul>
+<li>a <span>$(N, K, P, Q)$</span><!-- Has MathJax --> tensor as the convolution (in fact correlation) result</li>
+</ul>
+</li>
+<li>other parameters<ul>
+<li><span>$u,v$</span><!-- Has MathJax --> the vertical and horizontal strides</li>
+<li><span>$pad_h, pad_w$</span><!-- Has MathJax --> the vertical and horizontal padding</li>
+</ul>
+</li>
+</ul>
+<span>$P, Q$</span><!-- Has MathJax --> are the sizes of the output of a <span>$H\times W$</span><!-- Has MathJax --> image convolved by a <span>$R\times S$</span><!-- Has MathJax --> kernel, which is calculated by<br><br><span>$$P = \left\lceil\frac{H-R+1+2pad_h}{u}\right\rceil = \left\lfloor\frac{H-R+2pad_h}{u}\right\rfloor+1$$</span><!-- Has MathJax -->
+<p>while <span>$Q$</span><!-- Has MathJax --> is calculated similarly.</p>
+<h1 id="Approach"><a href="#Approach" class="headerlink" title="Approach"></a>Approach</h1><p>We calculate the convolution in three steps:</p>
+<h2 id="im2col"><a href="#im2col" class="headerlink" title="im2col"></a>im2col</h2><p>As demonstrated in the <a href="https://arxiv.org/abs/1410.0759" target="_blank" rel="external">paper by Nvidia</a>,</p>
+<p><img src="/uploads/im2col.png" alt="im2col"></p>
+<p>We convert the <span>$(N, C, H, W)$</span><!-- Has MathJax --> data into a <span>$(CRS, NPQ)$</span><!-- Has MathJax --> matrix, and the <span>$(K, C, R, S)$</span><!-- Has MathJax --> kernel into a <span>$(K, CRS)$</span><!-- Has MathJax --> matrix. The latter is easy since we only need to reshape by concatenating the last three dimensions. The former task is the so-called <code>im2col</code>.</p>
+<p>The way I did it is to find the positions in the target <span>$(CRS, NPQ)$</span><!-- Has MathJax --> matrix to which the value at <span>$(i, j)$</span><!-- Has MathJax --> in the original data will be mapped into by the rule demonstrated in the above figure. Let’s ignore the <span>$N, C$</span><!-- Has MathJax --> dimensions for a moment, and consider mapping a <span>$(H,W)$</span><!-- Has MathJax --> matrix into a <span>$(RS, PQ)$</span><!-- Has MathJax --> matrix. The final mapping is:</p>
+<span>$$\label{im2col}
+\begin{align}
+\lambda: (i, j) \mapsto \left\{\left(i&apos;S+j&apos;, \frac{i-i&apos;}{u}Q+\frac{j-j&apos;}{v}\right)\middle|i\equiv i&apos;(\textrm{mod}\ u), j\equiv j&apos;(\textrm{mod}\ v)\right\}
+\end{align}$$</span><!-- Has MathJax -->
+<p>where</p>
+<span>$$\begin{aligned}
+&amp;\max{(0, i+R-H-2pad_h)\leqslant i&apos;\leqslant \min{(R-1, i)}}\\
+&amp;\max{(0, j+S-W-2pad_w)\leqslant j&apos;\leqslant \min{(S-1, j)}}
+\end{aligned}$$</span><!-- Has MathJax -->
+<p>The idea behind the formula is: for each <span>$(i, j)$</span><!-- Has MathJax --> of the original image, if <em>a</em> mapped position in the target matrix is <span>$(x,y)$</span><!-- Has MathJax -->, then</p>
+<ul>
+<li><span>$y$</span><!-- Has MathJax --> is the index of the kernel multiplying currently.</li>
+<li><span>$x$</span><!-- Has MathJax --> is the index of position <span>$(i&apos;,j&apos;)$</span><!-- Has MathJax --> in the kernel in row-major order.</li>
+</ul>
+<p>Suppose the position <em>in the kernel</em> which is multiplying <span>$(i,j)$</span><!-- Has MathJax --> is <span>$(i&apos;,j&apos;)$</span><!-- Has MathJax -->, after a little thinking we can figure out that</p>
+<span>$$\begin{aligned}
+x &amp;= i&apos;S+j&apos;\\
+y &amp;= \frac{i-i&apos;}{u}Q+\frac{j-j&apos;}{v}
+\end{aligned}$$</span><!-- Has MathJax -->
+<p>However, <span>$(i&apos;,j&apos;)$</span><!-- Has MathJax --> can not take arbitrary values. Firstly they must be within <span>$(R,S)$</span><!-- Has MathJax -->, the size of kernel, i.e.</p>
+<span>$$\begin{aligned}
+0&amp;\leqslant i&apos;\leqslant R-1\\
+0&amp;\leqslant j&apos;\leqslant S-1
+\end{aligned}$$</span><!-- Has MathJax -->
+<p>Besides, the <em>left-top position</em> of the kernel, i.e. <span>$(i-i&apos;, j-j&apos;)$</span><!-- Has MathJax -->, must lie validly within the original padded image, which implies:</p>
+<span>$$\begin{aligned}
+-pad_h&amp;\leqslant i-i&apos;\leqslant H+2pad_h-R\\
+-pad_w&amp;\leqslant j-j&apos;\leqslant W+2pad_w-S\\
+\end{aligned}$$</span><!-- Has MathJax -->
+<p>Furthermore, considering strides <span>$u,v$</span><!-- Has MathJax -->, we have <span>$(u,v)$</span><!-- Has MathJax --> must devide <span>$(i-i&apos;,j-j&apos;)$</span><!-- Has MathJax --> respectively.</p>
+<p>Combine all of those above, we finally reach the formula <span>$(\ref{im2col})$</span><!-- Has MathJax -->, which in fact is also sufficient.</p>
+<p>Based on this, we can take <span>$(N,C)$</span><!-- Has MathJax --> back to get the final formula:</p>
+<span>$$(n, c, i, j) \mapsto (cRS, nPQ) + \lambda(i,j)$$</span><!-- Has MathJax -->
+<h2 id="gemm"><a href="#gemm" class="headerlink" title="gemm"></a>gemm</h2><p>  An intuitive description of GEMM can be found <a href="https://petewarden.com/2015/10/25/an-engineers-guide-to-gemm/" target="_blank" rel="external">here</a>. We calculate the matrix multiplication of a <span>$(K, CRS)$</span><!-- Has MathJax --> matrix with <span>$(CRS, NPQ)$</span><!-- Has MathJax --> matrix to get a <span>$(K, NPQ)$</span><!-- Has MathJax --> matrix.</p>
+<p>  <img src="/uploads/gemm.png" alt="gemm"></p>
+<p>  I used the uint8 gemm API provided by Nvidia, which is described in <a href="/2016/09/09/uint8-fc/" title="UInt8 Matrix Multiplication">UInt8 Matrix Multiplication</a>.</p>
+<h2 id="transform"><a href="#transform" class="headerlink" title="transform"></a>transform</h2><p>  At last, we must turn the <span>$(K, NPQ)$</span><!-- Has MathJax --> matrix to a <span>$(N, KPQ)$</span><!-- Has MathJax --> matrix, then a <span>$(N,K,P,Q)$</span><!-- Has MathJax --> tensor. The first transform is essentially a matrix transpose if we view the inner most <span>$PQ$</span><!-- Has MathJax --> elements as a single block. Since in the memory those <span>$PQ$</span><!-- Has MathJax --> values are stored contiguously, we can use <code>memcpy</code> to manually implement block-wise matrix transpose. After that, a simple reshaping will turn the result into the final <span>$(N,K,P,Q)$</span><!-- Has MathJax --> tensor.</p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/09/09/uint8-fc/" itemprop="url">
+                  UInt8 Matrix Multiplication
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-09-09T19:25:23+08:00" content="2016-09-09">
+              2016-09-09
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/ML-Implementation/" itemprop="url" rel="index">
+                    <span itemprop="name">ML Implementation</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/09/09/uint8-fc/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/09/09/uint8-fc/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2016/09/09/uint8-fc/" class="leancloud_visitors" data-flag-title="UInt8 Matrix Multiplication">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>In this post I will introduce how to do uint8 matrix multiplication using a hidden API in CUDA 8.0.</p>
+<h1 id="Mathematics-of-Quantized-Matrix-Multiplication"><a href="#Mathematics-of-Quantized-Matrix-Multiplication" class="headerlink" title="Mathematics of Quantized Matrix Multiplication"></a>Mathematics of Quantized Matrix Multiplication</h1><p>Given two matrices <span>$A, B$</span><!-- Has MathJax --> in <span>$\mathbb{R}$</span><!-- Has MathJax -->, we need to calculate their product in the quantized space <span>$Q_U(\mathbb{R})$</span><!-- Has MathJax --> where <span>$U$</span><!-- Has MathJax --> is the ring of uint8 integers.</p>
+<p>Suppose <span>$A$</span><!-- Has MathJax --> is mapped to <span>$(\hat{A}, m_A, M_A)$</span><!-- Has MathJax -->, and <span>$B$</span><!-- Has MathJax --> is mapped to <span>$(\hat{B}, m_B, M_B)$</span><!-- Has MathJax -->, we have in <span>$\mathbb{R}$</span><!-- Has MathJax -->:</p>
+<span>$$\label{corg}
+\begin{align}
+\begin{split}
+C=AB&amp;\approx (\hat{A}\Delta_A+m_A)(\hat{B}\Delta_B+m_B)\\
+&amp;=\Delta_A\Delta_B\left(\hat{A}+\frac{m_A}{\Delta_A}\right)\left(\hat{B}+\frac{m_B}{\Delta_B}\right)\\
+&amp;\approx\Delta_A\Delta_B\left(\hat{A}+\left[\frac{m_A}{\Delta_A}\right]\right)\left(\hat{B}+\left[\frac{m_B}{\Delta_B}\right]\right)
+\end{split}
+\end{align}$$</span><!-- Has MathJax -->
+<p>where the addition is performed elementwisely. Note that the multiplication between two brackets is integer product (although not uint8)!</p>
+<p>Then we quantize <span>$C$</span><!-- Has MathJax --> back to the quantized space, we have</p>
+<span>$$\hat{C} = \left[\frac{C-m_C}{\Delta_C}\right]$$</span><!-- Has MathJax -->
+<p>Put formula (1) in, we get</p>
+<span>$$\label{chat}
+\begin{align}
+\hat{C}&amp;\triangleq\frac{\Delta_A\Delta_B}{\Delta_C}\left(\left(\hat{A}+\left[\frac{m_A}{\Delta_A}\right]\right)\left(\hat{B}+\left[\frac{m_B}{\Delta_B}\right]\right)-\frac{m_C}{\Delta_A\Delta_B}\right)
+\end{align}$$</span><!-- Has MathJax -->
+<p>The reason for writing like this will be clear later.</p>
+<h1 id="Implement-Quantized-Matrix-Multiplication"><a href="#Implement-Quantized-Matrix-Multiplication" class="headerlink" title="Implement Quantized Matrix Multiplication"></a>Implement Quantized Matrix Multiplication</h1><p>My task is to run model on GPU, so I look into CUDA 8.0, which is said to support int8/uint8 operations, although turns out to be weak and disapporting. Luckily, in <code>cublas_api.h</code> I find an API</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/*...*/</span>cublasUint8gemmBias (cublasHandle_t handle,</div><div class="line">                            cublasOperation_t transa, cublasOperation_t transb, cublasOperation_t transc,</div><div class="line">                            <span class="keyword">int</span> m, <span class="keyword">int</span> n, <span class="keyword">int</span> k,</div><div class="line">                            <span class="keyword">const</span> <span class="keyword">unsigned</span> <span class="keyword">char</span> *A, <span class="keyword">int</span> A_bias, <span class="keyword">int</span> lda,</div><div class="line">                            <span class="keyword">const</span> <span class="keyword">unsigned</span> <span class="keyword">char</span> *B, <span class="keyword">int</span> B_bias, <span class="keyword">int</span> ldb,</div><div class="line">                            <span class="keyword">unsigned</span> <span class="keyword">char</span> *C, <span class="keyword">int</span> C_bias, <span class="keyword">int</span> ldc,</div><div class="line">                            <span class="keyword">int</span> C_mult, <span class="keyword">int</span> C_shift);</div></pre></td></tr></table></figure>
+<p>From the name we can tell it must be calculating the uint8 GEMM. Strangely, there is not a single word about it in the documentation, so I have to try, guess, and test by myself.</p>
+<p>Initially I just simply set all <code>*_bias</code> to 0, and confirmed that it does calculate the uint8 matrix multiplication, and handles over/under-flow by capping to 255 and 0. After that, I did not investigate any deeper.</p>
+<p>Things changed when I incidentally read a blog named <a href="https://petewarden.com/2016/05/03/how-to-quantize-neural-networks-with-tensorflow/" target="_blank" rel="external">How to Quantize Neural Networks with TensorFlow</a>,  which leads me to <a href="https://github.com/tensorflow/tensorflow/tree/master/tensorflow/contrib/quantization/kernels" target="_blank" rel="external">a piece of code of  TensorFlow</a>. From the file name <a href="https://github.com/tensorflow/tensorflow/blob/master/tensorflow/contrib/quantization/kernels/quantized_matmul_op.cc" target="_blank" rel="external">quantized_matmul_op.cc</a>  we can tell it is used for matrix multiplication. In the file, I noticed a function:</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">GemmlowpMultiply&lt;<span class="literal">false</span>, <span class="literal">false</span>, <span class="literal">false</span>&gt;(context, a_data, b_data, c_data,</div><div class="line">                                      m, n, k, offset_a, offset_b,</div><div class="line">                                      lda, ldb, ldc);</div></pre></td></tr></table></figure>
+<p>It looks JUST LIKE the previous CUDA API, for example it also have parameters named <code>offset_*</code>. I immediately had a sense that it is also performing uint8 matrix multiplication. What is more important is that from several papers by Google, I know it uses the linear quantization the same as me. As a result, I began to re-examine the <code>cublasUint8gemmBias</code> API in CUDA. After some guesses and experiments, I finally figured out the formula it is calculating:</p>
+<span>$$C = 2^{-C_{shift}}\cdot C_{mult}\cdot ((A-A_{bias})(B-B_{bias})+C_{bias})$$</span><!-- Has MathJax -->
+<p>where <span>$A$</span><!-- Has MathJax -->, <span>$B$</span><!-- Has MathJax --> and the result <span>$C$</span><!-- Has MathJax --> are all in uint8, while other variables are int. Compare it to formula <span>$(\ref{chat})$</span><!-- Has MathJax -->, we can figure out the value of each variables:</p>
+<span>$$\begin{aligned}
+A_{bias}&amp;\triangleq-\left[\frac{m_A}{\Delta_A}\right]\\
+B_{bias}&amp;\triangleq-\left[\frac{m_B}{\Delta_B}\right]\\
+C_{bias}&amp;\triangleq\frac{m_C}{\Delta_A\Delta_B}\\
+2^{-C_{shift}}\cdot C_{mult}&amp;\triangleq\frac{\Delta_A\Delta_B}{\Delta_C}
+\end{aligned}$$</span><!-- Has MathJax -->
+<p>The first three formulas are clear, while the last one shows an issue: how to use two integers <span>$a$</span><!-- Has MathJax --> and <span>$b$</span><!-- Has MathJax --> to estimate a real number <span>$r$</span><!-- Has MathJax --> such at <span>$2^{-a}b\approx r$</span><!-- Has MathJax -->? Turns out it is simple. Suppose we allow error <span>$\epsilon$</span><!-- Has MathJax -->, we have:</p>
+<span>$$| 2^{-a}b-r |&lt;\epsilon \Rightarrow | b-2^ar|&lt;2^a\epsilon$$</span><!-- Has MathJax -->
+<p>The left-hand-side is the difference of two integers, which is at least 1, so we can choose <span>$\epsilon=2^{-30}\approx 10^{-9}, a=30, b=[2^ar]$</span><!-- Has MathJax -->, which leads to</p>
+<span>$$\begin{aligned}
+C_{shift}&amp;=30\\
+C_{mult}&amp;=\left[2^{30} \frac{\Delta_A\Delta_B}{\Delta_C}\right]
+\end{aligned}$$</span><!-- Has MathJax -->
+<p>Now, we have completely unmystified this undocumented API!</p>
+<p>One more word, it turns out that the parameter <code>C_shift</code> is at most 30, otherwise the result will be completely a mess.</p>
+<h1 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h1><p>Following is the function to calculate the multiplication of two uint8 matrices.</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">matrixMulGPU</span><span class="params">(</span></span></div><div class="line">    cublasHandle_t handle,</div><div class="line">    <span class="keyword">uint8_t</span> *d_C, <span class="keyword">const</span> <span class="keyword">uint8_t</span> *d_A, <span class="keyword">const</span> <span class="keyword">uint8_t</span> *d_B,</div><div class="line">    <span class="keyword">const</span> <span class="keyword">int</span> m, <span class="keyword">const</span> <span class="keyword">int</span> n, <span class="keyword">const</span> <span class="keyword">int</span> k,</div><div class="line">    <span class="keyword">float</span> minA, <span class="keyword">float</span> maxA, <span class="keyword">float</span> minB, <span class="keyword">float</span> maxB,</div><div class="line">    <span class="keyword">float</span> &amp;minC, <span class="keyword">float</span> &amp;maxC)</div><div class="line">&#123;</div><div class="line">    <span class="built_in">printf</span>(<span class="string">"minA=%f maxA=%f minB=%f maxB=%f\n"</span>, minA, maxA, minB, maxB);</div><div class="line">    <span class="keyword">float</span> deltaA = (maxA - minA) / (<span class="keyword">float</span>)UCHAR_MAX;</div><div class="line">    <span class="keyword">float</span> deltaB = (maxB - minB) / (<span class="keyword">float</span>)UCHAR_MAX;</div><div class="line">    <span class="built_in">printf</span>(<span class="string">"deltaA=%f deltaB=%f\n"</span>, deltaA, deltaB);</div><div class="line"></div><div class="line">    minC = min(min(minA * maxB, maxA * minB), min(minA * minB, maxA * maxB)) * n;</div><div class="line">    maxC = max(max(minA * maxB, maxA * minB), max(minA * minB, maxA * maxB)) * n;</div><div class="line">    <span class="keyword">float</span> deltaC = (maxC - minC) / (<span class="keyword">float</span>)UCHAR_MAX;</div><div class="line">    <span class="built_in">printf</span>(<span class="string">"minC=%f maxC=%f\n"</span>, minC, maxC);</div><div class="line">    <span class="built_in">printf</span>(<span class="string">"deltaC=%f\n"</span>, deltaC);</div><div class="line"></div><div class="line">    <span class="keyword">int</span> a_bias = -round(minA / deltaA);</div><div class="line">    <span class="keyword">int</span> b_bias = -round(minB / deltaB);</div><div class="line">    <span class="keyword">int</span> c_bias = -round(minC / (deltaA * deltaB));</div><div class="line">    <span class="built_in">printf</span>(<span class="string">"a_bias=%d b_bias=%d c_bias=%d\n"</span>, a_bias, b_bias, c_bias);</div><div class="line"></div><div class="line">    <span class="keyword">float</span> scale = deltaA * deltaB / deltaC;</div><div class="line">    <span class="built_in">printf</span>(<span class="string">"scale=%f\n"</span>, scale);</div><div class="line"></div><div class="line">    <span class="keyword">int</span> c_shift = <span class="number">30</span>;</div><div class="line">    <span class="keyword">int</span> c_mul = round(scale * (<span class="number">1</span> &lt;&lt; c_shift));</div><div class="line">    <span class="built_in">printf</span>(<span class="string">"c_mul=%d c_shift=%d\n"</span>, c_mul, c_shift);</div><div class="line"></div><div class="line">    cublasUint8gemmBias(</div><div class="line">        handle,</div><div class="line">        CUBLAS_OP_N, CUBLAS_OP_N, CUBLAS_OP_N,</div><div class="line">        k, m, n,</div><div class="line">        d_B, b_bias, k,</div><div class="line">        d_A, a_bias, n,</div><div class="line">        d_C, c_bias, k,</div><div class="line">        c_mul, c_shift</div><div class="line">    );</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/09/07/quantization-summary/" itemprop="url">
+                  Quantizing a Neural Network
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-09-07T15:55:40+08:00" content="2016-09-07">
+              2016-09-07
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/ML-Implementation/" itemprop="url" rel="index">
+                    <span itemprop="name">ML Implementation</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/09/07/quantization-summary/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/09/07/quantization-summary/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2016/09/07/quantization-summary/" class="leancloud_visitors" data-flag-title="Quantizing a Neural Network">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>Recently I have been working on quantizing typical neural networks to uint8 to figure out the influence on their performance. Today I got some result, which shows that to Inception-BN and VGG model on CIFAR10 and ImageNet dataset, the effect on the performance is negligible, from which I believe we can conclude that uint8 quantization will not decrease performance. The concrete results will be attached at the end of the post.</p>
+<p>This post is to write down some important conclusions and thinkings.</p>
+<h1 id="What-is-Quantization"><a href="#What-is-Quantization" class="headerlink" title="What is Quantization"></a>What is Quantization</h1><p>From my understanding, the so called <em>quantization</em> is nothing but the process to change the floating-point storage and operations into fixed-point. The main purposes are:</p>
+<ul>
+<li>save space</li>
+<li>speed up by utilizing integer operations</li>
+</ul>
+<p>The first goal is obvious and immediate, e.g. 4x space will be saved upon converting from float32 to uint8. Note that it is just storage space, while the runtime memory is another story. On the other hand, the second goal is not that easy to achieve, which requires us to investigate into every single operators, and find corresponding steps and optimizations.</p>
+<p>There are mainly two ways of quantization:</p>
+<ul>
+<li>Linear quantization<ul>
+<li>use a linear mapping to (de)quantize</li>
+</ul>
+</li>
+<li>Codebook quantization<ul>
+<li>(de)quantize by looking up a mapping table</li>
+</ul>
+</li>
+</ul>
+<p>In fact, those two are essentially equivalent, which I believe is also the essence of quantization:</p>
+<blockquote>
+<p>to find a invertible mapping from floating-point to fixed-point numbers, and to transform operations under such mapping correspondingly</p>
+</blockquote>
+<p>The difference between different ways of quantization results in the fact that we have to re-define the operations between elements! For example:</p>
+<ul>
+<li>Linear quantization<ul>
+<li>element mapping: <span>$x\mapsto a\hat{x}+b$</span><!-- Has MathJax --></li>
+<li>element addition: <span>$\widehat{x+y} = \hat{x}+\hat{y}+ \frac{b}{a}$</span><!-- Has MathJax -->, which is NOT simply <span>$\hat{x}+\hat{y}$</span><!-- Has MathJax --></li>
+</ul>
+</li>
+<li>Codebook quantization<ul>
+<li>element mapping：look up a table</li>
+<li>element addition: look up twice</li>
+</ul>
+</li>
+</ul>
+<p>As a result, different mapping indicates different optimization on computation. <a href="https://arxiv.org/abs/1510.00149" target="_blank" rel="external">The Deep Compression by Song Han</a> chooses the codebook approach, and utilizes the K-means algorithm to generate the codebook, while he also designed a <a href="https://arxiv.org/abs/1602.01528" target="_blank" rel="external">designated hardware</a> to speed up the looking up operation. On the contrary, I chose the linear method, since it can utilize some mathematics.</p>
+<p>In fact, we can define the process of quantization using the language from Category Theory:</p>
+<blockquote>
+<p>to find a functor from floating-point category to fixed-point category</p>
+</blockquote>
+<p>which not only implies the mapping between elements, but also that between operators!</p>
+<h1 id="Formalization-of-Linear-Quantization"><a href="#Formalization-of-Linear-Quantization" class="headerlink" title="Formalization of Linear Quantization"></a>Formalization of Linear Quantization</h1><p>We call <span>$Q_V(\mathbb{R})$</span><!-- Has MathJax --> a linear <strong>quantized space</strong> to finite integer ring V from <span>$\mathbb{R}$</span><!-- Has MathJax -->.</p>
+<p>The elements of <span>$Q_V(\mathbb{R})$</span><!-- Has MathJax --> are denoted by <span>$(\hat{x}, l, u)$</span><!-- Has MathJax -->, and are referred to as the <strong>quantized number</strong>. We call <span>$\hat{x}\in V$</span><!-- Has MathJax --> the <strong>quantized value</strong>, and <span>$(l, u), l\leqslant u\in \mathbb{R}$</span><!-- Has MathJax --> the <strong>quantizing range</strong>. Sometimes we can omit the range when it is clear from the context, but must keep in mind that every element of <span>$Q_V(\mathbb{R})$</span><!-- Has MathJax --> <em>must</em> be attached by two real number <span>$l$</span><!-- Has MathJax --> and <span>$u$</span><!-- Has MathJax --> representing the endpoints of the interval to which the quantized value is quantizing.</p>
+<p>The quantize mapping from <span>$\mathbb{R}$</span><!-- Has MathJax --> to <span>$Q_V(\mathbb{R})$</span><!-- Has MathJax --> is:</p>
+<span>$$q_{l,u}:x\mapsto \left(\left[\frac{x-l}{\Delta}\right], l, u\right)$$</span><!-- Has MathJax -->
+<p>where the round bracket is saturated to the range of <span>$V$</span><!-- Has MathJax -->. The dequantize mapping is:</p>
+<span>$$q^{-1}:(\hat{x}, l, u) \mapsto \hat{x}\Delta + l$$</span><!-- Has MathJax -->
+<p>where</p>
+<span>$$\Delta = \frac{u-l}{|V| - 1}$$</span><!-- Has MathJax -->
+<p>is the minimum representable difference.</p>
+<p>In this post we will consider the ring <span>$U$</span><!-- Has MathJax --> be the ring consists of uint8 integers, in which the addition and multiplication is saturated version，i.e. capped by 0 and 255. We have <span>$|U|=256$</span><!-- Has MathJax -->, and denote it by <span>$S=255$</span><!-- Has MathJax --> from now on.</p>
+<h1 id="Liearn-Invariance"><a href="#Liearn-Invariance" class="headerlink" title="Liearn Invariance"></a>Liearn Invariance</h1><p>It is easy to see a simple property of linear quantized space, which I called the <strong>linear invariance</strong>: i.e. if</p>
+<span>$$q_{l,u}(x)=(\hat{x},l,u)$$</span><!-- Has MathJax -->
+<p>then</p>
+<span>$$q_{l,u}(ax+b)=(\hat{x}, al+b, au+b)$$</span><!-- Has MathJax -->
+<p>As a result, when linearly transforming a bunch of quantized numbers under same range, we need to do nothing but update the two endpoints of the range under the linear transformation. In particular, we do NOT need to update the quantzied values of those numbers!</p>
+<h1 id="Range-Adjustment"><a href="#Range-Adjustment" class="headerlink" title="Range Adjustment"></a>Range Adjustment</h1><p>We call two quantized number are <strong>equal</strong> if they dequantized to the same number in <span>$\mathbb{R}$</span><!-- Has MathJax -->. However it seldom happens, since the precision of quantized numbers are limited. So we define two quantized numbers <span>$(\hat{x}, l, u)$</span><!-- Has MathJax --> and <span>$(\hat{y}, l&apos;, u&apos;)$</span><!-- Has MathJax --> to be <strong>almost equal</strong> if</p>
+<span>$$\left|(\Delta\hat{x}+l) - (\Delta&apos;\hat{y} + l&apos;)\right| &lt; \frac{1}{2}\min{(\Delta,\Delta&apos;)}$$</span><!-- Has MathJax -->
+<p>which looks terrifying, but in fact it is saying nothing but that <span>$\hat{x}$</span><!-- Has MathJax --> and <span>$\hat{y}$</span><!-- Has MathJax --> are the best choices to represent the same real number under different quantizing ranges.</p>
+<p>There is a common operation within space <span>$Q_V(\mathbb{R})$</span><!-- Has MathJax --> itself, which I called <strong>range adjustment</strong>: if <span>$(\hat{x}, l, u)$</span><!-- Has MathJax --> and <span>$(\hat{y}, l&apos;, u&apos;)$</span><!-- Has MathJax --> are almost equal, then</p>
+<span>$$\begin{aligned}
+\hat{y}&amp;= \left[\frac{\hat{x}\Delta+l-l&apos;}{\Delta&apos;}\right]\\
+\end{aligned}$$</span><!-- Has MathJax -->
+<p>This operation is so common that we must find a fast way to compute it. So far I just naively implemented it.</p>
+<h1 id="Operations-in-Linear-Quantized-Space"><a href="#Operations-in-Linear-Quantized-Space" class="headerlink" title="Operations in Linear Quantized Space"></a>Operations in Linear Quantized Space</h1><p>In this section I provide the quantized version of several common operators in neural network.</p>
+<h2 id="Fully-Connected"><a href="#Fully-Connected" class="headerlink" title="Fully Connected"></a>Fully Connected</h2><p>Please refer to <a href="/2016/09/09/uint8-fc/" title="UInt8 Matrix Multiplication">UInt8 Matrix Multiplication</a>.</p>
+<h2 id="Convolution"><a href="#Convolution" class="headerlink" title="Convolution"></a>Convolution</h2><p>In GPU, CuDNN provides the API for floating-point convolution, but no uint8 version. Luckily at least CUDA 8.0 provides uint8 GEMM API, so I can write the convolution by myself, before which I have to write im2col functions. The detail is in <a href="/2016/09/09/conv/" title="Implement Convolution in CNN">Implement Convolution in CNN</a>.</p>
+<h2 id="ReLU-Activation"><a href="#ReLU-Activation" class="headerlink" title="ReLU Activation"></a>ReLU Activation</h2><p>ReLU is computed in <span>$\mathbb{R}$</span><!-- Has MathJax --> as：</p>
+<span>$$x\mapsto\max{(x,0)}$$</span><!-- Has MathJax -->
+<p>In <span>$Q_V(\mathbb{R})$</span><!-- Has MathJax --> , if the input range is <span>$(l, u)$</span><!-- Has MathJax --> where <span>$l&lt;0, u&gt;0$</span><!-- Has MathJax -->, the output range should be <span>$(0, u)$</span><!-- Has MathJax -->, and we have the mapping<br><span>$$\begin{aligned}
+&amp;(\hat{x}, l, u) \mapsto (\hat{y}, 0, u)\\
+\hat{y}&amp;= \left[\frac{1}{\Delta_y}(\max{(\hat{x}\Delta_x+l, 0)} - 0)\right]\\
+&amp;= \left[\frac{\max{\left(\hat{x}\frac{u-l}{S}+l, 0\right)}\cdot S}{u}\right]\\
+&amp;=\left[\max{\left(\hat{x}\left(1-\frac{l}{u}\right)+\frac{l}{u}S, 0\right)}\right]\\
+&amp;=\hat{x} - \left[(S - \hat{x})\frac{-l}{u}\right]
+\end{aligned}$$</span><!-- Has MathJax --></p>
+<p>where</p>
+<ul>
+<li>the last minus is saturated</li>
+<li>note that on uint8, <span>$S - \hat{x}$</span><!-- Has MathJax --> is still in uint8</li>
+</ul>
+<p>All other cases on the input range is obvious and need no computation.</p>
+<h2 id="Batch-Normalization"><a href="#Batch-Normalization" class="headerlink" title="Batch Normalization"></a>Batch Normalization</h2><p>The input of a batch normalization layer is a tensor of dimension <span>$(N, C, H, W)$</span><!-- Has MathJax -->. The layer will update <span>$C$</span><!-- Has MathJax --> tensors of shape <span>$(N, H, W)$</span><!-- Has MathJax --> along the second dimension by:</p>
+<span>$$x \mapsto \gamma_c\frac{x-\mu_c}{\sigma_c} + \beta_c$$</span><!-- Has MathJax -->
+<p>where <span>$\mu_c, \sigma_c$</span><!-- Has MathJax --> is the mean and standard deviation of the <span>$c$</span><!-- Has MathJax -->th tensor, and <span>$\gamma_c$</span><!-- Has MathJax --> and <span>$\beta_c$</span><!-- Has MathJax --> are pre-determined parameters for each <span>$c$</span><!-- Has MathJax -->。</p>
+<p>By linear invariance, the quantized batch norm can be calculated as:</p>
+<ul>
+<li>For each <span>$c$</span><!-- Has MathJax -->, let <span>$l_c =f_c(l), u_c = f_c(u)$</span><!-- Has MathJax -->, where <span>$f_c(x) = \gamma_c\frac{x-\mu_c}{\sigma_c} + \beta_c$</span><!-- Has MathJax --></li>
+<li>Find <span>$l=\min{(l_i)}, u = \max{(u_i)}$</span><!-- Has MathJax --></li>
+<li>For each <span>$c$</span><!-- Has MathJax -->, adjust the range of <span>$(\hat{x}, l_c, u_c)$</span><!-- Has MathJax --> to <span>$(\hat{y}, l&apos;, u&apos;)$</span><!-- Has MathJax --></li>
+</ul>
+<p>Furthermore, instead of calculating <span>$\mu_c, \sigma_c$</span><!-- Has MathJax --> on air, they are passed in as parameters, since they are calculated and movingly accumulated during training process. As a result, the speed bottleneck is at the third step, i.e. adjusting <span>$C$</span><!-- Has MathJax --> ranges to a uniformed one.</p>
+<h2 id="Max-and-Avg-Pooling"><a href="#Max-and-Avg-Pooling" class="headerlink" title="Max and Avg Pooling"></a>Max and Avg Pooling</h2><p>Obviously, quantization preserves max and avg. In other words, we can perform the corresponding operation directly on uint8 integers without changing the range. Note that we need a intermediate variable with large type such as int when performing avg.</p>
+<p>However, always we need to adjust the range at end for better accuracy, which will cause extra time.</p>
+<h2 id="Concat"><a href="#Concat" class="headerlink" title="Concat"></a>Concat</h2><p>We only need to adjust the ranges of each part to a uniformed one.</p>
+<h1 id="Determine-Operator-Output-Range"><a href="#Determine-Operator-Output-Range" class="headerlink" title="Determine Operator Output Range"></a>Determine Operator Output Range</h1><p>There is another important issue that must be solved: how to determine the output ranges of each operator given the quantized input numbers, i.e. a bunch of uint8 values and their quantizing ranges?</p>
+<p>The output range of some operator, such as ReLU, is obvious, while some not, e.g. fully connected, which is matrix multiplication. Initially I tried several heuristic to estimated the output range. For example, I found that for a <span>$(m,n)$</span><!-- Has MathJax --> matrix with range <span>$(l_1,u_1)$</span><!-- Has MathJax --> multiplying <span>$(n, k)$</span><!-- Has MathJax --> matrix with range <span>$(l_2,u_2)$</span><!-- Has MathJax -->, the output range can be roughly estimated by</p>
+<span>$$(l,u)\times\sqrt{n}$$</span><!-- Has MathJax -->
+<p>where</p>
+<span>$$\begin{aligned}
+l&amp;=\min{(l_1l_2,l_1u_2,u_1l_2,u_1u_2)}\\
+u&amp;=\max{(l_1l_2,l_1u_2,u_1l_2,u_1u_2)}\\
+\end{aligned}$$</span><!-- Has MathJax -->
+<p>At least on the randomly generated data, such estimation makes little error. However, it failed on the real data. Besides, there are a lot other operators whose output ranges can not be even estiamted by closed math formulas.</p>
+<p>Finally, my solution is to use the <em>training data</em> and the original model to directly record the output range of each layer, and introduced a new hyper parameter to shrink the recorded ranges to be the quantized ranges in the quantized model. It works surprisingly good:)</p>
+<h1 id="Notes-on-Implementation"><a href="#Notes-on-Implementation" class="headerlink" title="Notes on Implementation"></a>Notes on Implementation</h1><p>It turnes out that the performance after quantization is extremely sensitive to the rounding error. Followings are several lessons I have been taught.</p>
+<ul>
+<li><p>Always use <code>std::round</code> instead of <code>std::floor</code></p>
+<p>Initially, I carelessly used <code>std::floor</code> when mapping a float32 to uint8 at one place. The model accuracy drops to, surprisingly, 0!</p>
+</li>
+<li><p>Always choose the quantizing range such that 0 is quantized as accurate as possible, i.e <span>$q^{-1}(q_{l,u}(0))$</span><!-- Has MathJax --> should ideally be again 0.</p>
+<p>This principle is intended for the convolution operators, which are always 0-padded. If the quantized zero is in fact depart from the real zero a lot, it will cause much error.</p>
+</li>
+</ul>
+<p>Following table demonstrates the influence on performance caused by the above two approaches. The accuracy is calculated on a single batch, i.e. 32 examples.</p>
+<table>
+<thead>
+<tr>
+<th>Model</th>
+<th>Dataset</th>
+<th>normal</th>
+<th>misused std::floor</th>
+<th>not adjust range</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Inception-BN</td>
+<td>ImagetNet</td>
+<td>59.375%</td>
+<td>0%</td>
+<td>18.75%</td>
+</tr>
+<tr>
+<td>VGG</td>
+<td>ImageNet</td>
+<td>62.5%</td>
+<td>0%</td>
+<td>9.375%</td>
+</tr>
+</tbody>
+</table>
+<p>It can be seen that those two approaches have dramatical influence on the final performance.</p>
+<h1 id="Results"><a href="#Results" class="headerlink" title="Results"></a>Results</h1><p>Following table shows the result of my experiments on some typical models, the performance is Top-1 accuracy on the validation dataset:</p>
+<table>
+<thead>
+<tr>
+<th>Model</th>
+<th>Dataset</th>
+<th>Original</th>
+<th>Quantized</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Small Inception-BN</td>
+<td>CIFAR10</td>
+<td>90.97%</td>
+<td>90.87%</td>
+</tr>
+<tr>
+<td>Inception-BN</td>
+<td>ImagetNet</td>
+<td>67.61%</td>
+<td>66.75%</td>
+</tr>
+<tr>
+<td>VGG</td>
+<td>ImageNet</td>
+<td>70.69%</td>
+<td>69.67%</td>
+</tr>
+</tbody>
+</table>
+<p>We see that the experiment covers networks and datasets in both small and large scale, which I believe indicates that the uint8 quantization have little if not at all harm on the performance.</p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+  </section>
+
+  
+
+
+          </div>
+          
+
+
+          
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview sidebar-panel  sidebar-panel-active ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/uploads/avatar.png"
+               alt="h(x)" />
+          <p class="site-author-name" itemprop="name">h(x)</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">7</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">h(x)</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"hx-chaos"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    <script src="/vendors/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("HaYouQEVV7WVOM54aQI5vJ8W-gzGzoHsz", "dwbK71pPT5vOio5RpJ5x0dad");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+
+
+
+  
+
+</body>
+</html>
