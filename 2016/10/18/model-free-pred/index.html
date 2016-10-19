@@ -84,16 +84,19 @@
 
 
 
-<meta name="description" content="In this post I will clarify a method to solve the MDP using Bellman Expectation and/or Optimality Equation, as stated in the previous post RL Note (3) - Planning by Dynamic Programming. The lecture vi">
+<meta name="description" content="Up until now, all our works are done under the assumption that a MDP is known, in particular the transition probability $P$ and rewords $R$ are known. However, those two things are determined by the e">
 <meta property="og:type" content="article">
-<meta property="og:title" content="RL Note (3) - Planning by Dynamic Programming">
-<meta property="og:url" content="http://yoursite.com/2016/10/03/rl-dp/index.html">
+<meta property="og:title" content="RL Note (4.1) - Model-Free Prediction">
+<meta property="og:url" content="http://yoursite.com/2016/10/18/model-free-pred/index.html">
 <meta property="og:site_name" content="Chaos">
-<meta property="og:description" content="In this post I will clarify a method to solve the MDP using Bellman Expectation and/or Optimality Equation, as stated in the previous post RL Note (3) - Planning by Dynamic Programming. The lecture vi">
-<meta property="og:updated_time" content="2016-10-09T07:28:11.000Z">
+<meta property="og:description" content="Up until now, all our works are done under the assumption that a MDP is known, in particular the transition probability $P$ and rewords $R$ are known. However, those two things are determined by the e">
+<meta property="og:image" content="http://yoursite.com/uploads/tdn.png">
+<meta property="og:image" content="http://yoursite.com/uploads/tdl.png">
+<meta property="og:updated_time" content="2016-10-19T02:50:55.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="RL Note (3) - Planning by Dynamic Programming">
-<meta name="twitter:description" content="In this post I will clarify a method to solve the MDP using Bellman Expectation and/or Optimality Equation, as stated in the previous post RL Note (3) - Planning by Dynamic Programming. The lecture vi">
+<meta name="twitter:title" content="RL Note (4.1) - Model-Free Prediction">
+<meta name="twitter:description" content="Up until now, all our works are done under the assumption that a MDP is known, in particular the transition probability $P$ and rewords $R$ are known. However, those two things are determined by the e">
+<meta name="twitter:image" content="http://yoursite.com/uploads/tdn.png">
 
 
 
@@ -114,9 +117,9 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2016/10/03/rl-dp/"/>
+  <link rel="canonical" href="http://yoursite.com/2016/10/18/model-free-pred/"/>
 
-  <title> RL Note (3) - Planning by Dynamic Programming | Chaos </title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  <title> RL Note (4.1) - Model-Free Prediction | Chaos </title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="en">
@@ -246,7 +249,7 @@
             
             
               
-                RL Note (3) - Planning by Dynamic Programming
+                RL Note (4.1) - Model-Free Prediction
               
             
           </h1>
@@ -258,8 +261,8 @@
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2016-10-03T15:21:11+08:00" content="2016-10-03">
-              2016-10-03
+            <time itemprop="dateCreated" datetime="2016-10-18T18:48:17+08:00" content="2016-10-18">
+              2016-10-18
             </time>
           </span>
 
@@ -288,8 +291,8 @@
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2016/10/03/rl-dp/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/10/03/rl-dp/" itemprop="commentsCount"></span>
+                <a href="/2016/10/18/model-free-pred/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/10/18/model-free-pred/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -299,7 +302,7 @@
 
           
           
-             <span id="/2016/10/03/rl-dp/" class="leancloud_visitors" data-flag-title="RL Note (3) - Planning by Dynamic Programming">
+             <span id="/2016/10/18/model-free-pred/" class="leancloud_visitors" data-flag-title="RL Note (4.1) - Model-Free Prediction">
                &nbsp; | &nbsp;
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -321,116 +324,71 @@
       
 
       
-        <p>In this post I will clarify a method to solve the MDP using Bellman Expectation and/or Optimality Equation, as stated in the previous post <a href="/2016/10/03/rl-dp/" title="RL Note (3) - Planning by Dynamic Programming">RL Note (3) - Planning by Dynamic Programming</a>. The lecture video is <a href="https://www.youtube.com/watch?v=Nd1-UUMVfz4" target="_blank" rel="external">here: Lecture 3_ Planning by Dynamic Programming</a>.</p>
-<p>To be honest, initially I was not clear what’s going on after watching the video, so used my own way to re-formulate the algorithm introduced in the video, which hopefully is clearer and easier to understand.</p>
-<p>In this post we are considering how to solve for optimal state value function <span>$v_*$</span><!-- Has MathJax --> and optimal policy <span>$\pi_*$</span><!-- Has MathJax -->.</p>
-<h1 id="Notations"><a href="#Notations" class="headerlink" title="Notations"></a>Notations</h1><p>The Bellman Expectation Equation is<br><span>$$v_{\pi}(s)=\mathbb{E}[R_{t+1}\mid S_t=s] + \gamma\mathbb{E}[v_{\pi}(S_{t+1}) \mid S_t = s]$$</span><!-- Has MathJax --></p>
-<p>For simplicity, we define a <em>bellman expectation operator</em> <span>$T_E^{\pi}$</span><!-- Has MathJax --> on the functions over state space to encapsulate all right hand side, i.e. define</p>
+        <p>Up until now, all our works are done under the assumption that a MDP is known, in particular the transition probability <span>$P$</span><!-- Has MathJax --> and rewords <span>$R$</span><!-- Has MathJax --> are known. However, those two things are determined by the environment, and in real life typically not known by the agent. For example, when playing a game, unless you have read the manual, you have no idea what will happen if you press the up key, and what reward you will get. You must play and observe for a while to generate a good guess.</p>
+<p>To handle this, there are two main approaches, differed by creating a <strong>model</strong> of the environment or not. For example, physics is a model for the universe. This note is for the model free approach to handle prediction, corresponding to <a href="https://www.youtube.com/watch?v=PnHCvfgC_ZA" target="_blank" rel="external">Lecture 4: Model-Free Prediction</a></p>
+<p>Recall that a prediction problem is to figure out the value function <span>$v(s)$</span><!-- Has MathJax --> given the policy <span>$\pi$</span><!-- Has MathJax -->.</p>
+<p>So, what can we do as the agent, knowing literally nothing at all about the outside world? <em>Sampling!</em></p>
+<h1 id="Monte-Carlo"><a href="#Monte-Carlo" class="headerlink" title="Monte-Carlo"></a>Monte-Carlo</h1><p>Perhaps the most naive and ancient approach to tackle randomness is to use the so called Monte-Carlo method, by estimating the true expectation by empirical average.</p>
+<p>In the RL case, to find <span>$v(s)$</span><!-- Has MathJax --> for each <span>$s$</span><!-- Has MathJax -->, we just sample several <em>episode</em> <span>$(s_1, a_1, r_2, s_2, \cdots, s_{T}, a_{T}, r_{T+1}, s_{T+1})$</span><!-- Has MathJax -->, and calculate the value function <span>$v(s)$</span><!-- Has MathJax --> for each state <span>$s$</span><!-- Has MathJax --> as the average of all the accumulated discounted rewards starting from state <span>$s$</span><!-- Has MathJax --> in all episodes. Note that we could only care <span>$s_1=s$</span><!-- Has MathJax --> as well.</p>
+<p>The algorithm can be described as:</p>
+<ul>
+<li>For n<em>th</em> episode<ul>
+<li>Sample <span>$(s_1, a_1, r_2, s_2, \cdots, s_{T}, a_{T}, r_{T+1}, s_{T+1})$</span><!-- Has MathJax -->:<ul>
+<li>for each (or the fist) <span>$s_t$</span><!-- Has MathJax --> in the episode:<ul>
+<li>calculate <span>$v\leftarrow r_{t+1}+\gamma r_{t+2}+\cdots +\gamma^{T-t} r_{T+1}$</span><!-- Has MathJax --></li>
+<li>update <span>$v(s_t)\leftarrow v(s_t) + \frac{1}{n}(v-v(s_t))$</span><!-- Has MathJax --></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>Note that here we used a common trick to calculate moving mean:</p>
+<span>$$\mu_n=\mu_{n-1}+\frac{1}{n}(a_n-\mu_{n-1})$$</span><!-- Has MathJax -->
+<p>Obviously, there are at least two drawbacks for this approach:</p>
+<ul>
+<li>The episode must terminate.</li>
+<li>We must wait until the episode terminates.</li>
+</ul>
+<p>To resolve those two issues, we need to play smarter.</p>
+<h1 id="Temporal-Difference"><a href="#Temporal-Difference" class="headerlink" title="Temporal-Difference"></a>Temporal-Difference</h1><p>The idea is, instead of sampling a whole episode, we sample only 1 step forward, and then use the current guess of the new state to update the previous state. The algorithm is:</p>
+<ul>
+<li>For n<em>th</em> episode<ul>
+<li>Sample forward one step: <span>$(s_t, a_t, r_{t+1}, s_{t+1})$</span><!-- Has MathJax -->:</li>
+<li>update <span>$v(s_t)\leftarrow v(s_t) + \alpha(r_{t+1}+\gamma v(s_{t+1})-v(s_t))$</span><!-- Has MathJax --></li>
+</ul>
+</li>
+</ul>
+<p>The <span>$r_{t+1}+\gamma v(s_{t+1})$</span><!-- Has MathJax --> term is called the <strong>TD target</strong>, which reflects the new knowledge of <span>$v(s_t)$</span><!-- Has MathJax --> after performing an action.</p>
+<p>The whole <span>$r_{t+1}+\gamma v(s_{t+1})-v(s_t)$</span><!-- Has MathJax --> term is called the <strong>TD error</strong>, which is the difference between the TD target and the previous guess of <span>$v(s_t)$</span><!-- Has MathJax -->.</p>
+<p>So in one word, every time we move forward one step to get a new state, and update the value function of the previous state by a tiny fraction <span>$\alpha$</span><!-- Has MathJax --> of the TD error.</p>
+<p>The method that using current guess to update a new guess is called <strong>bootstrapping</strong>.</p>
+<p>Note that the only difference between Monte-Carlo and TD is that, TD bootstraps after 1 step, while Monte-Carlo does not bootstrp at all. So, why 1 step? Why not 2, or 100? Of course we can.</p>
+<p>Define <em>n-step return</em> by</p>
 <span>$$\begin{aligned}
-T_E^{\pi}: (S\rightarrow\mathbb{R})&amp;\rightarrow(S\rightarrow\mathbb{R})\\
-v&amp;\mapsto \left(s\mapsto\mathbb{E}[R_{t+1}\mid S_t=s] + \gamma\mathbb{E}[v(S_{t+1}) \mid S_t = s]\right)
+G_t^{(n)} &amp;= R_{t+1}+\gamma R_{t+2}+\cdots + \gamma^{n-1} R_{t+n} + \gamma^{n}v(S_{t+n})\\
+&amp;=\sum_{i=1}^n\gamma^{i-1} R_{t+i}+\gamma^{n}v(S_{t+n})
 \end{aligned}$$</span><!-- Has MathJax -->
-<p>So the Bellman Expectation Equation can be expressed as simply:<br><span>$$v_{\pi}=T_E^{\pi}(v_{\pi})$$</span><!-- Has MathJax --></p>
-<p>Also, for Bellman Optimality Equation, we can similarly define a <em>bellman optimality operator</em><br><span>$$\begin{aligned}
-T_O: (S\rightarrow\mathbb{R})&amp;\rightarrow(S\rightarrow\mathbb{R})\\
-v&amp;\mapsto \left(s\mapsto\max_a{\left(R_s^a + \gamma  \sum_{s&apos;}\mathbb{P}_{ss&apos;}^av(s&apos;)\right)}\right)
-\end{aligned}$$</span><!-- Has MathJax --></p>
-<p>As a result, the Bellman Optimality Equation for optimal value functions can be written as<br><span>$$v_*=T_O(v_*)$$</span><!-- Has MathJax --></p>
-<p>Furthermore, recall that we can construct an optimal policy <span>$\pi_*$</span><!-- Has MathJax --> from an optimal action value function <span>$q_*$</span><!-- Has MathJax --> greedily by picking the action with the maximum value. Since <span>$q_*$</span><!-- Has MathJax --> and  <span>$v_*$</span><!-- Has MathJax --> are inter-convertible, we can also construct the <span>$\pi_*$</span><!-- Has MathJax --> from an optimal state value function <span>$q_*$</span><!-- Has MathJax -->. For simplicity, we define the <strong>greedy operator</strong> <span>$G$</span><!-- Has MathJax --> by<br><span>$$\begin{aligned}
-G: (S\rightarrow\mathbb{R})&amp;\rightarrow(A\rightarrow\mathbb{R})\\
-v&amp;\mapsto \left(a\mapsto \begin{cases}
-1, \quad a = \operatorname{argmax} \left(R_s^a + \gamma\sum_{s&apos;}\mathbb{P}_{ss&apos;}^a v(s&apos;)\right)\\
-0, \quad\text{otherwise}
-\end{cases}\right)
-\end{aligned}$$</span><!-- Has MathJax --></p>
-<p>Use those operators, we can find a simple relation between those frightening formulas:<br><span>$$T_O(\cdot) = T_E^{G(\cdot)}(\cdot)$$</span><!-- Has MathJax --></p>
-<h1 id="Three-Iterative-Methods"><a href="#Three-Iterative-Methods" class="headerlink" title="Three Iterative Methods"></a>Three Iterative Methods</h1><p>In the lecture, the teacher mentioned three iterative algorithms, which are</p>
-<ul>
-<li>Policy Evaluation<ul>
-<li>Input: MDP, A policy <span>$\pi$</span><!-- Has MathJax --></li>
-<li>Output: The value function <span>$v_{\pi}$</span><!-- Has MathJax --></li>
-</ul>
-</li>
-<li>Policy Iteration<ul>
-<li>Input: MDP</li>
-<li>Output: An optimal value function <span>$v_*$</span><!-- Has MathJax --> and optimal policy <span>$\pi_*$</span><!-- Has MathJax --></li>
-</ul>
-</li>
-<li>Value Iteration<ul>
-<li>Input: MDP</li>
-<li>Output: An optimal value function <span>$v_*$</span><!-- Has MathJax --> and optimal policy <span>$\pi_*$</span><!-- Has MathJax --></li>
-</ul>
-</li>
-</ul>
-<p>At the beginning I was really confused, especially by the latter two. Luckily, by the operator I defined above, I can clearly express those three algorithms now.</p>
-<h2 id="Policy-Evaluation"><a href="#Policy-Evaluation" class="headerlink" title="Policy Evaluation"></a>Policy Evaluation</h2><ul>
-<li>Input:<ul>
-<li>MDP, A policy <span>$\pi$</span><!-- Has MathJax --></li>
-</ul>
-</li>
-<li>Steps:<ul>
-<li>initialize <span>$v^{(0)}$</span><!-- Has MathJax --></li>
-<li>loop until should terminate<ul>
-<li><span>$v^{(k+1)}\leftarrow T^{\pi}_E\left(v^{(k)}\right)$</span><!-- Has MathJax --></li>
-</ul>
-</li>
-</ul>
-</li>
-<li>Output:<ul>
-<li><span>$v_*\leftarrow v^{(\text{last})}$</span><!-- Has MathJax -->
-</li>
-</ul>
-</li>
-</ul>
-<h2 id="Policy-Iteration"><a href="#Policy-Iteration" class="headerlink" title="Policy Iteration"></a>Policy Iteration</h2><ul>
-<li>Input:<ul>
-<li>MDP</li>
-</ul>
-</li>
-<li>Steps:<ul>
-<li>initialize <span>$v^{(0)}, \pi^{(0)}$</span><!-- Has MathJax -->, and an integer <span>$K\geqslant 1$</span><!-- Has MathJax --></li>
-<li>loop until should terminate<ul>
-<li><span>$v^{(k+1)}\leftarrow \left(T^{\pi^{(k)}}_E\right)^K\left(v^{(k)}\right)$</span><!-- Has MathJax --></li>
-<li><span>$\pi^{(k+1)}\leftarrow G\left(v^{(k+1)}\right)$</span><!-- Has MathJax --></li>
-</ul>
-</li>
-</ul>
-</li>
-<li>Output:<ul>
-<li><span>$v_*\leftarrow v^{(\text{last})}$</span><!-- Has MathJax --></li>
-<li><span>$\pi_*\leftarrow \pi^{(\text{last})}$</span><!-- Has MathJax -->
-</li>
-</ul>
-</li>
-</ul>
-<h2 id="Value-Iteration"><a href="#Value-Iteration" class="headerlink" title="Value Iteration"></a>Value Iteration</h2><ul>
-<li>Input:<ul>
-<li>MDP</li>
-</ul>
-</li>
-<li>Steps:<ul>
-<li>initialize <span>$v^{(0)}$</span><!-- Has MathJax --></li>
-<li>loop until should terminate<ul>
-<li><span>$v^{(k+1)}\leftarrow T_O\left(v^{(k)}\right)$</span><!-- Has MathJax --></li>
-</ul>
-</li>
-</ul>
-</li>
-<li>Output:<ul>
-<li><span>$v_*\leftarrow v^{(\text{last})}$</span><!-- Has MathJax --></li>
-<li><span>$\pi_*\leftarrow G(v_*)$</span><!-- Has MathJax -->
-</li>
-</ul>
-</li>
-</ul>
-<p>Note that when <span>$K=1$</span><!-- Has MathJax -->, the Policy Iteration is exactly Value Iteration.</p>
-<p>It can be shown by the Contraction Mapping Theorem that when <span>$\gamma&lt;1$</span><!-- Has MathJax --></p>
-<ul>
-<li><span>$v_{\pi}$</span><!-- Has MathJax --> is unique for a given <span>$\pi$</span><!-- Has MathJax --></li>
-<li>Policy Evaluation converges to <span>$v_{\pi}$</span><!-- Has MathJax --></li>
-<li>Policy Iteration converges to <span>$v_*$</span><!-- Has MathJax --></li>
-<li>Value Iteration converges to <span>$v_*$</span><!-- Has MathJax --></li>
-</ul>
+<p>A little word about the notation. Since the <span>$n$</span><!-- Has MathJax --> in <span>$G_t^{(n)}$</span><!-- Has MathJax --> has to start from <span>$1$</span><!-- Has MathJax -->, when we say the episode terminates at timestamp <span>$T$</span><!-- Has MathJax -->, it means the last piece of the sequence is <span>$(s_T, a_T, r_{T+1}, s_{T+1})$</span><!-- Has MathJax -->, where <span>$s_{T+1}$</span><!-- Has MathJax --> is the terminate state.</p>
+<p>Now, the Monte-Carlo is simply to update by</p>
+<span>$$v(S_{t+1})\leftarrow v(S_{t+1}) + \frac{1}{N} \left(G_t^{(T-t+1)} - v(S_{t+1})\right)$$</span><!-- Has MathJax -->
+<p>and the TD is simply to update by</p>
+<span>$$v(S_{t+1})\leftarrow v(S_{t+1}) + \alpha\left(G_t^{(1)} - v(S_{t+1})\right)$$</span><!-- Has MathJax -->
+<p>So why can’t we use <span>$G_t^{(n)}$</span><!-- Has MathJax --> to update, like</p>
+<span>$$v(S_{t+1})\leftarrow v(S_{t+1}) + \alpha\left(G_t^{(n)} - v(S_{t+1})\right)$$</span><!-- Has MathJax -->
+<p>which apparently will perform better? Yes it is, but depends, on <span>$\alpha$</span><!-- Has MathJax -->.</p>
+<p><img src="/uploads/tdn.png" alt="tdn"></p>
+<p>Note that for different step size <span>$\alpha$</span><!-- Has MathJax -->, we need different <span>$n$</span><!-- Has MathJax --> to get the best result. This is bad, and we want a method where the performance depends (almost) only on a single variable, like <span>$\alpha$</span><!-- Has MathJax -->.</p>
+<h1 id="TD"><a href="#TD" class="headerlink" title="TD()"></a>TD(<span>$\lambda$</span><!-- Has MathJax -->)</h1><p>To achieve the above goal, we use a simple solution: just like accumulating discounted rewards as the final reward, we accumulate the discounted n-step return to make the final return, i.e. TD target. We define</p>
+<span>$$G_t^{\lambda} \triangleq (1-\lambda)\left(G_t^{(1)}+\lambda G_t^{(2)}+\lambda^2G_t^{(3)}+\cdots\right)$$</span><!-- Has MathJax -->
+<p>and after the termination timestamp <span>$T$</span><!-- Has MathJax -->, all terms are <span>$G_t^{(T-t+1)}$</span><!-- Has MathJax -->, i.e. it absorbs all tails. However, to handle <span>$\lambda=1$</span><!-- Has MathJax --> correctly, we rewrite the definition as</p>
+<span>$$G_t^{\lambda} \triangleq (1-\lambda)\sum_{n=1}^{T-t}\lambda^{n-1}G_t^{(n)} + \lambda^{T-t}G_t^{(T-t+1)}$$</span><!-- Has MathJax -->
+<p>Now we can update the value function towards this integrated return, i.e.</p>
+<span>$$v(S_{t+1})\leftarrow v(S_{t+1}) + \alpha\left(G_t^{\lambda} - v(S_{t+1})\right)$$</span><!-- Has MathJax -->
+<p>Does it solve the previous problem? It does!</p>
+<p><img src="/uploads/tdl.png" alt="tdl"></p>
+<p>Experiments show that best results are always achieved when <span>$\lambda$</span><!-- Has MathJax --> is around <span>$0.9$</span><!-- Has MathJax -->, so it almost only depends on <span>$\alpha$</span><!-- Has MathJax -->!</p>
 
       
     </div>
@@ -462,16 +420,16 @@ v&amp;\mapsto \left(a\mapsto \begin{cases}
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2016/10/03/rl-bellman/" rel="next" title="RL Note (2.2) - The Bellman Equation">
-                <i class="fa fa-chevron-left"></i> RL Note (2.2) - The Bellman Equation
+              <a href="/2016/10/03/rl-dp/" rel="next" title="RL Note (3) - Planning by Dynamic Programming">
+                <i class="fa fa-chevron-left"></i> RL Note (3) - Planning by Dynamic Programming
               </a>
             
           </div>
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2016/10/18/model-free-pred/" rel="prev" title="RL Note (4.1) - Model-Free Prediction">
-                RL Note (4.1) - Model-Free Prediction <i class="fa fa-chevron-right"></i>
+              <a href="/2016/10/18/eligibility-trace/" rel="prev" title="RL Note (4.2) - Backward View TD">
+                RL Note (4.2) - Backward View TD <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -498,8 +456,8 @@ v&amp;\mapsto \left(a\mapsto \begin{cases}
           
   <div class="comments" id="comments">
     
-      <div class="ds-thread" data-thread-key="2016/10/03/rl-dp/"
-           data-title="RL Note (3) - Planning by Dynamic Programming" data-url="http://yoursite.com/2016/10/03/rl-dp/">
+      <div class="ds-thread" data-thread-key="2016/10/18/model-free-pred/"
+           data-title="RL Note (4.1) - Model-Free Prediction" data-url="http://yoursite.com/2016/10/18/model-free-pred/">
       </div>
     
   </div>
@@ -590,7 +548,7 @@ v&amp;\mapsto \left(a\mapsto \begin{cases}
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Notations"><span class="nav-number">1.</span> <span class="nav-text">Notations</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Three-Iterative-Methods"><span class="nav-number">2.</span> <span class="nav-text">Three Iterative Methods</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Policy-Evaluation"><span class="nav-number">2.1.</span> <span class="nav-text">Policy Evaluation</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Policy-Iteration"><span class="nav-number">2.2.</span> <span class="nav-text">Policy Iteration</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Value-Iteration"><span class="nav-number">2.3.</span> <span class="nav-text">Value Iteration</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Monte-Carlo"><span class="nav-number">1.</span> <span class="nav-text">Monte-Carlo</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Temporal-Difference"><span class="nav-number">2.</span> <span class="nav-text">Temporal-Difference</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#TD"><span class="nav-number">3.</span> <span class="nav-text">TD($\lambda$)</span></a></li></ol></div>
             
           </div>
         </section>

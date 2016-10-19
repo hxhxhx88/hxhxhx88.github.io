@@ -245,6 +245,407 @@
             
               
                 
+                <a class="post-title-link" href="/2016/10/18/eligibility-trace/" itemprop="url">
+                  RL Note (4.2) - Backward View TD
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2016-10-18T21:53:34+08:00" content="2016-10-18">
+              2016-10-18
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Machine-Learning/" itemprop="url" rel="index">
+                    <span itemprop="name">Machine Learning</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/10/18/eligibility-trace/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/10/18/eligibility-trace/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2016/10/18/eligibility-trace/" class="leancloud_visitors" data-flag-title="RL Note (4.2) - Backward View TD">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">visitors </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>TD(<span>$\lambda$</span><!-- Has MathJax -->) is good, but has the same problem as Monte-Carlo:</p>
+<ul>
+<li>The episode must terminate.</li>
+<li>We must wait until the episode terminates.</li>
+</ul>
+<p>Well, by the very definition of <span>$G_t^{(\lambda)}$</span><!-- Has MathJax -->, the episode need to have a termination, which in fact is tolerable, since in many tasks the episodes do terminate, and we can manually require so. However, the second one is absolutely intolerable, which for example may result in inefficient implementation.</p>
+<p>Luckily, there is a very clever way to resolve this. I will directly put the conclusion, and provide the prove, since I have no idea how to deduce it from the first place:(</p>
+<h1 id="Eligibility-Trace"><a href="#Eligibility-Trace" class="headerlink" title="Eligibility Trace"></a>Eligibility Trace</h1><p>We maintain an <strong>eligibility trace</strong> for each state <span>$s$</span><!-- Has MathJax --> at each timestmap <span>$t$</span><!-- Has MathJax -->:</p>
+<span>$$\begin{aligned}
+E_0(s) &amp;= 0\\
+E_t(s) &amp;= \gamma\lambda E_{t-1}(s) + \mathbb{1}(S_t=s)
+\end{aligned}$$</span><!-- Has MathJax -->
+<p>Intuitively, the eligibility of a state bump up by 1 each time we enter that state, and always decay exponentially.</p>
+<p>We perform the update by</p>
+<span>$$\begin{aligned}
+\delta_t &amp;= R_{t+1}+\gamma v(S_{t+1}) - v(S_t)\\
+v(s)&amp;\leftarrow v(s) + \alpha\delta_tE_t(s), \forall s
+\end{aligned}$$</span><!-- Has MathJax -->
+<p>Note that the update is for <em>every state <span>$s$</span><!-- Has MathJax --></em>. The algorithm can be described as:</p>
+<ul>
+<li>Start an episode, given initial state <span>$s_1$</span><!-- Has MathJax --><ul>
+<li>for each state <span>$s$</span><!-- Has MathJax --><ul>
+<li>update <span>$E_t(s)$</span><!-- Has MathJax --></li>
+</ul>
+</li>
+<li>Sample forward one step: <span>$(s_t, a_t, r_{t+1}, s_{t+1})$</span><!-- Has MathJax -->:</li>
+<li>Calculate TD error <span>$\delta_t \leftarrow r_{t+1}+\gamma v(s_{t+1}) - v(s_t)$</span><!-- Has MathJax --></li>
+<li>for each state <span>$s$</span><!-- Has MathJax --><ul>
+<li>update <span>$v(s)\leftarrow v(s) + \alpha\delta_tE_t(s)$</span><!-- Has MathJax --></li>
+</ul>
+</li>
+<li>repeat for the timestamp <span>$t+1$</span><!-- Has MathJax --> if not terminate</li>
+</ul>
+</li>
+</ul>
+<p>Use such approach, we no longer need to wait until a complete episode terminates before performing the update. However, does it give the same result as the original TD<span>$(\lambda)$</span><!-- Has MathJax -->? Surprisingly, yes!</p>
+<div class="theorem math-block"><br>The sum of offline updates is identical for forward-view and backward-view TD<span>$(\lambda)$</span><!-- Has MathJax --><br><span>$$\sum_{t=1}^T\alpha\delta_tE_t(s) = \sum_{t=1}^T\alpha\left(G_t^{\lambda}-v(S_t)\right)\mathbb{1}(S_t=s), \forall s$$</span><!-- Has MathJax --><br></div>
+
+<p><em>offline</em> means we keep a copy of the previous <span>$v(s)$</span><!-- Has MathJax --> for updating within each episode, instead of dynamically update <span>$v(s)$</span><!-- Has MathJax --> on the fly.</p>
+<p>This theorem says that the <em>total</em> change for each state <span>$s$</span><!-- Has MathJax --> is the same under two approaches. Note that it does not say any partial changes before termination are the same, and they are not.</p>
+<h1 id="Proof"><a href="#Proof" class="headerlink" title="Proof"></a>Proof</h1><p>Here we prove the above theorem. Initially I tried brute force, by expending two sides, which turns out to be too complicated. Then I turn to mathematical induction, which works happily.</p>
+<p>After cancelling <span>$\alpha$</span><!-- Has MathJax -->, we need to prove</p>
+<span>$$\sum_{t=1}^T\delta_tE_t(s) = \sum_{t=1}^T\left(G_t^{\lambda}-v(S_t)\right)\mathbb{1}(S_t=s), \forall s$$</span><!-- Has MathJax -->
+<p>We perform induction on the terminating time <span>$T$</span><!-- Has MathJax -->. When <span>$T=1$</span><!-- Has MathJax -->, the left hand side is</p>
+<span>$$(R_2+\gamma v(S_2)-v(S_1))\mathbb{1}(S_1=s)$$</span><!-- Has MathJax -->
+<p>while the right hand side is</p>
+<span>$$(G_1^{\lambda}-v(S_1))\mathbb{1}(S_1=s)$$</span><!-- Has MathJax -->
+<p>Also, when terminating after only <span>$1$</span><!-- Has MathJax --> step, we have</p>
+<span>$$G_1^{\lambda} = G_1^{(1)} = R_2+\gamma v(S_2)$$</span><!-- Has MathJax -->
+<p>So the equation holds.</p>
+<p>Now we assume the theorem holds for a <span>$T\geqslant 1$</span><!-- Has MathJax -->, we need to show it holds for <span>$T+1$</span><!-- Has MathJax -->. What is the difference for each side when <span>$T$</span><!-- Has MathJax --> becomes <span>$T+1$</span><!-- Has MathJax -->? On the left hand side, we get an extra term</p>
+<span>$$\delta_{T+1}E_{T+1}(s)$$</span><!-- Has MathJax -->
+<p>The right hand side is not that obvious, since the dependency of <span>$T$</span><!-- Has MathJax --> is implicit inside <span>$G_t^{\lambda}$</span><!-- Has MathJax -->, not only in the subscript. To emphasize this, we temporarily write <span>$G_t^{\lambda,T}$</span><!-- Has MathJax --> to mean it is the <span>$G_t^{\lambda}$</span><!-- Has MathJax --> when terminating at timestamp <span>$T$</span><!-- Has MathJax -->.</p>
+<p>We have</p>
+<span>$$\begin{aligned}
+G_t^{\lambda,T} &amp;= (1-\lambda)\sum_{n=1}^{T-t}\lambda^{n-1}G_t^{(n,T)} + \lambda^{T-t}G_t^{(T+1-t, T)}\\
+G_t^{\lambda,T+1} &amp;= (1-\lambda)\sum_{n=1}^{T-t+1}\lambda^{n-1}G_t^{(n,T+1)} + \lambda^{T+1-t}G_t^{(T+2-t, T+1)}
+\end{aligned}$$</span><!-- Has MathJax -->
+<p>Note that when <span>$n\leqslant T+1-t$</span><!-- Has MathJax -->, <span>$G_t^{(n,T)}$</span><!-- Has MathJax --> and <span>$G_t^{(n,T+1)}$</span><!-- Has MathJax --> are the same, due to bootstrapping eliminates the tails. So their difference is</p>
+<span>$$\begin{aligned}
+G_t^{\lambda,T+1}-G_t^{\lambda,T} &amp;= (1-\lambda)\lambda^{T-t}G_t^{(T+1-t,T+1)}+ \lambda^{T+1-t}G_t^{(T+2-t,T+1)}-\lambda^{T-t}G_t^{(T+1-t,T)}\\
+&amp;=\lambda^{T+1-t}\left(G_t^{(T+2-t,T+1)}-G_t^{(T+1-t,T+1)}\right)\\
+&amp;=\lambda^{T+1-t}\left(\left(\sum_{i=1}^{T+2-t}\gamma^{i-1} R_{t+i}+\gamma^{T+2-t}v(S_{T+2})\right)-\left(\sum_{i=1}^{T+1-t}\gamma^{i-1} R_{t+i}+\gamma^{T+1-t}v(S_{T+1})\right)\right)\\
+&amp;=\lambda^{T+1-t}\left(\gamma^{T+1-t} R_{T+2}+\gamma^{T+2-t}v(S_{T+2})-\gamma^{T+1-t}v(S_{T+1})\right)\\
+&amp;=(\lambda\gamma)^{T+1-t}\left(R_{T+2}+\gamma v(S_{T+2})-v(S_{T+1})\right)
+\end{aligned}$$</span><!-- Has MathJax -->
+<p>Looks simple, so must be right! Now the whole difference of the right hand side between <span>$T+1$</span><!-- Has MathJax --> and <span>$T$</span><!-- Has MathJax --> is</p>
+<span>$$\sum_{t=1}^T(\lambda\gamma)^{T+1-t}\left(R_{T+2}+\gamma v(S_{T+2})-v(S_{T+1})\right)\mathbb{1}(S_t=s) + (G_{T+1}^{\lambda,T+1}-v(S_{T+1}))\mathbb{1}(S_{T+1}=s)$$</span><!-- Has MathJax -->
+<p>Note that</p>
+<span>$$G_{T+1}^{\lambda,T+1} = R_{T+2}+\gamma v(S_{T+2})$$</span><!-- Has MathJax -->
+<p>We can rewrite the difference as</p>
+<span>$$\left(R_{T+2}+\gamma v(S_{T+2})-v(S_{T+1})\right)\sum_{t=1}^{T+1}(\lambda\gamma)^{T+1-t}\mathbb{1}(S_{t}=s)$$</span><!-- Has MathJax -->
+<p>Now we must show the differences of two sides are equal, which is</p>
+<span>$$\delta_{T+1}E_{T+1}(s)=\left(R_{T+2}+\gamma v(S_{T+2})-v(S_{T+1})\right)\sum_{t=1}^{T+1}(\lambda\gamma)^{T+1-t}\mathbb{1}(S_{t}=s)$$</span><!-- Has MathJax -->
+<p>It holds! Since it is not hard to show that</p>
+<span>$$\begin{aligned}
+\delta_{T+1}&amp;=R_{T+2}+\gamma v(S_{T+2})-v(S_{T+1})\\
+E_{T+1}(s)&amp;=\sum_{t=1}^{T+1}(\lambda\gamma)^{T+1-t}\mathbb{1}(S_{t}=s)
+\end{aligned}$$</span><!-- Has MathJax -->
+<p>Wonderful!</p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/10/18/model-free-pred/" itemprop="url">
+                  RL Note (4.1) - Model-Free Prediction
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2016-10-18T18:48:17+08:00" content="2016-10-18">
+              2016-10-18
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Machine-Learning/" itemprop="url" rel="index">
+                    <span itemprop="name">Machine Learning</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/10/18/model-free-pred/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/10/18/model-free-pred/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2016/10/18/model-free-pred/" class="leancloud_visitors" data-flag-title="RL Note (4.1) - Model-Free Prediction">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">visitors </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>Up until now, all our works are done under the assumption that a MDP is known, in particular the transition probability <span>$P$</span><!-- Has MathJax --> and rewords <span>$R$</span><!-- Has MathJax --> are known. However, those two things are determined by the environment, and in real life typically not known by the agent. For example, when playing a game, unless you have read the manual, you have no idea what will happen if you press the up key, and what reward you will get. You must play and observe for a while to generate a good guess.</p>
+<p>To handle this, there are two main approaches, differed by creating a <strong>model</strong> of the environment or not. For example, physics is a model for the universe. This note is for the model free approach to handle prediction, corresponding to <a href="https://www.youtube.com/watch?v=PnHCvfgC_ZA" target="_blank" rel="external">Lecture 4: Model-Free Prediction</a></p>
+<p>Recall that a prediction problem is to figure out the value function <span>$v(s)$</span><!-- Has MathJax --> given the policy <span>$\pi$</span><!-- Has MathJax -->.</p>
+<p>So, what can we do as the agent, knowing literally nothing at all about the outside world? <em>Sampling!</em></p>
+<h1 id="Monte-Carlo"><a href="#Monte-Carlo" class="headerlink" title="Monte-Carlo"></a>Monte-Carlo</h1><p>Perhaps the most naive and ancient approach to tackle randomness is to use the so called Monte-Carlo method, by estimating the true expectation by empirical average.</p>
+<p>In the RL case, to find <span>$v(s)$</span><!-- Has MathJax --> for each <span>$s$</span><!-- Has MathJax -->, we just sample several <em>episode</em> <span>$(s_1, a_1, r_2, s_2, \cdots, s_{T}, a_{T}, r_{T+1}, s_{T+1})$</span><!-- Has MathJax -->, and calculate the value function <span>$v(s)$</span><!-- Has MathJax --> for each state <span>$s$</span><!-- Has MathJax --> as the average of all the accumulated discounted rewards starting from state <span>$s$</span><!-- Has MathJax --> in all episodes. Note that we could only care <span>$s_1=s$</span><!-- Has MathJax --> as well.</p>
+<p>The algorithm can be described as:</p>
+<ul>
+<li>For n<em>th</em> episode<ul>
+<li>Sample <span>$(s_1, a_1, r_2, s_2, \cdots, s_{T}, a_{T}, r_{T+1}, s_{T+1})$</span><!-- Has MathJax -->:<ul>
+<li>for each (or the fist) <span>$s_t$</span><!-- Has MathJax --> in the episode:<ul>
+<li>calculate <span>$v\leftarrow r_{t+1}+\gamma r_{t+2}+\cdots +\gamma^{T-t} r_{T+1}$</span><!-- Has MathJax --></li>
+<li>update <span>$v(s_t)\leftarrow v(s_t) + \frac{1}{n}(v-v(s_t))$</span><!-- Has MathJax --></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>Note that here we used a common trick to calculate moving mean:</p>
+<span>$$\mu_n=\mu_{n-1}+\frac{1}{n}(a_n-\mu_{n-1})$$</span><!-- Has MathJax -->
+<p>Obviously, there are at least two drawbacks for this approach:</p>
+<ul>
+<li>The episode must terminate.</li>
+<li>We must wait until the episode terminates.</li>
+</ul>
+<p>To resolve those two issues, we need to play smarter.</p>
+<h1 id="Temporal-Difference"><a href="#Temporal-Difference" class="headerlink" title="Temporal-Difference"></a>Temporal-Difference</h1><p>The idea is, instead of sampling a whole episode, we sample only 1 step forward, and then use the current guess of the new state to update the previous state. The algorithm is:</p>
+<ul>
+<li>For n<em>th</em> episode<ul>
+<li>Sample forward one step: <span>$(s_t, a_t, r_{t+1}, s_{t+1})$</span><!-- Has MathJax -->:</li>
+<li>update <span>$v(s_t)\leftarrow v(s_t) + \alpha(r_{t+1}+\gamma v(s_{t+1})-v(s_t))$</span><!-- Has MathJax --></li>
+</ul>
+</li>
+</ul>
+<p>The <span>$r_{t+1}+\gamma v(s_{t+1})$</span><!-- Has MathJax --> term is called the <strong>TD target</strong>, which reflects the new knowledge of <span>$v(s_t)$</span><!-- Has MathJax --> after performing an action.</p>
+<p>The whole <span>$r_{t+1}+\gamma v(s_{t+1})-v(s_t)$</span><!-- Has MathJax --> term is called the <strong>TD error</strong>, which is the difference between the TD target and the previous guess of <span>$v(s_t)$</span><!-- Has MathJax -->.</p>
+<p>So in one word, every time we move forward one step to get a new state, and update the value function of the previous state by a tiny fraction <span>$\alpha$</span><!-- Has MathJax --> of the TD error.</p>
+<p>The method that using current guess to update a new guess is called <strong>bootstrapping</strong>.</p>
+<p>Note that the only difference between Monte-Carlo and TD is that, TD bootstraps after 1 step, while Monte-Carlo does not bootstrp at all. So, why 1 step? Why not 2, or 100? Of course we can.</p>
+<p>Define <em>n-step return</em> by</p>
+<span>$$\begin{aligned}
+G_t^{(n)} &amp;= R_{t+1}+\gamma R_{t+2}+\cdots + \gamma^{n-1} R_{t+n} + \gamma^{n}v(S_{t+n})\\
+&amp;=\sum_{i=1}^n\gamma^{i-1} R_{t+i}+\gamma^{n}v(S_{t+n})
+\end{aligned}$$</span><!-- Has MathJax -->
+<p>A little word about the notation. Since the <span>$n$</span><!-- Has MathJax --> in <span>$G_t^{(n)}$</span><!-- Has MathJax --> has to start from <span>$1$</span><!-- Has MathJax -->, when we say the episode terminates at timestamp <span>$T$</span><!-- Has MathJax -->, it means the last piece of the sequence is <span>$(s_T, a_T, r_{T+1}, s_{T+1})$</span><!-- Has MathJax -->, where <span>$s_{T+1}$</span><!-- Has MathJax --> is the terminate state.</p>
+<p>Now, the Monte-Carlo is simply to update by</p>
+<span>$$v(S_{t+1})\leftarrow v(S_{t+1}) + \frac{1}{N} \left(G_t^{(T-t+1)} - v(S_{t+1})\right)$$</span><!-- Has MathJax -->
+<p>and the TD is simply to update by</p>
+<span>$$v(S_{t+1})\leftarrow v(S_{t+1}) + \alpha\left(G_t^{(1)} - v(S_{t+1})\right)$$</span><!-- Has MathJax -->
+<p>So why can’t we use <span>$G_t^{(n)}$</span><!-- Has MathJax --> to update, like</p>
+<span>$$v(S_{t+1})\leftarrow v(S_{t+1}) + \alpha\left(G_t^{(n)} - v(S_{t+1})\right)$$</span><!-- Has MathJax -->
+<p>which apparently will perform better? Yes it is, but depends, on <span>$\alpha$</span><!-- Has MathJax -->.</p>
+<p><img src="/uploads/tdn.png" alt="tdn"></p>
+<p>Note that for different step size <span>$\alpha$</span><!-- Has MathJax -->, we need different <span>$n$</span><!-- Has MathJax --> to get the best result. This is bad, and we want a method where the performance depends (almost) only on a single variable, like <span>$\alpha$</span><!-- Has MathJax -->.</p>
+<h1 id="TD"><a href="#TD" class="headerlink" title="TD()"></a>TD(<span>$\lambda$</span><!-- Has MathJax -->)</h1><p>To achieve the above goal, we use a simple solution: just like accumulating discounted rewards as the final reward, we accumulate the discounted n-step return to make the final return, i.e. TD target. We define</p>
+<span>$$G_t^{\lambda} \triangleq (1-\lambda)\left(G_t^{(1)}+\lambda G_t^{(2)}+\lambda^2G_t^{(3)}+\cdots\right)$$</span><!-- Has MathJax -->
+<p>and after the termination timestamp <span>$T$</span><!-- Has MathJax -->, all terms are <span>$G_t^{(T-t+1)}$</span><!-- Has MathJax -->, i.e. it absorbs all tails. However, to handle <span>$\lambda=1$</span><!-- Has MathJax --> correctly, we rewrite the definition as</p>
+<span>$$G_t^{\lambda} \triangleq (1-\lambda)\sum_{n=1}^{T-t}\lambda^{n-1}G_t^{(n)} + \lambda^{T-t}G_t^{(T-t+1)}$$</span><!-- Has MathJax -->
+<p>Now we can update the value function towards this integrated return, i.e.</p>
+<span>$$v(S_{t+1})\leftarrow v(S_{t+1}) + \alpha\left(G_t^{\lambda} - v(S_{t+1})\right)$$</span><!-- Has MathJax -->
+<p>Does it solve the previous problem? It does!</p>
+<p><img src="/uploads/tdl.png" alt="tdl"></p>
+<p>Experiments show that best results are always achieved when <span>$\lambda$</span><!-- Has MathJax --> is around <span>$0.9$</span><!-- Has MathJax -->, so it almost only depends on <span>$\alpha$</span><!-- Has MathJax -->!</p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2016/10/03/rl-dp/" itemprop="url">
                   RL Note (3) - Planning by Dynamic Programming
                 </a>
@@ -1678,7 +2079,7 @@ u&amp;=\max{(l_1l_2,l_1u_2,u_1l_2,u_1u_2)}\\
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">7</span>
+              <span class="site-state-item-count">9</span>
               <span class="site-state-item-name">posts</span>
             </a>
           </div>
