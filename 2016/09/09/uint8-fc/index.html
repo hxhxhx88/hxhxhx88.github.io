@@ -292,7 +292,7 @@ Mathematics of Quantized Matrix MultiplicationGiven two matrices $A, B$ in $\mat
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
                 <a href="/2016/09/09/uint8-fc/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/09/09/uint8-fc/" itemprop="commentsCount"></span>
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2016/09/09/uint8-fc/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -437,8 +437,11 @@ C_{mult}&amp;=\left[2^{30} \frac{\Delta_A\Delta_B}{\Delta_C}\right]
           
   <div class="comments" id="comments">
     
-      <div class="ds-thread" data-thread-key="2016/09/09/uint8-fc/"
-           data-title="UInt8 Matrix Multiplication" data-url="http://yoursite.com/2016/09/09/uint8-fc/">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
       </div>
     
   </div>
@@ -643,30 +646,30 @@ C_{mult}&amp;=\left[2^{30} \frac{\Delta_A\Delta_B}{\Delta_C}\right]
 
   
 
-  
-    
-  
-
-  <script type="text/javascript">
-    var duoshuoQuery = {short_name:"hx-chaos"};
-    (function() {
-      var ds = document.createElement('script');
-      ds.type = 'text/javascript';ds.async = true;
-      ds.id = 'duoshuo-script';
-      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
-      ds.charset = 'UTF-8';
-      (document.getElementsByTagName('head')[0]
-      || document.getElementsByTagName('body')[0]).appendChild(ds);
-    })();
-  </script>
-
-  
-    
-    <script src="/vendors/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
-    <script src="/js/src/hook-duoshuo.js"></script>
-  
 
 
+  
+
+    <script type="text/javascript">
+      var disqus_shortname = 'hx-chaos';
+      var disqus_identifier = '2016/09/09/uint8-fc/';
+      var disqus_title = "UInt8 Matrix Multiplication";
+      var disqus_url = 'http://yoursite.com/2016/09/09/uint8-fc/';
+
+      function run_disqus_script(disqus_script){
+        var dsq = document.createElement('script');
+        dsq.type = 'text/javascript';
+        dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      }
+
+      run_disqus_script('count.js');
+      
+        run_disqus_script('embed.js');
+      
+    </script>
+  
 
 
 

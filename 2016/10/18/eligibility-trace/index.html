@@ -304,7 +304,7 @@ Well, by the very definition of $G_t^{(\lambda)}$, the episode">
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
                 <a href="/2016/10/18/eligibility-trace/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/10/18/eligibility-trace/" itemprop="commentsCount"></span>
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2016/10/18/eligibility-trace/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -479,8 +479,11 @@ E_{T+1}(s)&amp;=\sum_{t=1}^{T+1}(\lambda\gamma)^{T+1-t}\mathbb{1}(S_{t}=s)
           
   <div class="comments" id="comments">
     
-      <div class="ds-thread" data-thread-key="2016/10/18/eligibility-trace/"
-           data-title="RL Note (4.2) - Backward View TD" data-url="http://yoursite.com/2016/10/18/eligibility-trace/">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
       </div>
     
   </div>
@@ -685,30 +688,30 @@ E_{T+1}(s)&amp;=\sum_{t=1}^{T+1}(\lambda\gamma)^{T+1-t}\mathbb{1}(S_{t}=s)
 
   
 
-  
-    
-  
-
-  <script type="text/javascript">
-    var duoshuoQuery = {short_name:"hx-chaos"};
-    (function() {
-      var ds = document.createElement('script');
-      ds.type = 'text/javascript';ds.async = true;
-      ds.id = 'duoshuo-script';
-      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
-      ds.charset = 'UTF-8';
-      (document.getElementsByTagName('head')[0]
-      || document.getElementsByTagName('body')[0]).appendChild(ds);
-    })();
-  </script>
-
-  
-    
-    <script src="/vendors/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
-    <script src="/js/src/hook-duoshuo.js"></script>
-  
 
 
+  
+
+    <script type="text/javascript">
+      var disqus_shortname = 'hx-chaos';
+      var disqus_identifier = '2016/10/18/eligibility-trace/';
+      var disqus_title = "RL Note (4.2) - Backward View TD";
+      var disqus_url = 'http://yoursite.com/2016/10/18/eligibility-trace/';
+
+      function run_disqus_script(disqus_script){
+        var dsq = document.createElement('script');
+        dsq.type = 'text/javascript';
+        dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      }
+
+      run_disqus_script('count.js');
+      
+        run_disqus_script('embed.js');
+      
+    </script>
+  
 
 
 
