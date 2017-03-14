@@ -92,7 +92,7 @@
 <meta property="og:description" content="Up until now, all our works are done under the assumption that a MDP is known, in particular the transition probability $P$ and rewords $R$ are known. However, those two things are determined by the e">
 <meta property="og:image" content="http://yoursite.com/uploads/tdn.png">
 <meta property="og:image" content="http://yoursite.com/uploads/tdl.png">
-<meta property="og:updated_time" content="2016-10-19T02:50:55.000Z">
+<meta property="og:updated_time" content="2017-03-13T13:51:26.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="RL Note (4.1) - Model-Free Prediction">
 <meta name="twitter:description" content="Up until now, all our works are done under the assumption that a MDP is known, in particular the transition probability $P$ and rewords $R$ are known. However, those two things are determined by the e">
@@ -336,7 +336,8 @@
 <li>Sample <span>$(s_1, a_1, r_2, s_2, \cdots, s_{T}, a_{T}, r_{T+1}, s_{T+1})$</span><!-- Has MathJax -->:<ul>
 <li>for each (or the fist) <span>$s_t$</span><!-- Has MathJax --> in the episode:<ul>
 <li>calculate <span>$v\leftarrow r_{t+1}+\gamma r_{t+2}+\cdots +\gamma^{T-t} r_{T+1}$</span><!-- Has MathJax --></li>
-<li>update <span>$v(s_t)\leftarrow v(s_t) + \frac{1}{n}(v-v(s_t))$</span><!-- Has MathJax --></li>
+<li>accumulate <span>$N(s_t)\leftarrow N(s_t) + 1$</span><!-- Has MathJax --></li>
+<li>update <span>$v(s_t)\leftarrow v(s_t) + \frac{1}{N(s_t)}(v-v(s_t))$</span><!-- Has MathJax --></li>
 </ul>
 </li>
 </ul>
@@ -505,7 +506,7 @@ G_t^{(n)} &amp;= R_{t+1}+\gamma R_{t+2}+\cdots + \gamma^{n-1} R_{t+n} + \gamma^{
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">9</span>
+              <span class="site-state-item-count">11</span>
               <span class="site-state-item-name">posts</span>
             </a>
           </div>
@@ -570,7 +571,7 @@ G_t^{(n)} &amp;= R_{t+1}+\gamma R_{t+2}+\cdots + \gamma^{n-1} R_{t+n} + \gamma^{
         <div class="copyright" >
   
   &copy; 
-  <span itemprop="copyrightYear">2016</span>
+  <span itemprop="copyrightYear">2017</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>

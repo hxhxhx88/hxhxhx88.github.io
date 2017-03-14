@@ -68,7 +68,7 @@
 <link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Reinforcement Learning," />
+  <meta name="keywords" content="Hexo, NexT" />
 
 
 
@@ -84,16 +84,12 @@
 
 
 
-<meta name="description" content="Recently I began to watch RL Course by David Silver, and will write a series of notes on this topic. This first note will record some symbols and definitions, corresponding to Lecture 1: Introduction">
-<meta property="og:type" content="article">
-<meta property="og:title" content="RL Note (1) - Introduction to Reinforcement">
-<meta property="og:url" content="http://yoursite.com/2016/10/03/rl-concept/index.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Chaos">
+<meta property="og:url" content="http://yoursite.com/archives/2017/index.html">
 <meta property="og:site_name" content="Chaos">
-<meta property="og:description" content="Recently I began to watch RL Course by David Silver, and will write a series of notes on this topic. This first note will record some symbols and definitions, corresponding to Lecture 1: Introduction">
-<meta property="og:updated_time" content="2016-10-09T06:57:12.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="RL Note (1) - Introduction to Reinforcement">
-<meta name="twitter:description" content="Recently I began to watch RL Course by David Silver, and will write a series of notes on this topic. This first note will record some symbols and definitions, corresponding to Lecture 1: Introduction">
+<meta name="twitter:title" content="Chaos">
 
 
 
@@ -114,9 +110,9 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2016/10/03/rl-concept/"/>
+  <link rel="canonical" href="http://yoursite.com/archives/2017/"/>
 
-  <title> RL Note (1) - Introduction to Reinforcement | Chaos </title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  <title> Archive | Chaos </title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="en">
@@ -137,7 +133,7 @@
     
   
 
-  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container one-collumn sidebar-position-left page-post-detail ">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container one-collumn sidebar-position-left  page-archive  ">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -225,180 +221,66 @@
           <div id="content" class="content">
             
 
-  <div id="posts" class="posts-expand">
+  <section id="posts" class="posts-collapse">
+    <span class="archive-move-on"></span>
+
+    <span class="archive-page-counter">
+      
+      
+      
+        
+      
+      Um..! 11 posts in total. Keep on posting.
+    </span>
+
     
 
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                RL Note (1) - Introduction to Reinforcement
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2016-10-03T10:07:24+08:00" content="2016-10-03">
-              2016-10-03
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp;
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/Machine-Learning/" itemprop="url" rel="index">
-                    <span itemprop="name">Machine Learning</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2016/10/03/rl-concept/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2016/10/03/rl-concept/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-             <span id="/2016/10/03/rl-concept/" class="leancloud_visitors" data-flag-title="RL Note (1) - Introduction to Reinforcement">
-               &nbsp; | &nbsp;
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               <span class="post-meta-item-text">visitors </span>
-               <span class="leancloud-visitors-count"></span>
-              </span>
-          
-
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
+      
       
       
 
-      
-        <p>Recently I began to watch <a href="http://www0.cs.ucl.ac.uk/staff/d.silver/web/Teaching.html" target="_blank" rel="external">RL Course by David Silver</a>, and will write a series of notes on this topic. This first note will record some symbols and definitions, corresponding to <a href="https://www.youtube.com/watch?v=2pWv7GOvuf0" target="_blank" rel="external">Lecture 1: Introduction to Reinforcement</a>.</p>
-<h1 id="Basic-Concepts"><a href="#Basic-Concepts" class="headerlink" title="Basic Concepts"></a>Basic Concepts</h1><p>In reinforcement learning, we are studying an <strong>agent</strong> interacting with an <strong>environment</strong> in a sequential manner. At each timestamp, the agent performs some <strong>action</strong> based on the <strong>history</strong> in its memory. At the next timestamp, the environment will respond by providing some <em>scalar</em> <strong>reward</strong>.</p>
-<p>The history consists of a sequence of <strong>observations</strong>, actions and rewords, say <span>$h_T = (\cdots,o_t, a_t, r_{t+1}, o_{t+1},\cdots, o_T)$</span><!-- Has MathJax -->. However, it can be too large to handle. As a result, we define the concept of <strong>state</strong>, which is nothing but a function of history, i.e.</p>
-<span>$$s_t = f(h_t)$$</span><!-- Has MathJax -->
-<p>Now we can say the agent acts based on the current state.</p>
-<p>There are two kinds of states, the <strong>agent state</strong> and the <strong>environment state</strong>. The former is by definition known by the agent, while the latter may or may not, which defines different problem types.</p>
-<p>At every timestamp, the agent is at some state, and should perform some action. The decision process according to which the agent choose an action is called a <strong>policy</strong>, usually denoted by <span>$\pi(a\mid s)$</span><!-- Has MathJax -->. It could be stochastic or deterministic.</p>
-<p>Above are all basic concepts of the reinforcement learning.</p>
-<h1 id="Goals"><a href="#Goals" class="headerlink" title="Goals"></a>Goals</h1><p>Our agent does not interact with the environment for nothing, it has a goal, which by definition consists of the immediate reward together with all future rewards. There is a fundamental axiom of the reinforcement learning, which says</p>
-<div class="axiom math-block"><br>(<strong>Reward Hypothesis</strong>) All goals can be described by the maximization of expected cumulative rewards.<br></div>
-
-<p>All study and works in reinforcement learning is based on this assumption.</p>
-<h1 id="Characteristic-of-Reinforcement-Learning"><a href="#Characteristic-of-Reinforcement-Learning" class="headerlink" title="Characteristic of Reinforcement Learning"></a>Characteristic of Reinforcement Learning</h1><p>The main difference between the reinforcement learning and other machine learning methods are:</p>
-<ul>
-<li>No supervisor, only reward signals from the environment.</li>
-<li>Feedback from environment may be delayed.</li>
-<li>Sequential random process, not i.i.d data.</li>
-</ul>
-<p>We should also distinguish between <em>Reinforcement Learning</em> and <em>Planning</em>. In the planning case, the model of the environment, i.e. <span>$P_{ss&apos;}^a$</span><!-- Has MathJax --> and <span>$R_s^a$</span><!-- Has MathJax -->, are known by the agent which can perform calculation according to the model. In the reinforcement learning case, the model is unknown, and the agent can only updating its policy according to the feedback of the environment.</p>
-<p>I think a typical example is our interaction with the earth. The environment is the earth, which has an internal law determining the evolution of the state. We, as the agent, although know nothing about that law, but come up with a pretty good approximation, i.e. the law of physics. Use physics, we can in some simple case accurately determine <span>$P_{ss&apos;}^a$</span><!-- Has MathJax --> and <span>$R_s^a$</span><!-- Has MathJax -->, which turns the problem into a Planning one. However, in some other situation, it is impossible or too complex to apply the law of physics, which leads us to the Reinforcement Learning case.</p>
-
-      
-    </div>
-
-    <div>
       
         
-
-      
-    </div>
-
-    <div>
-      
-        
-
-      
-    </div>
-
-    <footer class="post-footer">
-      
-        <div class="post-tags">
-          
-            <a href="/tags/Reinforcement-Learning/" rel="tag">#Reinforcement Learning</a>
-          
+        <div class="collection-title">
+          <h2 class="archive-year motion-element" id="archive-year-2017">2017</h2>
         </div>
       
-
-      
-        <div class="post-nav">
-          <div class="post-nav-next post-nav-item">
-            
-              <a href="/2016/09/09/conv/" rel="next" title="Implement Convolution in CNN">
-                <i class="fa fa-chevron-left"></i> Implement Convolution in CNN
-              </a>
-            
-          </div>
-
-          <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2016/10/03/rl-mdp/" rel="prev" title="RL Note (2.1) - Markov Decision Process">
-                RL Note (2.1) - Markov Decision Process <i class="fa fa-chevron-right"></i>
-              </a>
-            
-          </div>
-        </div>
       
 
       
-      
-    </footer>
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      <h1 class="post-title">
+        
+            <a class="post-title-link" href="/2017/03/13/q-learning/" itemprop="url">
+              
+                <span itemprop="name">RL Note (5.2) - Q-Learning</span>
+              
+            </a>
+        
+      </h1>
+
+      <div class="post-meta">
+        <time class="post-time" itemprop="dateCreated"
+              datetime="2017-03-13T22:55:32+08:00"
+              content="2017-03-13" >
+          03-13
+        </time>
+      </div>
+
+    </header>
   </article>
 
 
 
-    <div class="post-spread">
-      
-    </div>
-  </div>
+    
+
+  </section>
+
+  
+
 
 
           </div>
@@ -406,17 +288,6 @@
 
 
           
-  <div class="comments" id="comments">
-    
-      <div id="disqus_thread">
-        <noscript>
-          Please enable JavaScript to view the
-          <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a>
-        </noscript>
-      </div>
-    
-  </div>
-
 
         </div>
         
@@ -436,17 +307,8 @@
       
 
       
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
-            Table of Contents
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview">
-            Overview
-          </li>
-        </ul>
-      
 
-      <section class="site-overview sidebar-panel ">
+      <section class="site-overview sidebar-panel  sidebar-panel-active ">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/uploads/avatar.png"
@@ -496,17 +358,6 @@
 
       </section>
 
-      
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-            
-              
-            
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Basic-Concepts"><span class="nav-number">1.</span> <span class="nav-text">Basic Concepts</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Goals"><span class="nav-number">2.</span> <span class="nav-text">Goals</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Characteristic-of-Reinforcement-Learning"><span class="nav-number">3.</span> <span class="nav-text">Characteristic of Reinforcement Learning</span></a></li></ol></div>
-            
-          </div>
-        </section>
       
 
     </div>
@@ -603,9 +454,11 @@
   
 
   
-  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
-<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
-
+  
+    <script type="text/javascript" id="motion.page.archive">
+      $('.archive-year').velocity('transition.slideLeftIn');
+    </script>
+  
 
 
   
@@ -623,9 +476,9 @@
 
     <script type="text/javascript">
       var disqus_shortname = 'hx-chaos';
-      var disqus_identifier = '2016/10/03/rl-concept/';
-      var disqus_title = "RL Note (1) - Introduction to Reinforcement";
-      var disqus_url = 'http://yoursite.com/2016/10/03/rl-concept/';
+      var disqus_identifier = 'archives/2017/index.html';
+      var disqus_title = "";
+      var disqus_url = '';
 
       function run_disqus_script(disqus_script){
         var dsq = document.createElement('script');
@@ -636,8 +489,6 @@
       }
 
       run_disqus_script('count.js');
-      
-        run_disqus_script('embed.js');
       
     </script>
   

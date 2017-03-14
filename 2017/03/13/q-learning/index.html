@@ -84,19 +84,16 @@
 
 
 
-<meta name="description" content="In this note we formalize the problem in reinforcement learning into a Markov Decision Process. The lecture video is here: Lecture 2: Markov Decision Process.
-In fact, I was shocked by the powerfulnes">
+<meta name="description" content="In RL Note (5.1) - Model-Free Control, we explored three ways to perform model-free control to find optimal policy through calculating the optimal action value function. All those three approaches sha">
 <meta property="og:type" content="article">
-<meta property="og:title" content="RL Note (2.1) - Markov Decision Process">
-<meta property="og:url" content="http://yoursite.com/2016/10/03/rl-mdp/index.html">
+<meta property="og:title" content="RL Note (5.2) - Q-Learning">
+<meta property="og:url" content="http://yoursite.com/2017/03/13/q-learning/index.html">
 <meta property="og:site_name" content="Chaos">
-<meta property="og:description" content="In this note we formalize the problem in reinforcement learning into a Markov Decision Process. The lecture video is here: Lecture 2: Markov Decision Process.
-In fact, I was shocked by the powerfulnes">
-<meta property="og:updated_time" content="2016-10-09T07:14:52.000Z">
+<meta property="og:description" content="In RL Note (5.1) - Model-Free Control, we explored three ways to perform model-free control to find optimal policy through calculating the optimal action value function. All those three approaches sha">
+<meta property="og:updated_time" content="2017-03-14T02:52:52.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="RL Note (2.1) - Markov Decision Process">
-<meta name="twitter:description" content="In this note we formalize the problem in reinforcement learning into a Markov Decision Process. The lecture video is here: Lecture 2: Markov Decision Process.
-In fact, I was shocked by the powerfulnes">
+<meta name="twitter:title" content="RL Note (5.2) - Q-Learning">
+<meta name="twitter:description" content="In RL Note (5.1) - Model-Free Control, we explored three ways to perform model-free control to find optimal policy through calculating the optimal action value function. All those three approaches sha">
 
 
 
@@ -117,9 +114,9 @@ In fact, I was shocked by the powerfulnes">
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2016/10/03/rl-mdp/"/>
+  <link rel="canonical" href="http://yoursite.com/2017/03/13/q-learning/"/>
 
-  <title> RL Note (2.1) - Markov Decision Process | Chaos </title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  <title> RL Note (5.2) - Q-Learning | Chaos </title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="en">
@@ -249,7 +246,7 @@ In fact, I was shocked by the powerfulnes">
             
             
               
-                RL Note (2.1) - Markov Decision Process
+                RL Note (5.2) - Q-Learning
               
             
           </h1>
@@ -261,8 +258,8 @@ In fact, I was shocked by the powerfulnes">
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2016-10-03T13:09:22+08:00" content="2016-10-03">
-              2016-10-03
+            <time itemprop="dateCreated" datetime="2017-03-13T22:55:32+08:00" content="2017-03-13">
+              2017-03-13
             </time>
           </span>
 
@@ -291,8 +288,8 @@ In fact, I was shocked by the powerfulnes">
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2016/10/03/rl-mdp/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2016/10/03/rl-mdp/" itemprop="commentsCount"></span>
+                <a href="/2017/03/13/q-learning/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2017/03/13/q-learning/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -302,7 +299,7 @@ In fact, I was shocked by the powerfulnes">
 
           
           
-             <span id="/2016/10/03/rl-mdp/" class="leancloud_visitors" data-flag-title="RL Note (2.1) - Markov Decision Process">
+             <span id="/2017/03/13/q-learning/" class="leancloud_visitors" data-flag-title="RL Note (5.2) - Q-Learning">
                &nbsp; | &nbsp;
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -324,47 +321,98 @@ In fact, I was shocked by the powerfulnes">
       
 
       
-        <p>In this note we formalize the problem in reinforcement learning into a Markov Decision Process. The lecture video is <a href="https://www.youtube.com/watch?v=lfHX2hHRMVQ" target="_blank" rel="external">here: Lecture 2: Markov Decision Process</a>.</p>
-<p>In fact, I was shocked by the powerfulness of formalization invented by the western. Maybe it is the reason that ancient China did not develop mathematics and science.</p>
-<h1 id="Markov-Decision-Process"><a href="#Markov-Decision-Process" class="headerlink" title="Markov Decision Process"></a>Markov Decision Process</h1><p>We build the final Markov Decision Process cumulatively. The very basic building block is the well known Markov Process:</p>
-<div class="definition math-block"><br>A <strong>Markov Process</strong> is a tuple <span>$&lt;S,P&gt;$</span><!-- Has MathJax -->, where<br>- <span>$S$</span><!-- Has MathJax --> is a finite set of states.<br>- <span>$P$</span><!-- Has MathJax --> is a state transition matrix, where <span>$P_{ss&apos;}=\mathbb{P}(S_{t+1}=s&apos;\mid S_t=s)$</span><!-- Has MathJax --><br></div>
-
-<p>to which we then add <em>rewards</em>, to form a Markov Reward Process:</p>
-<div class="definition math-block"><br>A <strong>Markov Reward Process</strong> is a tuple <span>$&lt;S,P,R,\gamma&gt;$</span><!-- Has MathJax -->, where<br>- <span>$S$</span><!-- Has MathJax --> is a finite set of states.<br>- <span>$P$</span><!-- Has MathJax --> is a state transition matrix, where <span>$P_{ss&apos;}=\mathbb{P}(S_{t+1}=s&apos;\mid S_t=s)$</span><!-- Has MathJax --><br>- <span>$R$</span><!-- Has MathJax --> is a reward function, where <span>$R_s=\mathbb{E}(R_{S_{t+1}}\mid S_t=s)$</span><!-- Has MathJax --><br>- <span>$\gamma\in[0,1]$</span><!-- Has MathJax --> is a discount factor.<br></div>
-
-<p>to which we further add <em>actions</em>, to form a Markov Decision Process:</p>
-<div class="definition math-block"><br>A <strong>Markov Decision Process</strong> is a tuple <span>$&lt;S,A,P,R,\gamma&gt;$</span><!-- Has MathJax -->, where<br>- <span>$S$</span><!-- Has MathJax --> is a finite set of states.<br>- <span>$A$</span><!-- Has MathJax --> is a finite set of actions.<br>- <span>$P$</span><!-- Has MathJax --> is a state transition matrix, where <span>$P_{ss&apos;}^a=\mathbb{P}(S_{t+1}=s&apos;\mid S_t=s, A_t=a)$</span><!-- Has MathJax --><br>- <span>$R$</span><!-- Has MathJax --> is a reward functio, where <span>$R_s^a$</span><!-- Has MathJax --> is the immediate rewrad after performing action <span>$a$</span><!-- Has MathJax --> at state <span>$s$</span><!-- Has MathJax -->.<br>- <span>$\gamma\in[0,1]$</span><!-- Has MathJax --> is a discount factor.<br></div>
-
-<p>The Markov Decision Process is abbreviated as the <strong>MDP</strong>.</p>
-<h1 id="Notations-and-Randomness"><a href="#Notations-and-Randomness" class="headerlink" title="Notations and Randomness"></a>Notations and Randomness</h1><p>Before move on, I think we should clear some fact about the notations and randomness here. The whole process is essentially stochastic, which is described by the following variables and random variables:</p>
+        <p>In <a href="/2016/10/20/model-free-control/" title="RL Note (5.1) - Model-Free Control">RL Note (5.1) - Model-Free Control</a>, we explored three ways to perform model-free control to find optimal policy through calculating the optimal action value function. All those three approaches share a common property: they all start from an initial policy and iteratively update the policy itself to approach the optimal one. Such property is called <strong>on-policy</strong>.</p>
+<p>However, in reality, there are often the cases when we have to separate the single policy into two policies: a <em>target policy</em> <span>$\pi$</span><!-- Has MathJax --> to compute value function <span>$v$</span><!-- Has MathJax --> and <span>$q$</span><!-- Has MathJax -->, and a <em>behavior policy</em> <span>$\mu$</span><!-- Has MathJax --> to pick actions. Such property is called <strong>off-policy</strong>.</p>
+<p>Following are several reasons for off-policy learning.</p>
 <ul>
-<li><span>$S_t$</span><!-- Has MathJax -->, the random variable of agent state at timestamp <span>$t$</span><!-- Has MathJax -->.</li>
-<li><span>$A_t$</span><!-- Has MathJax -->, the random variable of the action taken by the agent at timestamp <span>$t$</span><!-- Has MathJax -->. We have<br><span>$$\mathbb{P}(A_t=a\mid S_t=s)=\pi(a\mid s)$$</span><!-- Has MathJax --></li>
-<li><span>$P_{ss&apos;}^a$</span><!-- Has MathJax -->, the variable of transition probability from state <span>$s$</span><!-- Has MathJax --> to state <span>$s&apos;$</span><!-- Has MathJax --> after performing action <span>$a$</span><!-- Has MathJax -->. It is not a random variable.</li>
-<li><span>$R_s^a$</span><!-- Has MathJax -->, the variable of immediate reward after performing action <span>$a$</span><!-- Has MathJax --> from state <span>$s$</span><!-- Has MathJax -->. Although it is not a random variable, but we usually come into <span>$R_{S_t}^{A_t}, R_{S_t}^{a}, R_{s}^{A_t}$</span><!-- Has MathJax -->, which are random variables, and we usually abbreviate them to <span>$R_{t+1}$</span><!-- Has MathJax --> when the randomness is clear from the context. Note that we use <span>$R_{t+1}$</span><!-- Has MathJax --> instead of <span>$R_t$</span><!-- Has MathJax -->, which is just a notation convention, indicating that the feedback of the environment is received at the next timestamp.</li>
+<li>Sometimes we want to learn from some external oracle, such as teaching a robot to move by observing a person, where <span>$\mu$</span><!-- Has MathJax --> is the policy the person takes, and <span>$\pi$</span><!-- Has MathJax --> is the one the robot need to learn.</li>
+<li>Sometimes we want to reuse samples generated by previous policy <span>$\pi_t$</span><!-- Has MathJax --> during an iterative process to best explore the data. In such case we can treat those old policies as several external behavior policies.</li>
+<li>Note that the exploration and exploitation is always a contradiction in RL, since the optimal target policy <span>$\pi$</span><!-- Has MathJax --> should always be deterministic, and avoid exploitation at all. Thus, we can use a stochastic behavior policy <span>$\mu$</span><!-- Has MathJax --> to act as an <em>exploratory policy</em> to guide the exploration during learning.</li>
+<li>Finally, we may want to learn multiple policies by following one policy. One rough example is that we may want to learn how to study, how to work, and how to exercise based on a single policy, i.e. each one’s life trajectory.</li>
 </ul>
-<p>Note that <span>$S_t$</span><!-- Has MathJax --> and <span>$A_t$</span><!-- Has MathJax --> is determined by the agent, while <span>$P_{ss&apos;}^a$</span><!-- Has MathJax --> and <span>$R_s^a$</span><!-- Has MathJax --> is indeed a <strong>model</strong> of the environment in the agent, which encapsulates the ignorance of the environment.</p>
-<p>Besides, both agent state and environment state by definition have <strong>Markov property</strong>, i.e.<br><span>$$\mathbb{P}[S_{t+1}\mid S_t] = \mathbb{P}[S_{t+1}\mid S_t, S_{t-1}, \cdots, S_1]$$</span><!-- Has MathJax --></p>
-<h1 id="Value-Functions"><a href="#Value-Functions" class="headerlink" title="Value Functions"></a>Value Functions</h1><p>In the previous post <a href="/2016/10/03/rl-concept/" title="RL Note (1) - Introduction to Reinforcement">RL Note (1) - Introduction to Reinforcement</a>, we have stated the <em>Reward Hypothesis</em>. Here we can express it formally.</p>
-<div class="definition math-block"><br>The <strong>return</strong> for <em>a single sample</em> from timestamp <span>$t$</span><!-- Has MathJax --> afterwards is<br><span>$$G_t = R_{t+1}+\gamma R_{t+2}+\gamma^2 R_{t+3}+\cdots = \sum_{k\geqslant 1} \gamma R_{t+k}$$</span><!-- Has MathJax --><br></div>
-
-<p>Note that it is a random variable. So the reward hypothesis is saying that our goal is to maximize the following value:</p>
-<span>$$v_{\pi}(s)\triangleq \mathbb{E}[G_t \mid S_t = s]$$</span><!-- Has MathJax -->
-<p>The <span>$v(s)$</span><!-- Has MathJax --> is called the <strong>state value function</strong>. Note that implicitly the sequence is generated according to policy <span>$\pi$</span><!-- Has MathJax -->, so we index the value function by it.</p>
-<p>Don’t forget the reward is gained through performing actions, so besides state value function, we also have an <strong>action value function</strong>, which is defined as:<br><span>$$q_{\pi}(s,a)\triangleq\mathbb{E}[G_t \mid S_t = s, A_t=a]$$</span><!-- Has MathJax --></p>
-<p>Instead of caring about the value function under a certain policy, we in fact want to find a optimal policy generating an optimal value function in some sense. So we define the <strong>optimal state value function</strong> as<br><span>$$v_*(s)=\max_{\pi}{v_{\pi}(s)}, \forall s$$</span><!-- Has MathJax --></p>
-<p>and the <strong>optimal action value function</strong> as<br><span>$$q_*(s, a)=\max_{\pi}{q_{\pi}(s, a)}, \forall s$$</span><!-- Has MathJax --></p>
-<p>Besides, in order to compare policy, we introduce a partial order in the policy space, say<br><span>$$\pi\geqslant\pi&apos; \text{ if } v_{\pi}(s)\geqslant v_{\pi&apos;}(s), \forall s$$</span><!-- Has MathJax --></p>
-<p>Note that <span>$v_*(s)$</span><!-- Has MathJax --> and <span>$q_*(s, a)$</span><!-- Has MathJax --> are defined by taking maximum for each <span>$s$</span><!-- Has MathJax -->, so the optimal value function itself may not necessarily be a value function for some policy. Thanks to the following theorem, it will not gonna happen.</p>
-<div class="theorem math-block"><br>For any Markov Decision Process,<br>- There exists an optimal policy <span>$\pi_*$</span><!-- Has MathJax -->, i.e. <span>$\pi_*\geqslant\pi, \forall\pi$</span><!-- Has MathJax --><br>- All optimal policies achieves optimal value functions, i.e. <span>$v_*=v_{\pi_*}, q_*=q_{\pi_*}$</span><!-- Has MathJax --><br></div>
-
-<p>OK, but here is another question: how to find the optimal policy? It turns out that as long as we find the optimal action value function <span>$q_*(s, a)$</span><!-- Has MathJax -->, we can construct the optimal policy by<br><span>$$\pi_*(a\mid s) = \begin{cases}
-1, \quad a = \operatorname{argmax} q_*(s, a)\\
-0, \quad\text{otherwise}
-\end{cases}$$</span><!-- Has MathJax --></p>
-<p>In another word, <span>$\pi_*$</span><!-- Has MathJax --> is constructed by deterministically choosing the action with maximum value.</p>
-<p>Note that it is <em>an</em> optimal policy, which is deterministic. There may be other optimal policies which is stochastic. Nevertheless, all optimal policies achieve the optimal value function, which is obviously unique.</p>
-<p>Given a MDP, i.e. given <span>$S, A, P, R, \gamma$</span><!-- Has MathJax -->, our goal is find the optimal policy, or sufficiently to find the optimal action function. It is what we mean by <em>solving</em> a MDP.</p>
+<p>Based on all those reasons, we have to develop a way to learn a policy <span>$\pi$</span><!-- Has MathJax --> following another policy <span>$\mu$</span><!-- Has MathJax -->.</p>
+<h1 id="Q-Learning"><a href="#Q-Learning" class="headerlink" title="Q-Learning"></a>Q-Learning</h1><p>Now let’s consider off-policy learning of action value function <span>$q(s,a)$</span><!-- Has MathJax --> in a model-free setting. The process is like SARSA, but with slight difference when sampling actions:</p>
+<ul>
+<li>Given the behavior policy <span>$\mu$</span><!-- Has MathJax --></li>
+<li>Initialize the action value function <span>$q(s,a)$</span><!-- Has MathJax --> for all <span>$s, a$</span><!-- Has MathJax -->, and a policy <span>$\pi$</span><!-- Has MathJax --> as the target policy</li>
+<li>For <span>$n$</span><!-- Has MathJax -->th episode<ul>
+<li><span>$t\leftarrow 1$</span><!-- Has MathJax --></li>
+<li>Initialize the starting state <span>$s_t$</span><!-- Has MathJax --></li>
+<li>Loop<ul>
+<li>Sample <span>$a_t$</span><!-- Has MathJax --> from <span>$s_t$</span><!-- Has MathJax --> <strong>according to behavior policy</strong> <span>$\mu$</span><!-- Has MathJax --></li>
+<li>Taken action <span>$a_t$</span><!-- Has MathJax --> to observe <span>$r_{t+1}$</span><!-- Has MathJax --> and <span>$s_{t+1}$</span><!-- Has MathJax --></li>
+<li>Sample <span>$a&apos;$</span><!-- Has MathJax --> from <span>$s_{t+1}$</span><!-- Has MathJax --> <strong>according to target policy</strong> <span>$\pi$</span><!-- Has MathJax --></li>
+<li>update <span>$q(s_t, a_t)\leftarrow q(s_t, a_t) + \alpha_t(r_{t+1}+\gamma q(s_{t+1}, a&apos;)-q(s_t, a_t))$</span><!-- Has MathJax --></li>
+<li><span>$t\leftarrow t + 1$</span><!-- Has MathJax --> and repeat unless terminated</li>
+</ul>
+</li>
+<li><span>$\pi\leftarrow G_{\text{GLIE}}(q)$</span><!-- Has MathJax -->
+</li>
+</ul>
+</li>
+</ul>
+<p>Note that comparing to SARSA, sampling <span>$a_t$</span><!-- Has MathJax --> is moved into the loop.</p>
+<p>Furthermore, what if the behavior policy is not external and given, but also generated during the process like <span>$\pi$</span><!-- Has MathJax -->? In fact, it is a good way to handle the exploration-exploitation issue. Note that we know <span>$\pi$</span><!-- Has MathJax --> should be deterministic, and <span>$\mu$</span><!-- Has MathJax --> stochastic, as at each step we update these two as</p>
+<span>$$\begin{aligned}
+&amp;\pi\leftarrow G(q)\\
+&amp;\mu\leftarrow G_{\epsilon}(q)
+\end{aligned}$$</span><!-- Has MathJax -->
+<p>Since at timestamp <span>$t$</span><!-- Has MathJax -->, <span>$a&apos;$</span><!-- Has MathJax --> is picked throuth <span>$\pi$</span><!-- Has MathJax -->, thus we get</p>
+<span>$$r_{t+1}+\gamma q(s_{t+1}, a&apos;) = r_{t+1} + \gamma\max\limits_aq(s_{t+1}, a)$$</span><!-- Has MathJax -->
+<p>As a result, after implicitly absorbing <span>$\mu$</span><!-- Has MathJax --> and <span>$\pi$</span><!-- Has MathJax -->, the algorithm simplifies to</p>
+<ul>
+<li>Initialize the action value function <span>$q(s,a)$</span><!-- Has MathJax --> for all <span>$s, a$</span><!-- Has MathJax --></li>
+<li>For <span>$n$</span><!-- Has MathJax -->th episode<ul>
+<li><span>$t\leftarrow 1$</span><!-- Has MathJax --></li>
+<li>Initialize the starting state <span>$s_t$</span><!-- Has MathJax --></li>
+<li>Loop<ul>
+<li>Sample <span>$a_t$</span><!-- Has MathJax --> from <span>$s_t$</span><!-- Has MathJax --> based on <span>$q$</span><!-- Has MathJax --> <span>$\epsilon$</span><!-- Has MathJax -->-greedily</li>
+<li>Taken action <span>$a_t$</span><!-- Has MathJax --> to observe <span>$r_{t+1}$</span><!-- Has MathJax --> and <span>$s_{t+1}$</span><!-- Has MathJax --></li>
+<li>update <span>$q(s_t, a_t)\leftarrow q(s_t, a_t) + \alpha_t(r_{t+1}+\gamma \max\limits_aq(s_{t+1}, a)-q(s_t, a_t))$</span><!-- Has MathJax --></li>
+<li><span>$t\leftarrow t + 1$</span><!-- Has MathJax --> and repeat unless terminated</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>It is named <strong>Q-Learning</strong>.</p>
+<h1 id="Correspondence-between-DP-and-TD"><a href="#Correspondence-between-DP-and-TD" class="headerlink" title="Correspondence between DP and TD"></a>Correspondence between DP and TD</h1><p>The following table demonstrates the relationship between two approaches: dynamic programming and temporal difference. Note that <span>$x\Leftarrow y$</span><!-- Has MathJax --> means <span>$x\leftarrow x + \alpha(y-x)$</span><!-- Has MathJax --> for some step size <span>$\alpha$</span><!-- Has MathJax -->.</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Dynamic Programming</th>
+<th>Temporal Difference</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>use case</td>
+<td>when model is known</td>
+<td>when model is unknown</td>
+</tr>
+<tr>
+<td>strategy</td>
+<td>directly computing the expectation after one step</td>
+<td>sampling one step</td>
+</tr>
+<tr>
+<td>updating for <span>$v(s_t)$</span><!-- Has MathJax --></td>
+<td><span>$\leftarrow\mathbb{E}(R_{t+1}+\gamma v(S_{t+1}) | s)$</span><!-- Has MathJax --></td>
+<td><span>$\Leftarrow r_{t+1} + \gamma v(s_{t+1})$</span><!-- Has MathJax --></td>
+</tr>
+<tr>
+<td>updating for <span>$q(s_t, a_t)$</span><!-- Has MathJax --></td>
+<td><span>$\leftarrow\mathbb{E}(R_{t+1}+\gamma q(S_{t+1}, A_{t+1}) | s,a)$</span><!-- Has MathJax --></td>
+<td><span>$\Leftarrow r_{t+1} + \gamma q(s_{t+1}, a_{t+1})$</span><!-- Has MathJax --></td>
+</tr>
+<tr>
+<td>updating for <span>$q(s_t,a_t)$</span><!-- Has MathJax --> using deterministicity of the optimal policy</td>
+<td><span>$\leftarrow\mathbb{E}(R_{t+1}+\gamma \max\limits_{a&apos;} q(S_{t+1}, a&apos;) | s,a)$</span><!-- Has MathJax --></td>
+<td><span>$\Leftarrow r_{t+1} + \gamma \max\limits_{a&apos;}q(s_{t+1}, a&apos;)$</span><!-- Has MathJax --></td>
+</tr>
+</tbody>
+</table>
 
       
     </div>
@@ -396,17 +444,13 @@ In fact, I was shocked by the powerfulnes">
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2016/10/03/rl-concept/" rel="next" title="RL Note (1) - Introduction to Reinforcement">
-                <i class="fa fa-chevron-left"></i> RL Note (1) - Introduction to Reinforcement
+              <a href="/2016/10/20/model-free-control/" rel="next" title="RL Note (5.1) - Model-Free Control">
+                <i class="fa fa-chevron-left"></i> RL Note (5.1) - Model-Free Control
               </a>
             
           </div>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2016/10/03/rl-bellman/" rel="prev" title="RL Note (2.2) - The Bellman Equation">
-                RL Note (2.2) - The Bellman Equation <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -527,7 +571,7 @@ In fact, I was shocked by the powerfulnes">
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Markov-Decision-Process"><span class="nav-number">1.</span> <span class="nav-text">Markov Decision Process</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Notations-and-Randomness"><span class="nav-number">2.</span> <span class="nav-text">Notations and Randomness</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Value-Functions"><span class="nav-number">3.</span> <span class="nav-text">Value Functions</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Q-Learning"><span class="nav-number">1.</span> <span class="nav-text">Q-Learning</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Correspondence-between-DP-and-TD"><span class="nav-number">2.</span> <span class="nav-text">Correspondence between DP and TD</span></a></li></ol></div>
             
           </div>
         </section>
@@ -647,9 +691,9 @@ In fact, I was shocked by the powerfulnes">
 
     <script type="text/javascript">
       var disqus_shortname = 'hx-chaos';
-      var disqus_identifier = '2016/10/03/rl-mdp/';
-      var disqus_title = "RL Note (2.1) - Markov Decision Process";
-      var disqus_url = 'http://yoursite.com/2016/10/03/rl-mdp/';
+      var disqus_identifier = '2017/03/13/q-learning/';
+      var disqus_title = "RL Note (5.2) - Q-Learning";
+      var disqus_url = 'http://yoursite.com/2017/03/13/q-learning/';
 
       function run_disqus_script(disqus_script){
         var dsq = document.createElement('script');
