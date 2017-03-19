@@ -1,0 +1,919 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Reinforcement Learning," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="This note is for lecture Lecture 6: Value Function Approximation.
+Up until now, we have deduced several algorithms for both prediction and control, in theory. However, when applying them to practice,">
+<meta property="og:type" content="article">
+<meta property="og:title" content="RL Note (6) - Value Function Approximation">
+<meta property="og:url" content="http://yoursite.com/2017/03/14/value-function-approx/index.html">
+<meta property="og:site_name" content="Chaos">
+<meta property="og:description" content="This note is for lecture Lecture 6: Value Function Approximation.
+Up until now, we have deduced several algorithms for both prediction and control, in theory. However, when applying them to practice,">
+<meta property="og:updated_time" content="2017-03-19T06:03:11.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="RL Note (6) - Value Function Approximation">
+<meta name="twitter:description" content="This note is for lecture Lecture 6: Value Function Approximation.
+Up until now, we have deduced several algorithms for both prediction and control, in theory. However, when applying them to practice,">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: 'Author'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/03/14/value-function-approx/"/>
+
+  <title> RL Note (6) - Value Function Approximation | Chaos </title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Chaos</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                RL Note (6) - Value Function Approximation
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2017-03-14T15:36:08+08:00" content="2017-03-14">
+              2017-03-14
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Machine-Learning/" itemprop="url" rel="index">
+                    <span itemprop="name">Machine Learning</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2017/03/14/value-function-approx/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2017/03/14/value-function-approx/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2017/03/14/value-function-approx/" class="leancloud_visitors" data-flag-title="RL Note (6) - Value Function Approximation">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">visitors </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>This note is for lecture <a href="https://www.youtube.com/watch?v=UoPei5o4fps" target="_blank" rel="external">Lecture 6: Value Function Approximation</a>.</p>
+<p>Up until now, we have deduced several algorithms for both prediction and control, in theory. However, when applying them to practice, we have to face one challenge: the number of states or state-action pairs may be tremendously huge.</p>
+<p>The most naive approach to implement those algorithms, in particular to represent value functions <span>$v(s)$</span><!-- Has MathJax --> and <span>$q(s,a)$</span><!-- Has MathJax -->, is to build a lookup table. In reality, however, it is not applicable. For example, for game Backgammon we have roughly <span>$10^{20}$</span><!-- Has MathJax --> states, and <span>$10^{170}$</span><!-- Has MathJax --> states for the game Go. To make things worse, we have a continuous state space when training a helicopter.</p>
+<p>A natural approach to resolve the issue is to build a model <span>$\hat{v}(s;w)$</span><!-- Has MathJax --> or <span>$\hat{q}(s,a;w)$</span><!-- Has MathJax --> parametrized by some parameters <span>$w$</span><!-- Has MathJax --> to approximate the true mapping <span>$v(s)$</span><!-- Has MathJax --> or <span>$q(s,a)$</span><!-- Has MathJax -->.</p>
+<p>One way to learn weights <span>$w$</span><!-- Has MathJax --> is to act as if it is a supervised learning problem. Now suppose some oracle has told us the true value function <span>$v^{\pi}(s)$</span><!-- Has MathJax --> for some policy <span>$\pi$</span><!-- Has MathJax -->. Our target is to minimize the following loss:<br><span>$$L(w) = \mathbb{E}_{\pi}\left[(v^{\pi}(S)-\hat{v}(S;w))^2\right]$$</span><!-- Has MathJax --></p>
+<span>$\mathbb{E}_{\pi}$</span><!-- Has MathJax --> means the expectation is calculated for state samples following trajectories guided by policy <span>$\pi$</span><!-- Has MathJax -->.<br><br>How to minimize such loss with respect to <span>$w$</span><!-- Has MathJax -->? Gradient descent! To be more specific, we calculate for some step size <span>$\alpha$</span><!-- Has MathJax -->
+<span>$$\begin{aligned}
+\Delta w&amp;=-\frac{1}{2}\alpha\nabla_w L(w)\\
+&amp;=\alpha\mathbb{E}_{\pi}\left[(v^{\pi}(S)-\hat{v}(S;w))\nabla_w \hat{v}(S;w)\right]
+\end{aligned}$$</span><!-- Has MathJax -->
+<p>However, it is impossible to calculate the actual expectation, so we have to compromise. The typically way to compromise is sampling.</p>
+<p>Suppose we have sampled several steps according to policy <span>$\pi$</span><!-- Has MathJax -->, and stored them in a set named <em>experience</em>, denoted by <span>$\mathcal{D}$</span><!-- Has MathJax -->:<br><span>$$\mathcal{D}=\left\{(s_1, v^{\pi}_1),\dots,(s_n, v^{\pi}_n)\right\}$$</span><!-- Has MathJax --></p>
+<p>Now we have two ways to learn our parameters <span>$w$</span><!-- Has MathJax --> using the experience.</p>
+<h1 id="Incremental-Method"><a href="#Incremental-Method" class="headerlink" title="Incremental Method"></a>Incremental Method</h1><p>One way is to use the sample one by one sequentially, or say incrementally.</p>
+<ul>
+<li>for <span>$t$</span><!-- Has MathJax --> in <span>$1\dots n$</span><!-- Has MathJax --><ul>
+<li>calculate <span>$\Delta w=\alpha(v^{\pi}(s_t)-\hat{v}(s_t;w))\nabla_w \hat{v}(s_t;w)$</span><!-- Has MathJax --></li>
+<li><span>$w\leftarrow w+\Delta w$</span><!-- Has MathJax -->
+</li>
+</ul>
+</li>
+</ul>
+<p>In practice, we may not need to sample the whole <span>$\mathcal{D}$</span><!-- Has MathJax --> in advance, but sample at the beginning of each step.</p>
+<p>Obviously, there is a drawback of the incremental method: the samples are not utilized to their best. We sample one by one, and discard the previous sample immediately after updating the weights using it. This drawback encourages the so-called batch method.</p>
+<h1 id="Batch-Method"><a href="#Batch-Method" class="headerlink" title="Batch Method"></a>Batch Method</h1><p>Instead of sampling and discarding one by one, we set our goal to find an approximator <span>$\hat{v}(s;w)$</span><!-- Has MathJax --> best fitting the experience <span>$\mathcal{D}$</span><!-- Has MathJax -->, in the sense to minimize the <em>least squares</em> of the approximation:<br><span>$$L(w)=\sum_{i=1}^{n}(v^{\pi}(s_i)-\hat{v}(s_i;w))^2$$</span><!-- Has MathJax --></p>
+<p>One way to look at it is to rewrite the original loss as<br><span>$$\begin{aligned}
+L(w) &amp;= \mathbb{E}_{S\sim\pi}\left[(v^{\pi}(S)-\hat{v}(S;w))^2\right]\\
+&amp;=\mathbb{E}_{D\sim\pi}\left[\mathbb{E}_{S\sim D}\left[(v^{\pi}(S)-\hat{v}(S;w))^2\right]\right]
+\end{aligned}$$</span><!-- Has MathJax --></p>
+<p>Instead of sampling <span>$S$</span><!-- Has MathJax --> one by one, we sample <span>$\mathcal{D}$</span><!-- Has MathJax -->, i.e. a batch of <span>$S$</span><!-- Has MathJax -->, to approximate the desired expectation.</p>
+<p>How to minimize the least squares? One way is to calculate the full gradient contributed by <span>$n$</span><!-- Has MathJax --> samples, i.e gradient descent. However, in reality <span>$n$</span><!-- Has MathJax --> may be very large. As a result, we use <em>stochastic gradient descent</em>:</p>
+<ul>
+<li>repeat sufficient times<ul>
+<li>randomly pick a sample <span>$(s_i, v^{\pi}_i)$</span><!-- Has MathJax --></li>
+<li>calculate <span>$\Delta w=\alpha(v^{\pi}_i-\hat{v}(s_i;w))\nabla_w \hat{v}(s_i;w)$</span><!-- Has MathJax --></li>
+<li><span>$w\leftarrow w+\Delta w$</span><!-- Has MathJax -->
+</li>
+</ul>
+</li>
+</ul>
+<h1 id="Missing-Oracle"><a href="#Missing-Oracle" class="headerlink" title="Missing Oracle"></a>Missing Oracle</h1><p>Up until now, we are assuming we know the true value function <span>$v^{\pi}$</span><!-- Has MathJax -->. However, in reality we never know it. As a compromise, we replace it by the target used in Monte-Carlo, Temporal-Difference and TD(<span>$\lambda$</span><!-- Has MathJax -->) prediction.</p>
+<table>
+<thead>
+<tr>
+<th>Prediction Method</th>
+<th>Replacement for <span>$v^{\pi}$</span><!-- Has MathJax --></th>
+<th>Require full epoch</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Monte-Carlo</td>
+<td><span>$G^t$</span><!-- Has MathJax --></td>
+<td>yes</td>
+</tr>
+<tr>
+<td>Temporal-Difference</td>
+<td><span>$r_{t+1}+\gamma \hat{v}(s_{t+1};w)$</span><!-- Has MathJax --></td>
+<td>no</td>
+</tr>
+<tr>
+<td>TD(<span>$\lambda$</span><!-- Has MathJax -->) in forward-view</td>
+<td><span>$G^{\lambda}$</span><!-- Has MathJax --></td>
+<td>yes</td>
+</tr>
+</tbody>
+</table>
+<p>Note that the vanilla TD(<span>$\lambda$</span><!-- Has MathJax -->) requires seeing the full epoch. Thankfully, similar to previous approach, we can use eligibility trace to rewrite the TD(<span>$\lambda$</span><!-- Has MathJax -->) in backward view:<br><span>$$\begin{aligned}
+\delta_t&amp;=r_{t+1}+\gamma \hat{v}(s_{t+1};w)-\hat{v}(s_{t+1};w)\\
+E_t&amp;=\gamma\lambda E_{t-1} + \nabla_w \hat{v}(s_t;w)\\
+\Delta w &amp;= \alpha\delta_t E_t
+\end{aligned}$$</span><!-- Has MathJax --></p>
+<p>Note that in the TD and TD(<span>$\lambda$</span><!-- Has MathJax -->) cases, the new term is dependent on <span>$\hat{v}$</span><!-- Has MathJax -->. However, we <strong>must not</strong> differentiate it when calculating the gradient. An explanation is that we always treat this new term as the replacement, or approximation, of the true <span>$v^{\pi}$</span><!-- Has MathJax -->, and update our target value function toward it, and not vise versa, i.e. we should not update the assumed true value towards our approximator. Anyway, in reality, if we take this new term into account when doing gradient descent, the performance dramatically drops.</p>
+<h1 id="Choice-for-function-approximators"><a href="#Choice-for-function-approximators" class="headerlink" title="Choice for function approximators"></a>Choice for function approximators</h1><p>We have settled down the overall structure of the prediction algorithm using a value function approximator, but we haven’t answer the very first question: what approximator should we use?</p>
+<p>Generally speaking, there are two categories: linear and non-linear approximator. The former is simple and straight forward, while the latter is typically a neural network.</p>
+<h2 id="Linear-function-approximator"><a href="#Linear-function-approximator" class="headerlink" title="Linear function approximator"></a>Linear function approximator</h2><p>In the linear case, we assume<br><span>$$\hat{v}(s;w)=\langle x(s), w\rangle$$</span><!-- Has MathJax --></p>
+<p>where <span>$x(s)$</span><!-- Has MathJax --> is the <em>feature vector</em> of the state not containing any weights, e.g. price history of a stock, or reading of sensors of a robot. In particular, if <span>$x(s)$</span><!-- Has MathJax --> is a one-hot vector for each <span>$s$</span><!-- Has MathJax -->, the linear approximation degenerates to table lookup.</p>
+<p>One great advantage of using linear approximation in an optimization problem is that it always has simple gradient and direct, closed form solution. In fact, we have<br><span>$$\nabla_w \hat{v}(s;w) = x(s)$$</span><!-- Has MathJax --></p>
+<p>Such gradient can be plugged into both Incremental Method and Batch Method directly.</p>
+<p>Furthermore, in Batch Method case, the problem turns out to be the classic Linear Least Squares problem, in which the optimal weight <span>$w$</span><!-- Has MathJax --> can be directly solved by<br><span>$$w = (Y^{\intercal}Z)^{-1}Y^{\intercal}V$$</span><!-- Has MathJax --></p>
+<p>where<br><span>$$Y=\begin{pmatrix}
+y^{\intercal}_1\\
+\vdots\\
+y^{\intercal}_n\\
+\end{pmatrix},
+Z=\begin{pmatrix}
+z^{\intercal}_1\\
+\vdots\\
+z^{\intercal}_n\\
+\end{pmatrix},
+V=\begin{pmatrix}
+v^{\intercal}_1\\
+\vdots\\
+v^{\intercal}_n\\
+\end{pmatrix}$$</span><!-- Has MathJax --></p>
+<p>are two <span>$n\times m$</span><!-- Has MathJax --> matrix, and a <span>$n\times 1$</span><!-- Has MathJax --> vector, respectively, with entries described in the following table.</p>
+<table>
+<thead>
+<tr>
+<th>Prediction Method</th>
+<th><span>$y_t$</span><!-- Has MathJax --></th>
+<th><span>$z_t$</span><!-- Has MathJax --></th>
+<th><span>$v_t$</span><!-- Has MathJax --></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Monte-Carlo</td>
+<td><span>$x(s_t)$</span><!-- Has MathJax --></td>
+<td><span>$x(s_t)$</span><!-- Has MathJax --></td>
+<td><span>$G_t$</span><!-- Has MathJax --></td>
+</tr>
+<tr>
+<td>Temporal-Difference</td>
+<td><span>$x(s_t)$</span><!-- Has MathJax --></td>
+<td><span>$x_t-\gamma v(s_{t+1})$</span><!-- Has MathJax --></td>
+<td><span>$r_{t+1}$</span><!-- Has MathJax --></td>
+</tr>
+<tr>
+<td>TD(<span>$\lambda$</span><!-- Has MathJax -->) in backward-view</td>
+<td><span>$E_t$</span><!-- Has MathJax --></td>
+<td><span>$x_t-\gamma v(s_{t+1})$</span><!-- Has MathJax --></td>
+<td><span>$r_{t+1}$</span><!-- Has MathJax --></td>
+</tr>
+</tbody>
+</table>
+<h2 id="Non-linear-function-approximator"><a href="#Non-linear-function-approximator" class="headerlink" title="Non-linear function approximator"></a>Non-linear function approximator</h2><p>In more complicated case, we approximate the value function <span>$\hat{v}(s;w)$</span><!-- Has MathJax --> using a neural network. Besides, when doing control instead of prediction, we model <span>$\hat{q}(s,a;w)$</span><!-- Has MathJax -->. There are two ways to model it:</p>
+<ul>
+<li><span>$\hat{q}:S\times A\rightarrow \mathbb{R}$</span><!-- Has MathJax --></li>
+<li><span>$\hat{q}:S\rightarrow\mathbb{R}^{|A|}$</span><!-- Has MathJax -->
+</li>
+</ul>
+<p>The second one is usually preferred.</p>
+<p>A well-known success of using a non-linear approximator is the <strong>Deep Q-Network</strong>.</p>
+<ul>
+<li>Initialze an empty experience set <span>$\mathcal{D}$</span><!-- Has MathJax -->.</li>
+<li>Initialize <span>$w$</span><!-- Has MathJax -->, and set <span>$w^{-}=w$</span><!-- Has MathJax --></li>
+<li>Repeat for several epochs<ul>
+<li>Initialize timestmap <span>$t\leftarrow 0$</span><!-- Has MathJax --></li>
+<li>Initialize <span>$s_t$</span><!-- Has MathJax --></li>
+<li>Repeat<ul>
+<li>Break if <span>$s_t$</span><!-- Has MathJax --> is termination.</li>
+<li><span>$w^{-}\leftarrow w$</span><!-- Has MathJax --> after <span>$C$</span><!-- Has MathJax --> steps.</li>
+<li>Take an action <span>$a_t$</span><!-- Has MathJax --> from current state <span>$s_t$</span><!-- Has MathJax --> according to <span>$\hat{q}(s_t,a;w)$</span><!-- Has MathJax --> <span>$\epsilon$</span><!-- Has MathJax -->-greedily.</li>
+<li>Apply <span>$a_t$</span><!-- Has MathJax --> to observe <span>$r_{t+1}$</span><!-- Has MathJax --> and <span>$s_{t+1}$</span><!-- Has MathJax -->.</li>
+<li>Store <span>$(s_t, a_t, r_{t+1}, s_{t+1})$</span><!-- Has MathJax --> in <span>$\mathcal{D}$</span><!-- Has MathJax --></li>
+<li><span>$t\leftarrow t+1$</span><!-- Has MathJax --> and jump to next loop if <span>$\mathcal{D}$</span><!-- Has MathJax --> is not big enough.</li>
+<li>Randomly sample a mini-batch <span>$\mathcal{D}_s$</span><!-- Has MathJax --> from <span>$\mathcal{D}$</span><!-- Has MathJax -->.</li>
+<li>Use variant of SGD to minizie<span>$$L(w)=\mathbb{E}_{(s,a,r&apos;,s&apos;)\sim \mathcal{D}_s}\left[\left(r+\gamma\max_{a&apos;}\hat{q}(s&apos;,a&apos;;w^{-})-\hat{q}(s,a;w)\right)^2\right]$$</span><!-- Has MathJax --></li>
+<li><span>$t\leftarrow t+1$</span><!-- Has MathJax -->
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>The original paper can be found <a href="https://storage.googleapis.com/deepmind-media/dqn/DQNNaturePaper.pdf" target="_blank" rel="external">here</a>, and a TensorFlow implementation can be found <a href="https://github.com/devsisters/DQN-tensorflow" target="_blank" rel="external">here</a>.</p>
+<p>Note there are two key innovation in DQN, the first one is <strong>experience replay</strong>, as has mentioned, which greatly reduces the correlation between training samples. The second one is <strong>fixed <span>$Q$</span><!-- Has MathJax -->-target</strong>, which fixes the parameters of target policy for several steps, and results in greatly stabilizing the training process.</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Reinforcement-Learning/" rel="tag">#Reinforcement Learning</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/03/13/q-learning/" rel="next" title="RL Note (5.2) - Q-Learning">
+                <i class="fa fa-chevron-left"></i> RL Note (5.2) - Q-Learning
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/uploads/avatar.png"
+               alt="h(x)" />
+          <p class="site-author-name" itemprop="name">h(x)</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">12</span>
+              <span class="site-state-item-name">posts</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-name">categories</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-name">tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Incremental-Method"><span class="nav-number">1.</span> <span class="nav-text">Incremental Method</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Batch-Method"><span class="nav-number">2.</span> <span class="nav-text">Batch Method</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Missing-Oracle"><span class="nav-number">3.</span> <span class="nav-text">Missing Oracle</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Choice-for-function-approximators"><span class="nav-number">4.</span> <span class="nav-text">Choice for function approximators</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Linear-function-approximator"><span class="nav-number">4.1.</span> <span class="nav-text">Linear function approximator</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Non-linear-function-approximator"><span class="nav-number">4.2.</span> <span class="nav-text">Non-linear function approximator</span></a></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">h(x)</span>
+</div>
+
+<div class="powered-by">
+  Powered by <a class="theme-link" href="https://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+    <script type="text/javascript">
+      var disqus_shortname = 'hx-chaos';
+      var disqus_identifier = '2017/03/14/value-function-approx/';
+      var disqus_title = "RL Note (6) - Value Function Approximation";
+      var disqus_url = 'http://yoursite.com/2017/03/14/value-function-approx/';
+
+      function run_disqus_script(disqus_script){
+        var dsq = document.createElement('script');
+        dsq.type = 'text/javascript';
+        dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      }
+
+      run_disqus_script('count.js');
+      
+        run_disqus_script('embed.js');
+      
+    </script>
+  
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("HaYouQEVV7WVOM54aQI5vJ8W-gzGzoHsz", "dwbK71pPT5vOio5RpJ5x0dad");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+
+
+
+  
+
+</body>
+</html>

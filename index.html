@@ -245,6 +245,292 @@
             
               
                 
+                <a class="post-title-link" href="/2017/03/14/value-function-approx/" itemprop="url">
+                  RL Note (6) - Value Function Approximation
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2017-03-14T15:36:08+08:00" content="2017-03-14">
+              2017-03-14
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Machine-Learning/" itemprop="url" rel="index">
+                    <span itemprop="name">Machine Learning</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2017/03/14/value-function-approx/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2017/03/14/value-function-approx/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2017/03/14/value-function-approx/" class="leancloud_visitors" data-flag-title="RL Note (6) - Value Function Approximation">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">visitors </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>This note is for lecture <a href="https://www.youtube.com/watch?v=UoPei5o4fps" target="_blank" rel="external">Lecture 6: Value Function Approximation</a>.</p>
+<p>Up until now, we have deduced several algorithms for both prediction and control, in theory. However, when applying them to practice, we have to face one challenge: the number of states or state-action pairs may be tremendously huge.</p>
+<p>The most naive approach to implement those algorithms, in particular to represent value functions <span>$v(s)$</span><!-- Has MathJax --> and <span>$q(s,a)$</span><!-- Has MathJax -->, is to build a lookup table. In reality, however, it is not applicable. For example, for game Backgammon we have roughly <span>$10^{20}$</span><!-- Has MathJax --> states, and <span>$10^{170}$</span><!-- Has MathJax --> states for the game Go. To make things worse, we have a continuous state space when training a helicopter.</p>
+<p>A natural approach to resolve the issue is to build a model <span>$\hat{v}(s;w)$</span><!-- Has MathJax --> or <span>$\hat{q}(s,a;w)$</span><!-- Has MathJax --> parametrized by some parameters <span>$w$</span><!-- Has MathJax --> to approximate the true mapping <span>$v(s)$</span><!-- Has MathJax --> or <span>$q(s,a)$</span><!-- Has MathJax -->.</p>
+<p>One way to learn weights <span>$w$</span><!-- Has MathJax --> is to act as if it is a supervised learning problem. Now suppose some oracle has told us the true value function <span>$v^{\pi}(s)$</span><!-- Has MathJax --> for some policy <span>$\pi$</span><!-- Has MathJax -->. Our target is to minimize the following loss:<br><span>$$L(w) = \mathbb{E}_{\pi}\left[(v^{\pi}(S)-\hat{v}(S;w))^2\right]$$</span><!-- Has MathJax --></p>
+<span>$\mathbb{E}_{\pi}$</span><!-- Has MathJax --> means the expectation is calculated for state samples following trajectories guided by policy <span>$\pi$</span><!-- Has MathJax -->.<br><br>How to minimize such loss with respect to <span>$w$</span><!-- Has MathJax -->? Gradient descent! To be more specific, we calculate for some step size <span>$\alpha$</span><!-- Has MathJax -->
+<span>$$\begin{aligned}
+\Delta w&amp;=-\frac{1}{2}\alpha\nabla_w L(w)\\
+&amp;=\alpha\mathbb{E}_{\pi}\left[(v^{\pi}(S)-\hat{v}(S;w))\nabla_w \hat{v}(S;w)\right]
+\end{aligned}$$</span><!-- Has MathJax -->
+<p>However, it is impossible to calculate the actual expectation, so we have to compromise. The typically way to compromise is sampling.</p>
+<p>Suppose we have sampled several steps according to policy <span>$\pi$</span><!-- Has MathJax -->, and stored them in a set named <em>experience</em>, denoted by <span>$\mathcal{D}$</span><!-- Has MathJax -->:<br><span>$$\mathcal{D}=\left\{(s_1, v^{\pi}_1),\dots,(s_n, v^{\pi}_n)\right\}$$</span><!-- Has MathJax --></p>
+<p>Now we have two ways to learn our parameters <span>$w$</span><!-- Has MathJax --> using the experience.</p>
+<h1 id="Incremental-Method"><a href="#Incremental-Method" class="headerlink" title="Incremental Method"></a>Incremental Method</h1><p>One way is to use the sample one by one sequentially, or say incrementally.</p>
+<ul>
+<li>for <span>$t$</span><!-- Has MathJax --> in <span>$1\dots n$</span><!-- Has MathJax --><ul>
+<li>calculate <span>$\Delta w=\alpha(v^{\pi}(s_t)-\hat{v}(s_t;w))\nabla_w \hat{v}(s_t;w)$</span><!-- Has MathJax --></li>
+<li><span>$w\leftarrow w+\Delta w$</span><!-- Has MathJax -->
+</li>
+</ul>
+</li>
+</ul>
+<p>In practice, we may not need to sample the whole <span>$\mathcal{D}$</span><!-- Has MathJax --> in advance, but sample at the beginning of each step.</p>
+<p>Obviously, there is a drawback of the incremental method: the samples are not utilized to their best. We sample one by one, and discard the previous sample immediately after updating the weights using it. This drawback encourages the so-called batch method.</p>
+<h1 id="Batch-Method"><a href="#Batch-Method" class="headerlink" title="Batch Method"></a>Batch Method</h1><p>Instead of sampling and discarding one by one, we set our goal to find an approximator <span>$\hat{v}(s;w)$</span><!-- Has MathJax --> best fitting the experience <span>$\mathcal{D}$</span><!-- Has MathJax -->, in the sense to minimize the <em>least squares</em> of the approximation:<br><span>$$L(w)=\sum_{i=1}^{n}(v^{\pi}(s_i)-\hat{v}(s_i;w))^2$$</span><!-- Has MathJax --></p>
+<p>One way to look at it is to rewrite the original loss as<br><span>$$\begin{aligned}
+L(w) &amp;= \mathbb{E}_{S\sim\pi}\left[(v^{\pi}(S)-\hat{v}(S;w))^2\right]\\
+&amp;=\mathbb{E}_{D\sim\pi}\left[\mathbb{E}_{S\sim D}\left[(v^{\pi}(S)-\hat{v}(S;w))^2\right]\right]
+\end{aligned}$$</span><!-- Has MathJax --></p>
+<p>Instead of sampling <span>$S$</span><!-- Has MathJax --> one by one, we sample <span>$\mathcal{D}$</span><!-- Has MathJax -->, i.e. a batch of <span>$S$</span><!-- Has MathJax -->, to approximate the desired expectation.</p>
+<p>How to minimize the least squares? One way is to calculate the full gradient contributed by <span>$n$</span><!-- Has MathJax --> samples, i.e gradient descent. However, in reality <span>$n$</span><!-- Has MathJax --> may be very large. As a result, we use <em>stochastic gradient descent</em>:</p>
+<ul>
+<li>repeat sufficient times<ul>
+<li>randomly pick a sample <span>$(s_i, v^{\pi}_i)$</span><!-- Has MathJax --></li>
+<li>calculate <span>$\Delta w=\alpha(v^{\pi}_i-\hat{v}(s_i;w))\nabla_w \hat{v}(s_i;w)$</span><!-- Has MathJax --></li>
+<li><span>$w\leftarrow w+\Delta w$</span><!-- Has MathJax -->
+</li>
+</ul>
+</li>
+</ul>
+<h1 id="Missing-Oracle"><a href="#Missing-Oracle" class="headerlink" title="Missing Oracle"></a>Missing Oracle</h1><p>Up until now, we are assuming we know the true value function <span>$v^{\pi}$</span><!-- Has MathJax -->. However, in reality we never know it. As a compromise, we replace it by the target used in Monte-Carlo, Temporal-Difference and TD(<span>$\lambda$</span><!-- Has MathJax -->) prediction.</p>
+<table>
+<thead>
+<tr>
+<th>Prediction Method</th>
+<th>Replacement for <span>$v^{\pi}$</span><!-- Has MathJax --></th>
+<th>Require full epoch</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Monte-Carlo</td>
+<td><span>$G^t$</span><!-- Has MathJax --></td>
+<td>yes</td>
+</tr>
+<tr>
+<td>Temporal-Difference</td>
+<td><span>$r_{t+1}+\gamma \hat{v}(s_{t+1};w)$</span><!-- Has MathJax --></td>
+<td>no</td>
+</tr>
+<tr>
+<td>TD(<span>$\lambda$</span><!-- Has MathJax -->) in forward-view</td>
+<td><span>$G^{\lambda}$</span><!-- Has MathJax --></td>
+<td>yes</td>
+</tr>
+</tbody>
+</table>
+<p>Note that the vanilla TD(<span>$\lambda$</span><!-- Has MathJax -->) requires seeing the full epoch. Thankfully, similar to previous approach, we can use eligibility trace to rewrite the TD(<span>$\lambda$</span><!-- Has MathJax -->) in backward view:<br><span>$$\begin{aligned}
+\delta_t&amp;=r_{t+1}+\gamma \hat{v}(s_{t+1};w)-\hat{v}(s_{t+1};w)\\
+E_t&amp;=\gamma\lambda E_{t-1} + \nabla_w \hat{v}(s_t;w)\\
+\Delta w &amp;= \alpha\delta_t E_t
+\end{aligned}$$</span><!-- Has MathJax --></p>
+<p>Note that in the TD and TD(<span>$\lambda$</span><!-- Has MathJax -->) cases, the new term is dependent on <span>$\hat{v}$</span><!-- Has MathJax -->. However, we <strong>must not</strong> differentiate it when calculating the gradient. An explanation is that we always treat this new term as the replacement, or approximation, of the true <span>$v^{\pi}$</span><!-- Has MathJax -->, and update our target value function toward it, and not vise versa, i.e. we should not update the assumed true value towards our approximator. Anyway, in reality, if we take this new term into account when doing gradient descent, the performance dramatically drops.</p>
+<h1 id="Choice-for-function-approximators"><a href="#Choice-for-function-approximators" class="headerlink" title="Choice for function approximators"></a>Choice for function approximators</h1><p>We have settled down the overall structure of the prediction algorithm using a value function approximator, but we haven’t answer the very first question: what approximator should we use?</p>
+<p>Generally speaking, there are two categories: linear and non-linear approximator. The former is simple and straight forward, while the latter is typically a neural network.</p>
+<h2 id="Linear-function-approximator"><a href="#Linear-function-approximator" class="headerlink" title="Linear function approximator"></a>Linear function approximator</h2><p>In the linear case, we assume<br><span>$$\hat{v}(s;w)=\langle x(s), w\rangle$$</span><!-- Has MathJax --></p>
+<p>where <span>$x(s)$</span><!-- Has MathJax --> is the <em>feature vector</em> of the state not containing any weights, e.g. price history of a stock, or reading of sensors of a robot. In particular, if <span>$x(s)$</span><!-- Has MathJax --> is a one-hot vector for each <span>$s$</span><!-- Has MathJax -->, the linear approximation degenerates to table lookup.</p>
+<p>One great advantage of using linear approximation in an optimization problem is that it always has simple gradient and direct, closed form solution. In fact, we have<br><span>$$\nabla_w \hat{v}(s;w) = x(s)$$</span><!-- Has MathJax --></p>
+<p>Such gradient can be plugged into both Incremental Method and Batch Method directly.</p>
+<p>Furthermore, in Batch Method case, the problem turns out to be the classic Linear Least Squares problem, in which the optimal weight <span>$w$</span><!-- Has MathJax --> can be directly solved by<br><span>$$w = (Y^{\intercal}Z)^{-1}Y^{\intercal}V$$</span><!-- Has MathJax --></p>
+<p>where<br><span>$$Y=\begin{pmatrix}
+y^{\intercal}_1\\
+\vdots\\
+y^{\intercal}_n\\
+\end{pmatrix},
+Z=\begin{pmatrix}
+z^{\intercal}_1\\
+\vdots\\
+z^{\intercal}_n\\
+\end{pmatrix},
+V=\begin{pmatrix}
+v^{\intercal}_1\\
+\vdots\\
+v^{\intercal}_n\\
+\end{pmatrix}$$</span><!-- Has MathJax --></p>
+<p>are two <span>$n\times m$</span><!-- Has MathJax --> matrix, and a <span>$n\times 1$</span><!-- Has MathJax --> vector, respectively, with entries described in the following table.</p>
+<table>
+<thead>
+<tr>
+<th>Prediction Method</th>
+<th><span>$y_t$</span><!-- Has MathJax --></th>
+<th><span>$z_t$</span><!-- Has MathJax --></th>
+<th><span>$v_t$</span><!-- Has MathJax --></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Monte-Carlo</td>
+<td><span>$x(s_t)$</span><!-- Has MathJax --></td>
+<td><span>$x(s_t)$</span><!-- Has MathJax --></td>
+<td><span>$G_t$</span><!-- Has MathJax --></td>
+</tr>
+<tr>
+<td>Temporal-Difference</td>
+<td><span>$x(s_t)$</span><!-- Has MathJax --></td>
+<td><span>$x_t-\gamma v(s_{t+1})$</span><!-- Has MathJax --></td>
+<td><span>$r_{t+1}$</span><!-- Has MathJax --></td>
+</tr>
+<tr>
+<td>TD(<span>$\lambda$</span><!-- Has MathJax -->) in backward-view</td>
+<td><span>$E_t$</span><!-- Has MathJax --></td>
+<td><span>$x_t-\gamma v(s_{t+1})$</span><!-- Has MathJax --></td>
+<td><span>$r_{t+1}$</span><!-- Has MathJax --></td>
+</tr>
+</tbody>
+</table>
+<h2 id="Non-linear-function-approximator"><a href="#Non-linear-function-approximator" class="headerlink" title="Non-linear function approximator"></a>Non-linear function approximator</h2><p>In more complicated case, we approximate the value function <span>$\hat{v}(s;w)$</span><!-- Has MathJax --> using a neural network. Besides, when doing control instead of prediction, we model <span>$\hat{q}(s,a;w)$</span><!-- Has MathJax -->. There are two ways to model it:</p>
+<ul>
+<li><span>$\hat{q}:S\times A\rightarrow \mathbb{R}$</span><!-- Has MathJax --></li>
+<li><span>$\hat{q}:S\rightarrow\mathbb{R}^{|A|}$</span><!-- Has MathJax -->
+</li>
+</ul>
+<p>The second one is usually preferred.</p>
+<p>A well-known success of using a non-linear approximator is the <strong>Deep Q-Network</strong>.</p>
+<ul>
+<li>Initialze an empty experience set <span>$\mathcal{D}$</span><!-- Has MathJax -->.</li>
+<li>Initialize <span>$w$</span><!-- Has MathJax -->, and set <span>$w^{-}=w$</span><!-- Has MathJax --></li>
+<li>Repeat for several epochs<ul>
+<li>Initialize timestmap <span>$t\leftarrow 0$</span><!-- Has MathJax --></li>
+<li>Initialize <span>$s_t$</span><!-- Has MathJax --></li>
+<li>Repeat<ul>
+<li>Break if <span>$s_t$</span><!-- Has MathJax --> is termination.</li>
+<li><span>$w^{-}\leftarrow w$</span><!-- Has MathJax --> after <span>$C$</span><!-- Has MathJax --> steps.</li>
+<li>Take an action <span>$a_t$</span><!-- Has MathJax --> from current state <span>$s_t$</span><!-- Has MathJax --> according to <span>$\hat{q}(s_t,a;w)$</span><!-- Has MathJax --> <span>$\epsilon$</span><!-- Has MathJax -->-greedily.</li>
+<li>Apply <span>$a_t$</span><!-- Has MathJax --> to observe <span>$r_{t+1}$</span><!-- Has MathJax --> and <span>$s_{t+1}$</span><!-- Has MathJax -->.</li>
+<li>Store <span>$(s_t, a_t, r_{t+1}, s_{t+1})$</span><!-- Has MathJax --> in <span>$\mathcal{D}$</span><!-- Has MathJax --></li>
+<li><span>$t\leftarrow t+1$</span><!-- Has MathJax --> and jump to next loop if <span>$\mathcal{D}$</span><!-- Has MathJax --> is not big enough.</li>
+<li>Randomly sample a mini-batch <span>$\mathcal{D}_s$</span><!-- Has MathJax --> from <span>$\mathcal{D}$</span><!-- Has MathJax -->.</li>
+<li>Use variant of SGD to minizie<span>$$L(w)=\mathbb{E}_{(s,a,r&apos;,s&apos;)\sim \mathcal{D}_s}\left[\left(r+\gamma\max_{a&apos;}\hat{q}(s&apos;,a&apos;;w^{-})-\hat{q}(s,a;w)\right)^2\right]$$</span><!-- Has MathJax --></li>
+<li><span>$t\leftarrow t+1$</span><!-- Has MathJax -->
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>The original paper can be found <a href="https://storage.googleapis.com/deepmind-media/dqn/DQNNaturePaper.pdf" target="_blank" rel="external">here</a>, and a TensorFlow implementation can be found <a href="https://github.com/devsisters/DQN-tensorflow" target="_blank" rel="external">here</a>.</p>
+<p>Note there are two key innovation in DQN, the first one is <strong>experience replay</strong>, as has mentioned, which greatly reduces the correlation between training samples. The second one is <strong>fixed <span>$Q$</span><!-- Has MathJax -->-target</strong>, which fixes the parameters of target policy for several steps, and results in greatly stabilizing the training process.</p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2017/03/13/q-learning/" itemprop="url">
                   RL Note (5.2) - Q-Learning
                 </a>
@@ -2022,180 +2308,6 @@ y &amp;= \frac{i-i&apos;}{u}Q+\frac{j-j&apos;}{v}
 
 
     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/09/09/uint8-fc/" itemprop="url">
-                  UInt8 Matrix Multiplication
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">Posted on</span>
-            <time itemprop="dateCreated" datetime="2016-09-09T19:25:23+08:00" content="2016-09-09">
-              2016-09-09
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp;
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/ML-Implementation/" itemprop="url" rel="index">
-                    <span itemprop="name">ML Implementation</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2016/09/09/uint8-fc/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2016/09/09/uint8-fc/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-             <span id="/2016/09/09/uint8-fc/" class="leancloud_visitors" data-flag-title="UInt8 Matrix Multiplication">
-               &nbsp; | &nbsp;
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               <span class="post-meta-item-text">visitors </span>
-               <span class="leancloud-visitors-count"></span>
-              </span>
-          
-
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>In this post I will introduce how to do uint8 matrix multiplication using a hidden API in CUDA 8.0.</p>
-<h1 id="Mathematics-of-Quantized-Matrix-Multiplication"><a href="#Mathematics-of-Quantized-Matrix-Multiplication" class="headerlink" title="Mathematics of Quantized Matrix Multiplication"></a>Mathematics of Quantized Matrix Multiplication</h1><p>Given two matrices <span>$A, B$</span><!-- Has MathJax --> in <span>$\mathbb{R}$</span><!-- Has MathJax -->, we need to calculate their product in the quantized space <span>$Q_U(\mathbb{R})$</span><!-- Has MathJax --> where <span>$U$</span><!-- Has MathJax --> is the ring of uint8 integers.</p>
-<p>Suppose <span>$A$</span><!-- Has MathJax --> is mapped to <span>$(\hat{A}, m_A, M_A)$</span><!-- Has MathJax -->, and <span>$B$</span><!-- Has MathJax --> is mapped to <span>$(\hat{B}, m_B, M_B)$</span><!-- Has MathJax -->, we have in <span>$\mathbb{R}$</span><!-- Has MathJax -->:</p>
-<span>$$\label{corg}
-\begin{align}
-\begin{split}
-C=AB&amp;\approx (\hat{A}\Delta_A+m_A)(\hat{B}\Delta_B+m_B)\\
-&amp;=\Delta_A\Delta_B\left(\hat{A}+\frac{m_A}{\Delta_A}\right)\left(\hat{B}+\frac{m_B}{\Delta_B}\right)\\
-&amp;\approx\Delta_A\Delta_B\left(\hat{A}+\left[\frac{m_A}{\Delta_A}\right]\right)\left(\hat{B}+\left[\frac{m_B}{\Delta_B}\right]\right)
-\end{split}
-\end{align}$$</span><!-- Has MathJax -->
-<p>where the addition is performed elementwisely. Note that the multiplication between two brackets is integer product (although not uint8)!</p>
-<p>Then we quantize <span>$C$</span><!-- Has MathJax --> back to the quantized space, we have</p>
-<span>$$\hat{C} = \left[\frac{C-m_C}{\Delta_C}\right]$$</span><!-- Has MathJax -->
-<p>Put formula (1) in, we get</p>
-<span>$$\label{chat}
-\begin{align}
-\hat{C}&amp;\triangleq\frac{\Delta_A\Delta_B}{\Delta_C}\left(\left(\hat{A}+\left[\frac{m_A}{\Delta_A}\right]\right)\left(\hat{B}+\left[\frac{m_B}{\Delta_B}\right]\right)-\frac{m_C}{\Delta_A\Delta_B}\right)
-\end{align}$$</span><!-- Has MathJax -->
-<p>The reason for writing like this will be clear later.</p>
-<h1 id="Implement-Quantized-Matrix-Multiplication"><a href="#Implement-Quantized-Matrix-Multiplication" class="headerlink" title="Implement Quantized Matrix Multiplication"></a>Implement Quantized Matrix Multiplication</h1><p>My task is to run model on GPU, so I look into CUDA 8.0, which is said to support int8/uint8 operations, although turns out to be weak and disapporting. Luckily, in <code>cublas_api.h</code> I find an API</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/*...*/</span>cublasUint8gemmBias (cublasHandle_t handle,</div><div class="line">                            cublasOperation_t transa, cublasOperation_t transb, cublasOperation_t transc,</div><div class="line">                            <span class="keyword">int</span> m, <span class="keyword">int</span> n, <span class="keyword">int</span> k,</div><div class="line">                            <span class="keyword">const</span> <span class="keyword">unsigned</span> <span class="keyword">char</span> *A, <span class="keyword">int</span> A_bias, <span class="keyword">int</span> lda,</div><div class="line">                            <span class="keyword">const</span> <span class="keyword">unsigned</span> <span class="keyword">char</span> *B, <span class="keyword">int</span> B_bias, <span class="keyword">int</span> ldb,</div><div class="line">                            <span class="keyword">unsigned</span> <span class="keyword">char</span> *C, <span class="keyword">int</span> C_bias, <span class="keyword">int</span> ldc,</div><div class="line">                            <span class="keyword">int</span> C_mult, <span class="keyword">int</span> C_shift);</div></pre></td></tr></table></figure>
-<p>From the name we can tell it must be calculating the uint8 GEMM. Strangely, there is not a single word about it in the documentation, so I have to try, guess, and test by myself.</p>
-<p>Initially I just simply set all <code>*_bias</code> to 0, and confirmed that it does calculate the uint8 matrix multiplication, and handles over/under-flow by capping to 255 and 0. After that, I did not investigate any deeper.</p>
-<p>Things changed when I incidentally read a blog named <a href="https://petewarden.com/2016/05/03/how-to-quantize-neural-networks-with-tensorflow/" target="_blank" rel="external">How to Quantize Neural Networks with TensorFlow</a>,  which leads me to <a href="https://github.com/tensorflow/tensorflow/tree/master/tensorflow/contrib/quantization/kernels" target="_blank" rel="external">a piece of code of  TensorFlow</a>. From the file name <a href="https://github.com/tensorflow/tensorflow/blob/master/tensorflow/contrib/quantization/kernels/quantized_matmul_op.cc" target="_blank" rel="external">quantized_matmul_op.cc</a>  we can tell it is used for matrix multiplication. In the file, I noticed a function:</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">GemmlowpMultiply&lt;<span class="literal">false</span>, <span class="literal">false</span>, <span class="literal">false</span>&gt;(context, a_data, b_data, c_data,</div><div class="line">                                      m, n, k, offset_a, offset_b,</div><div class="line">                                      lda, ldb, ldc);</div></pre></td></tr></table></figure>
-<p>It looks JUST LIKE the previous CUDA API, for example it also have parameters named <code>offset_*</code>. I immediately had a sense that it is also performing uint8 matrix multiplication. What is more important is that from several papers by Google, I know it uses the linear quantization the same as me. As a result, I began to re-examine the <code>cublasUint8gemmBias</code> API in CUDA. After some guesses and experiments, I finally figured out the formula it is calculating:</p>
-<span>$$C = 2^{-C_{shift}}\cdot C_{mult}\cdot ((A-A_{bias})(B-B_{bias})+C_{bias})$$</span><!-- Has MathJax -->
-<p>where <span>$A$</span><!-- Has MathJax -->, <span>$B$</span><!-- Has MathJax --> and the result <span>$C$</span><!-- Has MathJax --> are all in uint8, while other variables are int. Compare it to formula <span>$(\ref{chat})$</span><!-- Has MathJax -->, we can figure out the value of each variables:</p>
-<span>$$\begin{aligned}
-A_{bias}&amp;\triangleq-\left[\frac{m_A}{\Delta_A}\right]\\
-B_{bias}&amp;\triangleq-\left[\frac{m_B}{\Delta_B}\right]\\
-C_{bias}&amp;\triangleq\frac{m_C}{\Delta_A\Delta_B}\\
-2^{-C_{shift}}\cdot C_{mult}&amp;\triangleq\frac{\Delta_A\Delta_B}{\Delta_C}
-\end{aligned}$$</span><!-- Has MathJax -->
-<p>The first three formulas are clear, while the last one shows an issue: how to use two integers <span>$a$</span><!-- Has MathJax --> and <span>$b$</span><!-- Has MathJax --> to estimate a real number <span>$r$</span><!-- Has MathJax --> such at <span>$2^{-a}b\approx r$</span><!-- Has MathJax -->? Turns out it is simple. Suppose we allow error <span>$\epsilon$</span><!-- Has MathJax -->, we have:</p>
-<span>$$| 2^{-a}b-r |&lt;\epsilon \Rightarrow | b-2^ar|&lt;2^a\epsilon$$</span><!-- Has MathJax -->
-<p>The left-hand-side is the difference of two integers, which is at least 1, so we can choose <span>$\epsilon=2^{-30}\approx 10^{-9}, a=30, b=[2^ar]$</span><!-- Has MathJax -->, which leads to</p>
-<span>$$\begin{aligned}
-C_{shift}&amp;=30\\
-C_{mult}&amp;=\left[2^{30} \frac{\Delta_A\Delta_B}{\Delta_C}\right]
-\end{aligned}$$</span><!-- Has MathJax -->
-<p>Now, we have completely unmystified this undocumented API!</p>
-<p>One more word, it turns out that the parameter <code>C_shift</code> is at most 30, otherwise the result will be completely a mess.</p>
-<h1 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h1><p>Following is the function to calculate the multiplication of two uint8 matrices.</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">matrixMulGPU</span><span class="params">(</span></span></div><div class="line">    cublasHandle_t handle,</div><div class="line">    <span class="keyword">uint8_t</span> *d_C, <span class="keyword">const</span> <span class="keyword">uint8_t</span> *d_A, <span class="keyword">const</span> <span class="keyword">uint8_t</span> *d_B,</div><div class="line">    <span class="keyword">const</span> <span class="keyword">int</span> m, <span class="keyword">const</span> <span class="keyword">int</span> n, <span class="keyword">const</span> <span class="keyword">int</span> k,</div><div class="line">    <span class="keyword">float</span> minA, <span class="keyword">float</span> maxA, <span class="keyword">float</span> minB, <span class="keyword">float</span> maxB,</div><div class="line">    <span class="keyword">float</span> &amp;minC, <span class="keyword">float</span> &amp;maxC)</div><div class="line">&#123;</div><div class="line">    <span class="built_in">printf</span>(<span class="string">"minA=%f maxA=%f minB=%f maxB=%f\n"</span>, minA, maxA, minB, maxB);</div><div class="line">    <span class="keyword">float</span> deltaA = (maxA - minA) / (<span class="keyword">float</span>)UCHAR_MAX;</div><div class="line">    <span class="keyword">float</span> deltaB = (maxB - minB) / (<span class="keyword">float</span>)UCHAR_MAX;</div><div class="line">    <span class="built_in">printf</span>(<span class="string">"deltaA=%f deltaB=%f\n"</span>, deltaA, deltaB);</div><div class="line"></div><div class="line">    minC = min(min(minA * maxB, maxA * minB), min(minA * minB, maxA * maxB)) * n;</div><div class="line">    maxC = max(max(minA * maxB, maxA * minB), max(minA * minB, maxA * maxB)) * n;</div><div class="line">    <span class="keyword">float</span> deltaC = (maxC - minC) / (<span class="keyword">float</span>)UCHAR_MAX;</div><div class="line">    <span class="built_in">printf</span>(<span class="string">"minC=%f maxC=%f\n"</span>, minC, maxC);</div><div class="line">    <span class="built_in">printf</span>(<span class="string">"deltaC=%f\n"</span>, deltaC);</div><div class="line"></div><div class="line">    <span class="keyword">int</span> a_bias = -round(minA / deltaA);</div><div class="line">    <span class="keyword">int</span> b_bias = -round(minB / deltaB);</div><div class="line">    <span class="keyword">int</span> c_bias = -round(minC / (deltaA * deltaB));</div><div class="line">    <span class="built_in">printf</span>(<span class="string">"a_bias=%d b_bias=%d c_bias=%d\n"</span>, a_bias, b_bias, c_bias);</div><div class="line"></div><div class="line">    <span class="keyword">float</span> scale = deltaA * deltaB / deltaC;</div><div class="line">    <span class="built_in">printf</span>(<span class="string">"scale=%f\n"</span>, scale);</div><div class="line"></div><div class="line">    <span class="keyword">int</span> c_shift = <span class="number">30</span>;</div><div class="line">    <span class="keyword">int</span> c_mul = round(scale * (<span class="number">1</span> &lt;&lt; c_shift));</div><div class="line">    <span class="built_in">printf</span>(<span class="string">"c_mul=%d c_shift=%d\n"</span>, c_mul, c_shift);</div><div class="line"></div><div class="line">    cublasUint8gemmBias(</div><div class="line">        handle,</div><div class="line">        CUBLAS_OP_N, CUBLAS_OP_N, CUBLAS_OP_N,</div><div class="line">        k, m, n,</div><div class="line">        d_B, b_bias, k,</div><div class="line">        d_A, a_bias, n,</div><div class="line">        d_C, c_bias, k,</div><div class="line">        c_mul, c_shift</div><div class="line">    );</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -2241,7 +2353,7 @@ C_{mult}&amp;=\left[2^{30} \frac{\Delta_A\Delta_B}{\Delta_C}\right]
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">11</span>
+              <span class="site-state-item-count">12</span>
               <span class="site-state-item-name">posts</span>
             </a>
           </div>

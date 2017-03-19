@@ -245,6 +245,180 @@
             
               
                 
+                <a class="post-title-link" href="/2016/09/09/uint8-fc/" itemprop="url">
+                  UInt8 Matrix Multiplication
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2016-09-09T19:25:23+08:00" content="2016-09-09">
+              2016-09-09
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/ML-Implementation/" itemprop="url" rel="index">
+                    <span itemprop="name">ML Implementation</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/09/09/uint8-fc/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2016/09/09/uint8-fc/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2016/09/09/uint8-fc/" class="leancloud_visitors" data-flag-title="UInt8 Matrix Multiplication">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">visitors </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>In this post I will introduce how to do uint8 matrix multiplication using a hidden API in CUDA 8.0.</p>
+<h1 id="Mathematics-of-Quantized-Matrix-Multiplication"><a href="#Mathematics-of-Quantized-Matrix-Multiplication" class="headerlink" title="Mathematics of Quantized Matrix Multiplication"></a>Mathematics of Quantized Matrix Multiplication</h1><p>Given two matrices <span>$A, B$</span><!-- Has MathJax --> in <span>$\mathbb{R}$</span><!-- Has MathJax -->, we need to calculate their product in the quantized space <span>$Q_U(\mathbb{R})$</span><!-- Has MathJax --> where <span>$U$</span><!-- Has MathJax --> is the ring of uint8 integers.</p>
+<p>Suppose <span>$A$</span><!-- Has MathJax --> is mapped to <span>$(\hat{A}, m_A, M_A)$</span><!-- Has MathJax -->, and <span>$B$</span><!-- Has MathJax --> is mapped to <span>$(\hat{B}, m_B, M_B)$</span><!-- Has MathJax -->, we have in <span>$\mathbb{R}$</span><!-- Has MathJax -->:</p>
+<span>$$\label{corg}
+\begin{align}
+\begin{split}
+C=AB&amp;\approx (\hat{A}\Delta_A+m_A)(\hat{B}\Delta_B+m_B)\\
+&amp;=\Delta_A\Delta_B\left(\hat{A}+\frac{m_A}{\Delta_A}\right)\left(\hat{B}+\frac{m_B}{\Delta_B}\right)\\
+&amp;\approx\Delta_A\Delta_B\left(\hat{A}+\left[\frac{m_A}{\Delta_A}\right]\right)\left(\hat{B}+\left[\frac{m_B}{\Delta_B}\right]\right)
+\end{split}
+\end{align}$$</span><!-- Has MathJax -->
+<p>where the addition is performed elementwisely. Note that the multiplication between two brackets is integer product (although not uint8)!</p>
+<p>Then we quantize <span>$C$</span><!-- Has MathJax --> back to the quantized space, we have</p>
+<span>$$\hat{C} = \left[\frac{C-m_C}{\Delta_C}\right]$$</span><!-- Has MathJax -->
+<p>Put formula (1) in, we get</p>
+<span>$$\label{chat}
+\begin{align}
+\hat{C}&amp;\triangleq\frac{\Delta_A\Delta_B}{\Delta_C}\left(\left(\hat{A}+\left[\frac{m_A}{\Delta_A}\right]\right)\left(\hat{B}+\left[\frac{m_B}{\Delta_B}\right]\right)-\frac{m_C}{\Delta_A\Delta_B}\right)
+\end{align}$$</span><!-- Has MathJax -->
+<p>The reason for writing like this will be clear later.</p>
+<h1 id="Implement-Quantized-Matrix-Multiplication"><a href="#Implement-Quantized-Matrix-Multiplication" class="headerlink" title="Implement Quantized Matrix Multiplication"></a>Implement Quantized Matrix Multiplication</h1><p>My task is to run model on GPU, so I look into CUDA 8.0, which is said to support int8/uint8 operations, although turns out to be weak and disapporting. Luckily, in <code>cublas_api.h</code> I find an API</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/*...*/</span>cublasUint8gemmBias (cublasHandle_t handle,</div><div class="line">                            cublasOperation_t transa, cublasOperation_t transb, cublasOperation_t transc,</div><div class="line">                            <span class="keyword">int</span> m, <span class="keyword">int</span> n, <span class="keyword">int</span> k,</div><div class="line">                            <span class="keyword">const</span> <span class="keyword">unsigned</span> <span class="keyword">char</span> *A, <span class="keyword">int</span> A_bias, <span class="keyword">int</span> lda,</div><div class="line">                            <span class="keyword">const</span> <span class="keyword">unsigned</span> <span class="keyword">char</span> *B, <span class="keyword">int</span> B_bias, <span class="keyword">int</span> ldb,</div><div class="line">                            <span class="keyword">unsigned</span> <span class="keyword">char</span> *C, <span class="keyword">int</span> C_bias, <span class="keyword">int</span> ldc,</div><div class="line">                            <span class="keyword">int</span> C_mult, <span class="keyword">int</span> C_shift);</div></pre></td></tr></table></figure>
+<p>From the name we can tell it must be calculating the uint8 GEMM. Strangely, there is not a single word about it in the documentation, so I have to try, guess, and test by myself.</p>
+<p>Initially I just simply set all <code>*_bias</code> to 0, and confirmed that it does calculate the uint8 matrix multiplication, and handles over/under-flow by capping to 255 and 0. After that, I did not investigate any deeper.</p>
+<p>Things changed when I incidentally read a blog named <a href="https://petewarden.com/2016/05/03/how-to-quantize-neural-networks-with-tensorflow/" target="_blank" rel="external">How to Quantize Neural Networks with TensorFlow</a>,  which leads me to <a href="https://github.com/tensorflow/tensorflow/tree/master/tensorflow/contrib/quantization/kernels" target="_blank" rel="external">a piece of code of  TensorFlow</a>. From the file name <a href="https://github.com/tensorflow/tensorflow/blob/master/tensorflow/contrib/quantization/kernels/quantized_matmul_op.cc" target="_blank" rel="external">quantized_matmul_op.cc</a>  we can tell it is used for matrix multiplication. In the file, I noticed a function:</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">GemmlowpMultiply&lt;<span class="literal">false</span>, <span class="literal">false</span>, <span class="literal">false</span>&gt;(context, a_data, b_data, c_data,</div><div class="line">                                      m, n, k, offset_a, offset_b,</div><div class="line">                                      lda, ldb, ldc);</div></pre></td></tr></table></figure>
+<p>It looks JUST LIKE the previous CUDA API, for example it also have parameters named <code>offset_*</code>. I immediately had a sense that it is also performing uint8 matrix multiplication. What is more important is that from several papers by Google, I know it uses the linear quantization the same as me. As a result, I began to re-examine the <code>cublasUint8gemmBias</code> API in CUDA. After some guesses and experiments, I finally figured out the formula it is calculating:</p>
+<span>$$C = 2^{-C_{shift}}\cdot C_{mult}\cdot ((A-A_{bias})(B-B_{bias})+C_{bias})$$</span><!-- Has MathJax -->
+<p>where <span>$A$</span><!-- Has MathJax -->, <span>$B$</span><!-- Has MathJax --> and the result <span>$C$</span><!-- Has MathJax --> are all in uint8, while other variables are int. Compare it to formula <span>$(\ref{chat})$</span><!-- Has MathJax -->, we can figure out the value of each variables:</p>
+<span>$$\begin{aligned}
+A_{bias}&amp;\triangleq-\left[\frac{m_A}{\Delta_A}\right]\\
+B_{bias}&amp;\triangleq-\left[\frac{m_B}{\Delta_B}\right]\\
+C_{bias}&amp;\triangleq\frac{m_C}{\Delta_A\Delta_B}\\
+2^{-C_{shift}}\cdot C_{mult}&amp;\triangleq\frac{\Delta_A\Delta_B}{\Delta_C}
+\end{aligned}$$</span><!-- Has MathJax -->
+<p>The first three formulas are clear, while the last one shows an issue: how to use two integers <span>$a$</span><!-- Has MathJax --> and <span>$b$</span><!-- Has MathJax --> to estimate a real number <span>$r$</span><!-- Has MathJax --> such at <span>$2^{-a}b\approx r$</span><!-- Has MathJax -->? Turns out it is simple. Suppose we allow error <span>$\epsilon$</span><!-- Has MathJax -->, we have:</p>
+<span>$$| 2^{-a}b-r |&lt;\epsilon \Rightarrow | b-2^ar|&lt;2^a\epsilon$$</span><!-- Has MathJax -->
+<p>The left-hand-side is the difference of two integers, which is at least 1, so we can choose <span>$\epsilon=2^{-30}\approx 10^{-9}, a=30, b=[2^ar]$</span><!-- Has MathJax -->, which leads to</p>
+<span>$$\begin{aligned}
+C_{shift}&amp;=30\\
+C_{mult}&amp;=\left[2^{30} \frac{\Delta_A\Delta_B}{\Delta_C}\right]
+\end{aligned}$$</span><!-- Has MathJax -->
+<p>Now, we have completely unmystified this undocumented API!</p>
+<p>One more word, it turns out that the parameter <code>C_shift</code> is at most 30, otherwise the result will be completely a mess.</p>
+<h1 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h1><p>Following is the function to calculate the multiplication of two uint8 matrices.</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">matrixMulGPU</span><span class="params">(</span></span></div><div class="line">    cublasHandle_t handle,</div><div class="line">    <span class="keyword">uint8_t</span> *d_C, <span class="keyword">const</span> <span class="keyword">uint8_t</span> *d_A, <span class="keyword">const</span> <span class="keyword">uint8_t</span> *d_B,</div><div class="line">    <span class="keyword">const</span> <span class="keyword">int</span> m, <span class="keyword">const</span> <span class="keyword">int</span> n, <span class="keyword">const</span> <span class="keyword">int</span> k,</div><div class="line">    <span class="keyword">float</span> minA, <span class="keyword">float</span> maxA, <span class="keyword">float</span> minB, <span class="keyword">float</span> maxB,</div><div class="line">    <span class="keyword">float</span> &amp;minC, <span class="keyword">float</span> &amp;maxC)</div><div class="line">&#123;</div><div class="line">    <span class="built_in">printf</span>(<span class="string">"minA=%f maxA=%f minB=%f maxB=%f\n"</span>, minA, maxA, minB, maxB);</div><div class="line">    <span class="keyword">float</span> deltaA = (maxA - minA) / (<span class="keyword">float</span>)UCHAR_MAX;</div><div class="line">    <span class="keyword">float</span> deltaB = (maxB - minB) / (<span class="keyword">float</span>)UCHAR_MAX;</div><div class="line">    <span class="built_in">printf</span>(<span class="string">"deltaA=%f deltaB=%f\n"</span>, deltaA, deltaB);</div><div class="line"></div><div class="line">    minC = min(min(minA * maxB, maxA * minB), min(minA * minB, maxA * maxB)) * n;</div><div class="line">    maxC = max(max(minA * maxB, maxA * minB), max(minA * minB, maxA * maxB)) * n;</div><div class="line">    <span class="keyword">float</span> deltaC = (maxC - minC) / (<span class="keyword">float</span>)UCHAR_MAX;</div><div class="line">    <span class="built_in">printf</span>(<span class="string">"minC=%f maxC=%f\n"</span>, minC, maxC);</div><div class="line">    <span class="built_in">printf</span>(<span class="string">"deltaC=%f\n"</span>, deltaC);</div><div class="line"></div><div class="line">    <span class="keyword">int</span> a_bias = -round(minA / deltaA);</div><div class="line">    <span class="keyword">int</span> b_bias = -round(minB / deltaB);</div><div class="line">    <span class="keyword">int</span> c_bias = -round(minC / (deltaA * deltaB));</div><div class="line">    <span class="built_in">printf</span>(<span class="string">"a_bias=%d b_bias=%d c_bias=%d\n"</span>, a_bias, b_bias, c_bias);</div><div class="line"></div><div class="line">    <span class="keyword">float</span> scale = deltaA * deltaB / deltaC;</div><div class="line">    <span class="built_in">printf</span>(<span class="string">"scale=%f\n"</span>, scale);</div><div class="line"></div><div class="line">    <span class="keyword">int</span> c_shift = <span class="number">30</span>;</div><div class="line">    <span class="keyword">int</span> c_mul = round(scale * (<span class="number">1</span> &lt;&lt; c_shift));</div><div class="line">    <span class="built_in">printf</span>(<span class="string">"c_mul=%d c_shift=%d\n"</span>, c_mul, c_shift);</div><div class="line"></div><div class="line">    cublasUint8gemmBias(</div><div class="line">        handle,</div><div class="line">        CUBLAS_OP_N, CUBLAS_OP_N, CUBLAS_OP_N,</div><div class="line">        k, m, n,</div><div class="line">        d_B, b_bias, k,</div><div class="line">        d_A, a_bias, n,</div><div class="line">        d_C, c_bias, k,</div><div class="line">        c_mul, c_shift</div><div class="line">    );</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2016/09/07/quantization-summary/" itemprop="url">
                   Quantizing a Neural Network
                 </a>
@@ -573,7 +747,7 @@ u&amp;=\max{(l_1l_2,l_1u_2,u_1l_2,u_1u_2)}\\
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">11</span>
+              <span class="site-state-item-count">12</span>
               <span class="site-state-item-name">posts</span>
             </a>
           </div>
