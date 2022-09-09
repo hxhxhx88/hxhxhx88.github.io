@@ -1,0 +1,14 @@
+baseURL = 'http://example.org/'
+languageCode = 'en-us'
+title = 'h(x)'
+
+# ------------------------------
+theme = "mini"
+hasCJKLanguage = true
+[params]
+  author = 'h(x)'
+  bio = '在清醒中保持坚强'
+
+  math = true
+  showToc = true
+  hiddenPostSummaryInHomePage = true
