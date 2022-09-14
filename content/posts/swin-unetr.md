@@ -6,7 +6,7 @@ tags: ["Medical Imaging", "Paper Note"]
 draft: false
 ---
 
-[Swin UNETR](https://arxiv.org/abs/2201.01266) is a model using [Swin Transformer](https://arxiv.org/abs/2103.14030) and a U-shaped network architecture to perform medical image segementation. Its official implementation is available [here](https://github.com/Project-MONAI/research-contributions/tree/main/SwinUNETR/BRATS21). In this memo I write down some key points, without elaborating all accurate details.
+[Swin UNETR](https://arxiv.org/abs/2201.01266) is a model using [Swin Transformer](https://arxiv.org/abs/2103.14030) and a U-shaped network architecture to perform medical image segmentation. Its official implementation is available [here](https://github.com/Project-MONAI/research-contributions/tree/main/SwinUNETR/BRATS21). In this memo I write down some key points, without elaborating all accurate details.
 
 ![](https://github.com/Project-MONAI/research-contributions/blob/main/SwinUNETR/BRATS21/assets/swin_unetr.png?raw=true)
 
@@ -24,7 +24,7 @@ The output is a $(N, C_o, D, H, W)$ tensor, in which
 
 (From now on we will ignore the batch dimension.)
 
-Take the [BraTs21](https://www.synapse.org/#!Synapse:syn27046444/wiki/616992) challange as an exmaple. Each sample consists of four 3D images coming from different [mpMRI sequences](https://en.wikipedia.org/wiki/MRI_sequence) of the same region of interest(RoI):
+Take the [BraTs21](https://www.synapse.org/#!Synapse:syn27046444/wiki/616992) challenge as an example. Each sample consists of four 3D images coming from different [mpMRI sequences](https://en.wikipedia.org/wiki/MRI_sequence) of the same region of interest(RoI):
 - T1
 - T1ce
 - T2
@@ -35,7 +35,7 @@ Take the [BraTs21](https://www.synapse.org/#!Synapse:syn27046444/wiki/616992) ch
  The annotation is saved in a single 3D image consisting of three non-zero voxel values:
 - The necrotic tumor core(NCR 坏死肿瘤细胞) = 1;
 - The peritumoral edema(ED 瘤周水肿) = 2;
-- The enhencing tumor(ET 增强肿瘤) = 4;
+- The enhancing tumor(ET 增强肿瘤) = 4;
 
 while the expected prediction labels are combinations of the above:
 - Tumor core(TC) = NCR + ET;
@@ -49,7 +49,7 @@ $$
 \mathbb{p}(c,i,j,k)\in[0,1]
 $$
 
-telling for the voxel at $(i, j, k)$ the probabiliy for it to be of label TC($c=0$), WT($c=1$) and ET($c=2$).
+telling for the voxel at $(i, j, k)$ the probability for it to be of label TC($c=0$), WT($c=1$) and ET($c=2$).
 
 # Model
 
@@ -69,11 +69,11 @@ The overall computation flow is as follows:
 - Encode $x$ to $e$ of dimension $(C_h,\mathbf{D})$, then combine with $d_0$ to decode to $d$ of the same dimension.
 - Project $d$ to the output $y$ of dimension $(C_o,\mathbf{D})$.
 
-In the Swim Transforme step, the minimal units are (featurised) patches, rather than original voxels. Thoese patches are like tokens in natural langauge. Only in the very last stage are they joined with the original image at voxel granularity.
+In the Swim Transform step, the minimal units are (featurised) patches, rather than original voxels. Those patches are like tokens in natural language. Only in the very last stage are they joined with the original image at voxel granularity.
 
 ## Swin Transformer
 
-When doing Swin Transform, we first turn the input into *patches* of size $\mathbf{p}$, then further paratition these patches into *windows* of size $\mathbf{w}$, in each of which self-attention is computed. Since calculating attention preserves dimensions, the output is further downsampled to half its spatial dimensions while *double*, not $2^D$ times, the feature dimension.
+When doing Swin Transform, we first turn the input into *patches* of size $\mathbf{p}$, then further partition these patches into *windows* of size $\mathbf{w}$, in each of which self-attention is computed. Since calculating attention preserves dimensions, the output is further downsampled to half its spatial dimensions while *double*, not $2^D$ times, the feature dimension.
 
 ![](/images/swin-unetr/swin.svg)
 
@@ -102,13 +102,13 @@ As shown in the figure, the whole image is shifted by $\mathbf{\Delta}$ and padd
 x = torch.roll(x, shifts=shifts, dims=dims)
 ```
 
-Now, in the newly shifted image, patches with same colors are in proximity in the original unshifted image, and should pay attention to only patches of the same color. (Note that although, say, 0 and 3 are close in the origional image, they belongs to differnet windows in the shifted image, thus are assigned different colors.)
+Now, in the newly shifted image, patches with same colours are in proximity in the original unshifted image, and should pay attention to only patches of the same colour. (Note that although, say, 0 and 3 are close in the original image, they belongs to different windows in the shifted image, thus are assigned different colours.)
 
-To represent this, we calcualte an **attention mask** $m$ which is a $\left(N_w, V_w,V_w\right)$ dimensional tensor, in which $$N_w=\prod\frac{\mathbf{D}_p}{\mathbf{w}}$$ is the total number of windows, and $$V_w=\prod\mathbf{w}$$ is the volumn of each window, i.e. number of patches within each window.
+To represent this, we calculate an **attention mask** $m$ which is a $\left(N_w, V_w,V_w\right)$ dimensional tensor, in which $$N_w=\prod\frac{\mathbf{D}_p}{\mathbf{w}}$$ is the total number of windows, and $$V_w=\prod\mathbf{w}$$ is the volumn of each window, i.e. number of patches within each window.
 
 ![](/images/swin-unetr/windows.svg)
 
-Conceptually, we need to calcualte self-attention within each row of the above figure, but also limit the calculation to each color block.
+Conceptually, we need to calculate self-attention within each row of the above figure, but also limit the calculation to each colour block.
 
 The value of $m$ is
 $$
@@ -118,7 +118,7 @@ m(n,i,j) = \begin{cases}
 \end{cases}
 $$
 
-This mask is added to the ordinary attention before calcualting softmax to effectively turn attentions among irrelevant patches to zero.
+This mask is added to the ordinary attention before calculating softmax to effectively turn attentions among irrelevant patches to zero.
 
 [In code](https://github.com/Project-MONAI/MONAI/blob/342f4aa/monai/networks/nets/swin_unetr.py#L758-L795) (also see [here](https://github.com/microsoft/Swin-Transformer/blob/e43ac64/models/swin_transformer.py#L223-L241)), we first calculate a label tensor $l(n,i)$ of dimension $\left(N_w, V_w\right)$ with value in $\mathbb{Z}$ telling the label of patch $i$ in window $n$. Then we set $m(n,i,j)=l(n,i)-l(n,j)$, which can be efficiently calculated through [broadcasting](https://pytorch.org/docs/stable/notes/broadcasting.html). Finally, we turn all nonzero entry of $m$ to a sufficiently negative large number.
 ```python
@@ -142,7 +142,7 @@ for d, h, w in itertools.product(d_ranges, h_ranges, w_ranges):
 windows = img_mask.view(d // wd, wd, h // wh, wh, w // ww, ww)
 windows = windows.permute(1, 3, 5, 2, 4, 6).contiguous().view(-1, wd * wh * ww)
 
-# calcualte attention mask
+# calculate attention mask
 attn_mask = windows.unsqueeze(1) - windows.unsqueeze(2)
 attn_mask = attn_mask.masked_fill(attn_mask != 0, float(-inf)).masked_fill(attn_mask == 0, float(0.0))
 ```
@@ -165,7 +165,7 @@ where we add $w_i-1$ to $p_i-q_i$ to turn its value range from $[-(w_i-1),w_i)$ 
 
 A **relative position bias** $B^{(k)}$ of dimension $\left(h^{(k)},R\right)$ is learned for $k$-th attention calculation, where $h^{(k)}$ is the number of heads of the attention.
 
-The code to construct such tensor can be found [here](https://github.com/microsoft/Swin-Transformer/blob/e43ac64/models/swin_transformer.py#L100-L115) and [here](https://github.com/Project-MONAI/MONAI/blob/342f4aa/monai/networks/nets/swin_unetr.py#L439-L479). Roughtly as
+The code to construct such tensor can be found [here](https://github.com/microsoft/Swin-Transformer/blob/e43ac64/models/swin_transformer.py#L100-L115) and [here](https://github.com/Project-MONAI/MONAI/blob/342f4aa/monai/networks/nets/swin_unetr.py#L439-L479). Roughly as
 ```python
 wd, wh, ww = window_size
 
@@ -224,7 +224,7 @@ After finishing calculating window attention, which gives a $(N_w, V_w, C_h)$ te
 
 ![](/images/swin-unetr/patch_merging.svg)
 
-As demostrated in the figure, we split $z$ to $2^D$ smaller tensors of dimension $(C_h, \mathbf{D}_p/2)$ by sampling at step $2$, and then stack them to a $(2^DC_h, \mathbf{D}_p/2)$ tensor. Next, we perform a linear transformation to turn $2^DC_h$ to $2C_h$.
+As demonstrated in the figure, we split $z$ to $2^D$ smaller tensors of dimension $(C_h, \mathbf{D}_p/2)$ by sampling at step $2$, and then stack them to a $(2^DC_h, \mathbf{D}_p/2)$ tensor. Next, we perform a linear transformation to turn $2^DC_h$ to $2C_h$.
 
 Code can be found [here](https://github.com/Project-MONAI/MONAI/blob/342f4aa/monai/networks/nets/swin_unetr.py#L704-L725) and [here](https://github.com/microsoft/Swin-Transformer/blob/e43ac64/models/swin_transformer.py#L331-L352):
 ```python
@@ -251,7 +251,7 @@ $$
 where
 - $i$: input dimension;
 - $p$: padding on both side;
-- $k$: kernal size;
+- $k$: kernel size;
 - $s$: stride.
 
 Thus indeed when $s=p=1$ and $k=3$ we have $o=i$.
@@ -269,4 +269,4 @@ After that, we concatenate it with the encoded tensor at the same level to get a
 # Remark
 
 - As in the overall diagram, in order to be able to combine $e$ and $d_0$ to decode to $d$, it requires $\mathbf{D}$ is twice as much as $\mathbf{D}_p$, which further requires $\mathbf{p}$ to be $\mathbf{2}$. A relaxation maybe desired.
-- Since shift size is [alternatingly half the window size](https://github.com/microsoft/Swin-Transformer/blob/e43ac64/models/swin_transformer.py#L400) and [accumulated](https://github.com/microsoft/Swin-Transformer/blob/e43ac64/models/swin_transformer.py#L420), it seems crutial to pick *odd* window size, otherwise on the, say, 3rd shift simly a whole window is shifted and there is no information exchange between windows.
+- Since shift size is [alternatingly half the window size](https://github.com/microsoft/Swin-Transformer/blob/e43ac64/models/swin_transformer.py#L400) and [accumulated](https://github.com/microsoft/Swin-Transformer/blob/e43ac64/models/swin_transformer.py#L420), it seems crucial to pick *odd* window size, otherwise on the, say, 3rd shift simply a whole window is shifted and there is no information exchange between windows.
