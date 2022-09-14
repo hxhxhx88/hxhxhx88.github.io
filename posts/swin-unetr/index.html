@@ -84,7 +84,7 @@ $$</p><p>where we add $w_i-1$ to $p_i-q_i$ to turn its value range from $[-(w_i-
 </span></span><span style=display:flex><span><span style=color:#75715e># relative_position_bias_table[x] then further gives a vector of length h as the bias for each of h headers.</span>
 </span></span></code></pre></div><h4 id=attention>Attention <a href=#attention class=anchor>🔗</a></h4><p>The attention distribution is calculated as
 $$
-P^{(k)}(n,h,\mathbf{p},\mathbf{q})=\text{softmax}\left(\frac{Q^{(k)}\cdot \left(K^{(k)}\right)^\intercal}{\sqrt{h^{(k)}}}(n, h,\mathbf{p},\mathbf{q}) + B^{(k)}(\cdot,h,r(\mathbf{p},\mathbf{q}))+m(n,\cdot,\mathbf{p},\mathbf{q})\right)
+P^{(k)}(n,h,\mathbf{p},\mathbf{q})=\text{softmax}\left(\frac{Q^{(k)}\cdot \left(K^{(k)}\right)^\intercal}{\sqrt{C^{(i)}_h/h^{(i)}}}(n, h,\mathbf{p},\mathbf{q}) + B^{(k)}(\cdot,h,r(\mathbf{p},\mathbf{q}))+m(n,\cdot,\mathbf{p},\mathbf{q})\right)
 $$
 where indexing by $\mathbf{p}$ and $\mathbf{q}$ is understood under their natural mapping to $[0, V_w)$.</p><p>Finally, the attention is given by
 $$
