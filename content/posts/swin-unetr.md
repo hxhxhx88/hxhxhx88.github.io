@@ -6,7 +6,7 @@ tags: ["Medical Imaging", "Paper Note"]
 draft: false
 ---
 
-[Swin UNETR](https://arxiv.org/abs/2201.01266) is a model using [Swin Transformer](https://arxiv.org/abs/2103.14030) and a U-shaped network architecture to perform medical image segementation. Its official implementation is available [here](https://github.com/Project-MONAI/research-contributions/tree/main/SwinUNETR/BRATS21). In this memo I write down some key points.
+[Swin UNETR](https://arxiv.org/abs/2201.01266) is a model using [Swin Transformer](https://arxiv.org/abs/2103.14030) and a U-shaped network architecture to perform medical image segementation. Its official implementation is available [here](https://github.com/Project-MONAI/research-contributions/tree/main/SwinUNETR/BRATS21). In this memo I write down some key points, without elaborating all accurate details.
 
 ![](https://github.com/Project-MONAI/research-contributions/blob/main/SwinUNETR/BRATS21/assets/swin_unetr.png?raw=true)
 
@@ -64,7 +64,7 @@ The overall computation flow is as follows:
 
 - Swin-transform the input $x$ to get $N(=5)$ hidden states with dimensions $$h_n:=\left(2^nC_h, \frac{\mathbf{D}_p}{2^n}\right)$$ where $n=0,1,\cdots,N-1$ and $C_h$ is an internal feature size.
 - Encode $h_n$ to $e_n$ of the same dimension.
-- Decode $e_{N-1}$ to $d_{N-1}$ of the same dimension.
+- Set $e_{N-1}$ to $d_{N-1}$.
 - Combine $e_n$ with $d_{n+1}$ to decode to $d_n$ of the same dimension, for $n = N-2, N-1,\cdots 0$.
 - Encode $x$ to $e$ of dimension $(C_h,\mathbf{D})$, then combine with $d_0$ to decode to $d$ of the same dimension.
 - Project $d$ to the output $y$ of dimension $(C_o,\mathbf{D})$.
@@ -118,7 +118,7 @@ m(n,i,j) = \begin{cases}
 \end{cases}
 $$
 
-This mask is added to the oridnary attention before calcualting softmax to effectively turn attentions among irrelevant patches to zero.
+This mask is added to the ordinary attention before calcualting softmax to effectively turn attentions among irrelevant patches to zero.
 
 [In code](https://github.com/Project-MONAI/MONAI/blob/342f4aa/monai/networks/nets/swin_unetr.py#L758-L795) (also see [here](https://github.com/microsoft/Swin-Transformer/blob/e43ac64/models/swin_transformer.py#L223-L241)), we first calculate a label tensor $l(n,i)$ of dimension $\left(N_w, V_w\right)$ with value in $\mathbb{Z}$ telling the label of patch $i$ in window $n$. Then we set $m(n,i,j)=l(n,i)-l(n,j)$, which can be efficiently calculated through [broadcasting](https://pytorch.org/docs/stable/notes/broadcasting.html). Finally, we turn all nonzero entry of $m$ to a sufficiently negative large number.
 ```python
@@ -252,7 +252,7 @@ where
 - $i$: input dimension;
 - $p$: padding on both side;
 - $k$: kernal size;
-- $s$: stide.
+- $s$: stride.
 
 Thus indeed when $s=p=1$ and $k=3$ we have $o=i$.
 
@@ -269,3 +269,4 @@ After that, we concatenate it with the encoded tensor at the same level to get a
 # Remark
 
 - As in the overall diagram, in order to be able to combine $e$ and $d_0$ to decode to $d$, it requires $\mathbf{D}$ is twice as much as $\mathbf{D}_p$, which further requires $\mathbf{p}$ to be $\mathbf{2}$. A relaxation maybe desired.
+- Since shift size is [alternatingly half the window size](https://github.com/microsoft/Swin-Transformer/blob/e43ac64/models/swin_transformer.py#L400) and [accumulated](https://github.com/microsoft/Swin-Transformer/blob/e43ac64/models/swin_transformer.py#L420), it seems crutial to pick *odd* window size, otherwise on the, say, 3rd shift simly a whole window is shifted and there is no information exchange between windows.
