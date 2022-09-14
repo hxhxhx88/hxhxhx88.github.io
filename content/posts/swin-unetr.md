@@ -209,7 +209,7 @@ relative_position_index = relative_coords.sum(-1)
 
 The attention distribution is calculated as
 $$
-P^{(k)}(n,h,\mathbf{p},\mathbf{q})=\text{softmax}\left(\frac{Q^{(k)}\cdot \left(K^{(k)}\right)^\intercal}{\sqrt{h^{(k)}}}(n, h,\mathbf{p},\mathbf{q}) + B^{(k)}(\cdot,h,r(\mathbf{p},\mathbf{q}))+m(n,\cdot,\mathbf{p},\mathbf{q})\right)
+P^{(k)}(n,h,\mathbf{p},\mathbf{q})=\text{softmax}\left(\frac{Q^{(k)}\cdot \left(K^{(k)}\right)^\intercal}{\sqrt{C^{(i)}_h/h^{(i)}}}(n, h,\mathbf{p},\mathbf{q}) + B^{(k)}(\cdot,h,r(\mathbf{p},\mathbf{q}))+m(n,\cdot,\mathbf{p},\mathbf{q})\right)
 $$
 where indexing by $\mathbf{p}$ and $\mathbf{q}$ is understood under their natural mapping to $[0, V_w)$.
 
