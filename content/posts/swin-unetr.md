@@ -269,4 +269,3 @@ After that, we concatenate it with the encoded tensor at the same level to get a
 # Remark
 
 - As in the overall diagram, in order to be able to combine $e$ and $d_0$ to decode to $d$, it requires $\mathbf{D}$ is twice as much as $\mathbf{D}_p$, which further requires $\mathbf{p}$ to be $\mathbf{2}$. A relaxation maybe desired.
-- Since shift size is [alternatingly half the window size](https://github.com/microsoft/Swin-Transformer/blob/e43ac64/models/swin_transformer.py#L400) and [accumulated](https://github.com/microsoft/Swin-Transformer/blob/e43ac64/models/swin_transformer.py#L420), it seems crucial to pick *odd* window size, otherwise on the, say, 3rd shift simply a whole window is shifted and there is no information exchange between windows.
